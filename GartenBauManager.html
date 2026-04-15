@@ -92,6 +92,18 @@ button{font-family:Georgia,serif}
 /* Textarea */
 textarea.inp{resize:vertical;min-height:70px;line-height:1.6}
 
+/* Print styles */
+@media print {
+  #bottom-nav,.page-header,.no-print{display:none!important}
+  body{background:#fff!important;color:#000!important;font-family:Arial,sans-serif}
+  .print-doc{display:block!important}
+  .card,.cost-box,.r-block,.tagebuch-card{border:1px solid #ccc!important;background:#fff!important;color:#000!important;break-inside:avoid}
+  .r-block-title,.header-title{color:#2d6a4f!important}
+  .r-row-label,.r-row-det,.r-row-val,.sum-line span{color:#000!important}
+}
+.print-doc{display:none}
+
+
 /* Empty state */
 .empty{text-align:center;padding:60px 20px;color:#4a6a4a}
 .empty-icon{font-size:52px;margin-bottom:14px}
@@ -353,7 +365,7 @@ function renderPlanung(b){
       sBox.appendChild(sgrid);content.appendChild(sBox);
     }
 
-    // Calendar
+    // Calendar – alle Baustellen sichtbar
     const calWrap=document.createElement("div");calWrap.className="cal-wrap";
     const calHead=document.createElement("div");calHead.className="cal-head";
     const prevBtn=document.createElement("button");prevBtn.className="cal-nav";prevBtn.textContent="‹";
@@ -366,6 +378,19 @@ function renderPlanung(b){
     calHead.appendChild(prevBtn);calHead.appendChild(monthTitle);calHead.appendChild(nextBtn);
     calWrap.appendChild(calHead);
 
+    // Legende: alle Baustellen
+    const legend=document.createElement("div");
+    legend.style.cssText="display:flex;flex-wrap:wrap;gap:6px;padding:0 10px 10px";
+    for(let li=0;li<state.baustellen.length;li++){
+      const lb=state.baustellen[li];
+      const dot=document.createElement("div");
+      dot.style.cssText=`display:flex;align-items:center;gap:4px;font-size:10px;color:#8ab88a;background:${bc(li)}22;border:1px solid ${bc(li)}55;border-radius:5px;padding:2px 7px`;
+      dot.innerHTML=`<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${bc(li)}"></span>${esc(lb.name.slice(0,18))}`;
+      if(lb.id===b.id)dot.style.fontWeight="bold";
+      legend.appendChild(dot);
+    }
+    calWrap.appendChild(legend);
+
     const dayLabels=document.createElement("div");
     dayLabels.style.cssText="display:grid;grid-template-columns:repeat(7,1fr);padding:0 8px 4px";
     for(const d of DAYS){const dl=document.createElement("div");dl.className="cal-day-label";dl.textContent=d;dayLabels.appendChild(dl);}
@@ -375,36 +400,97 @@ function renderPlanung(b){
     const first=new Date(cal.year,cal.month,1);
     const dim=new Date(cal.year,cal.month+1,0).getDate();
     const sw=first.getDay();
-    const col=bc(state.baustellen.findIndex(x=>x.id===b.id));
+    const activeCol=bc(state.baustellen.findIndex(x=>x.id===b.id));
+
+    // Baue eine Map: datum -> [{baustelle, tag, col, isActive}]
+    const allDayMap={};
+    for(let bi=0;bi<state.baustellen.length;bi++){
+      const bx=state.baustellen[bi];
+      const col2=bc(bi);
+      for(const t of(bx.tage||[])){
+        if(!allDayMap[t.datum])allDayMap[t.datum]=[];
+        allDayMap[t.datum].push({bx,t,col:col2,isActive:bx.id===b.id});
+      }
+    }
 
     for(let i=0;i<sw;i++){grid.appendChild(document.createElement("div"));}
     for(let d=1;d<=dim;d++){
       const ds=`${cal.year}-${String(cal.month+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
-      const tag=tm[ds];
+      const entries=allDayMap[ds]||[];
+      const activeEntry=entries.find(e=>e.isActive);
+      const otherEntries=entries.filter(e=>!e.isActive);
       const isT=ds===today();
       const isSel=ds===selDay;
+      const hasConflict=entries.length>1;
+
       const cell=document.createElement("div");
       cell.className="cal-cell";
-      if(tag)cell.style.background=col+"25";
-      cell.style.border=isSel?`2px solid ${col}`:isT?`2px solid #5cb85c`:tag?`1px solid ${col}44`:"1px solid #2a4030";
+      cell.style.cursor="pointer";
+
+      // Hintergrund: aktive Baustelle dominiert, sonst erste andere
+      if(activeEntry)cell.style.background=activeCol+"22";
+      else if(entries.length)cell.style.background=entries[0].col+"15";
+
+      // Rahmen: Konflikt = orange, aktiv = activeCol, heute = grün
+      if(isSel)cell.style.border=`2px solid ${activeCol}`;
+      else if(hasConflict)cell.style.border="2px solid #c05c1a";
+      else if(isT)cell.style.border="2px solid #5cb85c";
+      else if(activeEntry)cell.style.border=`1px solid ${activeCol}55`;
+      else if(entries.length)cell.style.border=`1px solid ${entries[0].col}44`;
+      else cell.style.border="1px solid #2a4030";
+
       const num=document.createElement("div");
       num.className="cal-cell-num";
-      num.style.color=isT?"#5cb85c":"#8ab88a";
-      if(isT)num.style.fontWeight="bold";
+      num.style.color=isT?"#5cb85c":hasConflict?"#c05c1a":"#8ab88a";
+      if(isT||hasConflict)num.style.fontWeight="bold";
       num.textContent=d;
       cell.appendChild(num);
-      if(tag){
-        const info=document.createElement("div");
-        info.className="cal-cell-info";info.style.color=col;
-        info.textContent=tag.stunden+"h";
-        if((tag.personal||[]).length)info.innerHTML+=`<br>👷${tag.personal.length}`;
-        if((tag.maschinen||[]).length)info.innerHTML+=`<br>🚜${tag.maschinen.length}`;
-        cell.appendChild(info);
+
+      // Farbige Streifen für alle Baustellen an diesem Tag
+      if(entries.length){
+        const stripes=document.createElement("div");
+        stripes.style.cssText="display:flex;gap:1px;margin-top:2px;height:4px;border-radius:2px;overflow:hidden";
+        for(const e of entries){
+          const s=document.createElement("div");
+          s.style.cssText=`flex:1;background:${e.col};opacity:${e.isActive?1:0.6}`;
+          stripes.appendChild(s);
+        }
+        cell.appendChild(stripes);
+
+        // Info: aktive Baustelle zuerst
+        if(activeEntry){
+          const info=document.createElement("div");
+          info.style.cssText=`font-size:9px;color:${activeCol};text-align:center;margin-top:1px;line-height:1.4`;
+          info.textContent=activeEntry.t.stunden+"h";
+          if((activeEntry.t.personal||[]).length)info.innerHTML+=`<br>👷${activeEntry.t.personal.length}`;
+          if((activeEntry.t.maschinen||[]).length)info.innerHTML+=`<br>🚜${activeEntry.t.maschinen.length}`;
+          cell.appendChild(info);
+        }
+        // Andere Baustellen als kleine Punkte
+        for(const e of otherEntries){
+          const ob=document.createElement("div");
+          ob.style.cssText=`font-size:8px;color:${e.col};text-align:center;line-height:1.3`;
+          ob.textContent=e.bx.name.slice(0,6)+"…";
+          cell.appendChild(ob);
+        }
       }
+
       cell.addEventListener("click",()=>{selDay=ds;rebuild();});
       grid.appendChild(cell);
     }
     calWrap.appendChild(grid);
+
+    // Konflikt-Hinweis
+    const conflictDays=Object.entries(allDayMap).filter(([ds,entries])=>{
+      const y=parseInt(ds.slice(0,4)),mo=parseInt(ds.slice(5,7))-1;
+      return entries.length>1&&y===cal.year&&mo===cal.month;
+    });
+    if(conflictDays.length){
+      const cw=document.createElement("div");
+      cw.style.cssText="background:#2a1a0a;border:1px solid #c05c1a;border-radius:8px;padding:8px 12px;margin:0 8px 10px;font-size:12px;color:#c05c1a";
+      cw.innerHTML="⚠️ Überschneidungen: "+conflictDays.map(([ds,entries])=>fmt(ds)+" ("+entries.map(e=>e.bx.name.slice(0,10)).join(", ")+")").join(" · ");
+      calWrap.appendChild(cw);
+    }
     content.appendChild(calWrap);
 
     // Day form
@@ -453,7 +539,7 @@ function renderPlanung(b){
       listTitle.textContent=`Geplante Tage (${b.tage.length})`;
       content.appendChild(listTitle);
       for(const tag of b.tage){
-        const de=document.createElement("div");de.className="day-entry";
+        const de=document.createElement("div");de.className="day-entry";de.style.cursor="default";
         const top=document.createElement("div");top.style.cssText="display:flex;justify-content:space-between;align-items:center";
         top.innerHTML=`<span style="color:#7ec87e;font-weight:bold;font-size:14px">${fmt(tag.datum)}</span><span style="color:#8ab88a;font-size:13px">⏱ ${tag.stunden}h</span>`;
         de.appendChild(top);
@@ -462,7 +548,35 @@ function renderPlanung(b){
         for(const m of(tag.maschinen||[]))chips.innerHTML+=`<span class="chip chip-dim">🚜 ${esc(m.name||"Maschine")}</span>`;
         if(tag.notiz)chips.innerHTML+=`<span class="chip chip-dim">💬 ${esc(tag.notiz.slice(0,30))}</span>`;
         de.appendChild(chips);
-        de.addEventListener("click",()=>{selDay=tag.datum;rebuild();});
+        const actions=document.createElement("div");actions.style.cssText="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap";
+        const abtnStyle="background:#1e3222;border:1px solid #2a4030;border-radius:7px;padding:6px 12px;cursor:pointer;font-size:12px;font-family:Georgia,serif";
+        const eBtn=document.createElement("button");eBtn.style.cssText=abtnStyle+";color:#7ec87e";eBtn.textContent="✏️ Bearbeiten";
+        eBtn.addEventListener("click",()=>{selDay=tag.datum;rebuild();});actions.appendChild(eBtn);
+        const cBtn=document.createElement("button");cBtn.style.cssText=abtnStyle+";color:#8ab88a";cBtn.textContent="📋 Kopieren";
+        cBtn.addEventListener("click",()=>{
+          const nd=prompt("Auf welches Datum kopieren? (TT.MM.JJJJ)","");if(!nd)return;
+          const pts=nd.split(".");if(pts.length!==3){alert("Bitte im Format TT.MM.JJJJ eingeben");return;}
+          const iso=pts[2]+"-"+pts[1].padStart(2,"0")+"-"+pts[0].padStart(2,"0");
+          if(!/^\d{4}-\d{2}-\d{2}$/.test(iso)){alert("Ungültiges Datum");return;}
+          if((b.tage||[]).find(t=>t.datum===iso)&&!confirm("Dieser Tag ist bereits geplant. Überschreiben?"))return;
+          const copy=JSON.parse(JSON.stringify(tag));copy.datum=iso;
+          const tage=(b.tage||[]).filter(t=>t.datum!==iso);tage.push(copy);tage.sort((a,z)=>a.datum.localeCompare(z.datum));
+          updBaustelle(b.id,{tage});b.tage=tage;rebuild();
+        });actions.appendChild(cBtn);
+        const mBtn=document.createElement("button");mBtn.style.cssText=abtnStyle+";color:#8ab88a";mBtn.textContent="📅 Verschieben";
+        mBtn.addEventListener("click",()=>{
+          const nd=prompt("Verschieben auf welches Datum? (TT.MM.JJJJ)","");if(!nd)return;
+          const pts=nd.split(".");if(pts.length!==3){alert("Bitte im Format TT.MM.JJJJ eingeben");return;}
+          const iso=pts[2]+"-"+pts[1].padStart(2,"0")+"-"+pts[0].padStart(2,"0");
+          if(!/^\d{4}-\d{2}-\d{2}$/.test(iso)){alert("Ungültiges Datum");return;}
+          if(iso===tag.datum)return;
+          if((b.tage||[]).find(t=>t.datum===iso)&&!confirm("Dieser Tag ist bereits geplant. Überschreiben?"))return;
+          const moved=JSON.parse(JSON.stringify(tag));moved.datum=iso;
+          const tage=(b.tage||[]).filter(t=>t.datum!==tag.datum&&t.datum!==iso);
+          tage.push(moved);tage.sort((a,z)=>a.datum.localeCompare(z.datum));
+          updBaustelle(b.id,{tage});b.tage=tage;rebuild();
+        });actions.appendChild(mBtn);
+        de.appendChild(actions);
         content.appendChild(de);
       }
     }
@@ -701,6 +815,14 @@ function renderRechnung(b){
   const netto=eigenE+pT+mT+matT,mwst=netto*0.19,brutto=netto+mwst;
 
   wrap.appendChild(makeHeader("Rechnung",b.name));
+  // Print buttons bar
+  const printBar=document.createElement("div");printBar.className="no-print";
+  printBar.style.cssText="display:flex;gap:10px;padding:10px 14px 0;flex-wrap:wrap";
+  const mkPrintBtn=(label,fn)=>{const pb=document.createElement("button");pb.style.cssText="background:#2d6a4f;border:none;color:#fff;border-radius:9px;padding:10px 16px;cursor:pointer;font-size:13px;font-family:Georgia,serif;font-weight:600;display:flex;align-items:center;gap:6px";pb.innerHTML=label;pb.addEventListener("click",fn);return pb;};
+  printBar.appendChild(mkPrintBtn("🖨️ Rechnung drucken / PDF",()=>printDoc("rechnung",b)));
+  printBar.appendChild(mkPrintBtn("📄 Kostenvoranschlag",()=>printDoc("kva",b)));
+  printBar.appendChild(mkPrintBtn("📋 Tagesberichte",()=>printDoc("tage",b)));
+  wrap.appendChild(printBar);
   const content=document.createElement("div");content.style.cssText="padding:12px 14px";
 
   // Auftraggeber
@@ -759,6 +881,109 @@ function renderRechnung(b){
   }
   wrap.appendChild(content);
   return wrap;
+}
+
+
+// ── PRINT / PDF ───────────────────────────────────────────────────────────────
+function printDoc(type,b){
+  const eintraege=b.eintraege||[];
+  let eigenH=0,eigenE=0;
+  const pRows={},mRows={},matRows={};
+  for(const e of eintraege){
+    eigenH+=e.eigenStunden||0;eigenE+=(e.eigenStunden||0)*(b.stundensatz||55);
+    for(const p of(e.personalStunden||[])){const k=p.name+"__"+p.stundensatz;if(!pRows[k])pRows[k]={name:p.name,ss:p.stundensatz,h:0};pRows[k].h+=p.stunden||0;}
+    for(const m of(e.maschinenStunden||[])){const k=m.name+"__"+(m.stundensatz||0);if(!mRows[k])mRows[k]={name:m.name,ss:m.stundensatz||0,h:0};mRows[k].h+=m.stunden||0;}
+    for(const m of(e.material||[])){const k=m.bezeichnung+"__"+m.einheit+"__"+m.preis;if(!matRows[k])matRows[k]={bz:m.bezeichnung,ei:m.einheit,pr:m.preis,mg:0};matRows[k].mg+=m.menge||0;}
+  }
+  const pArr=Object.values(pRows),mArr=Object.values(mRows),matArr=Object.values(matRows);
+  const pT=pArr.reduce((a,p)=>a+p.h*(p.ss||0),0);
+  const mT=mArr.reduce((a,m)=>a+m.h*(m.ss||0),0);
+  const matT=matArr.reduce((a,m)=>a+m.mg*m.pr,0);
+  const netto=eigenE+pT+mT+matT,mwst=netto*0.19,brutto=netto+mwst;
+
+  const row=(l,d,v)=>`<tr><td style="padding:6px 8px;border-bottom:1px solid #eee">${l}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;color:#555;font-size:12px">${d}</td><td style="padding:6px 8px;border-bottom:1px solid #eee;text-align:right;font-weight:bold">${v.toFixed(2)} €</td></tr>`;
+  const block=(title,rows)=>rows.length?`<h3 style="color:#2d6a4f;margin:16px 0 6px;font-size:14px">${title}</h3><table style="width:100%;border-collapse:collapse">${rows.map(r=>row(r.l,r.d,r.v)).join("")}</table>`:"";
+
+  let body="";
+  const titleMap={rechnung:"Rechnung",kva:"Kostenvoranschlag",tage:"Tagesberichte"};
+  const dateStr=new Date().toLocaleDateString("de-DE");
+
+  if(type==="tage"){
+    body=`<h2 style="color:#2d6a4f">Tagesberichte</h2>`;
+    for(const e of eintraege){
+      const eS=(e.eigenStunden||0)*(b.stundensatz||55);
+      const pS=(e.personalStunden||[]).reduce((a,p)=>a+(p.stunden||0)*(p.stundensatz||0),0);
+      const mS=(e.maschinenStunden||[]).reduce((a,p)=>a+(p.stunden||0)*(p.stundensatz||0),0);
+      const matS=(e.material||[]).reduce((a,m)=>a+(m.menge||0)*(m.preis||0),0);
+      const tot=eS+pS+mS+matS;
+      body+=`<div style="border:1px solid #ddd;border-radius:8px;padding:12px;margin-bottom:12px;break-inside:avoid">
+        <div style="font-weight:bold;color:#2d6a4f;font-size:15px">${fmt(e.datum)}</div>
+        ${e.wetter?`<div style="font-size:12px;color:#777">🌤 ${esc(e.wetter)}</div>`:""}
+        ${e.notiz?`<div style="font-style:italic;color:#555;margin:4px 0">${esc(e.notiz)}</div>`:""}
+        <table style="width:100%;border-collapse:collapse;margin-top:8px">
+          ${e.eigenStunden>0?row("Eigenleistung",e.eigenStunden+"h × "+b.stundensatz+" €",eS):""}
+          ${(e.personalStunden||[]).map(p=>row(esc(p.name||"Personal"),p.stunden+"h × "+p.stundensatz+" €",(p.stunden||0)*(p.stundensatz||0))).join("")}
+          ${(e.maschinenStunden||[]).map(m=>row(esc(m.name||"Maschine"),m.stunden+"h × "+m.stundensatz+" €",(m.stunden||0)*(m.stundensatz||0))).join("")}
+          ${(e.material||[]).map(m=>row(esc(m.bezeichnung||"Material"),m.menge+" "+m.einheit+" × "+m.preis+" €",(m.menge||0)*(m.preis||0))).join("")}
+        </table>
+        <div style="text-align:right;font-weight:bold;color:#2d6a4f;border-top:1px solid #eee;padding-top:6px;margin-top:6px">Tagessumme: ${tot.toFixed(2)} €</div>
+      </div>`;
+    }
+  } else {
+    const isKVA=type==="kva";
+    body=`<h2 style="color:#2d6a4f">${isKVA?"Kostenvoranschlag":"Rechnung"}</h2>`;
+    if(isKVA){
+      // from planning
+      const tage=b.tage||[];
+      const eS2=tage.reduce((a,t)=>a+(t.stunden||0)*(b.stundensatz||55),0);
+      const pS2=tage.reduce((a,t)=>a+(t.personal||[]).reduce((s,p)=>s+(p.stunden||0)*(p.stundensatz||0),0),0);
+      const mS2=tage.reduce((a,t)=>a+(t.maschinen||[]).reduce((s,m)=>s+(m.stunden||0)*(m.stundensatz||0),0),0);
+      const matS2=tage.reduce((a,t)=>a+(t.material||[]).reduce((s,m)=>s+(m.menge||0)*(m.preis||0),0),0);
+      const n2=eS2+pS2+mS2+matS2;
+      const pRows2={},mRows2={},matRows2={};
+      for(const t of tage){
+        for(const p of(t.personal||[])){const k=p.name+"__"+p.stundensatz;if(!pRows2[k])pRows2[k]={name:p.name,ss:p.stundensatz,h:0};pRows2[k].h+=p.stunden||0;}
+        for(const m of(t.maschinen||[])){const k=m.name+"__"+(m.stundensatz||0);if(!mRows2[k])mRows2[k]={name:m.name,ss:m.stundensatz||0,h:0};mRows2[k].h+=m.stunden||0;}
+        for(const m of(t.material||[])){const k=m.bezeichnung+"__"+m.einheit+"__"+m.preis;if(!matRows2[k])matRows2[k]={bz:m.bezeichnung,ei:m.einheit,pr:m.preis,mg:0};matRows2[k].mg+=m.menge||0;}
+      }
+      body+=block("🧑‍🔧 Eigenleistung (geplant)",eS2>0?[{l:"Eigenleistung",d:`${(b.tage||[]).reduce((a,t)=>a+(t.stunden||0),0).toFixed(1)}h × ${b.stundensatz||55} €`,v:eS2}]:[]);
+      body+=block("👷 Personal",Object.values(pRows2).map(p=>({l:p.name||"Personal",d:`${p.h.toFixed(1)}h × ${p.ss||0} €`,v:p.h*(p.ss||0)})));
+      body+=block("🚜 Maschinen",Object.values(mRows2).map(m=>({l:m.name||"Maschine",d:`${m.h.toFixed(1)}h × ${m.ss||0} €`,v:m.h*(m.ss||0)})));
+      body+=block("📦 Material",Object.values(matRows2).map(m=>({l:m.bz||"Material",d:`${m.mg.toFixed(2)} ${m.ei} × ${m.pr.toFixed(2)} €`,v:m.mg*m.pr})));
+      body+=`<div style="border-top:2px solid #2d6a4f;margin-top:16px;padding-top:12px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Nettobetrag</span><span style="font-weight:bold">${n2.toFixed(2)} €</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;color:#555"><span>19 % MwSt.</span><span>${(n2*0.19).toFixed(2)} €</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:bold;color:#2d6a4f;border-top:2px solid #2d6a4f;padding-top:8px;margin-top:4px"><span>Gesamtbetrag brutto</span><span>${(n2*1.19).toFixed(2)} €</span></div>
+      </div>`;
+    } else {
+      body+=block("🧑‍🔧 Eigenleistung",eigenH>0?[{l:"Eigenleistung",d:`${eigenH.toFixed(1)}h × ${b.stundensatz||55} €`,v:eigenE}]:[]);
+      body+=block("👷 Personal",pArr.map(p=>({l:p.name||"Personal",d:`${p.h.toFixed(1)}h × ${p.ss||0} €`,v:p.h*(p.ss||0)})));
+      body+=block("🚜 Maschinen",mArr.map(m=>({l:m.name||"Maschine",d:`${m.h.toFixed(1)}h × ${m.ss||0} €`,v:m.h*(m.ss||0)})));
+      body+=block("📦 Material",matArr.map(m=>({l:m.bz||"Material",d:`${m.mg.toFixed(2)} ${m.ei} × ${m.pr.toFixed(2)} €`,v:m.mg*m.pr})));
+      if(netto>0)body+=`<div style="border-top:2px solid #2d6a4f;margin-top:16px;padding-top:12px">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Nettobetrag</span><span style="font-weight:bold">${netto.toFixed(2)} €</span></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;color:#555"><span>19 % MwSt.</span><span>${mwst.toFixed(2)} €</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:bold;color:#2d6a4f;border-top:2px solid #2d6a4f;padding-top:8px;margin-top:4px"><span>Gesamtbetrag brutto</span><span>${brutto.toFixed(2)} €</span></div>
+      </div>`;
+    }
+  }
+
+  const win=window.open("","_blank");
+  win.document.write(`<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>${titleMap[type]} – ${esc(b.name)}</title>
+  <style>*{box-sizing:border-box}body{font-family:Arial,sans-serif;max-width:800px;margin:0 auto;padding:20px;color:#000}
+  h1{color:#2d6a4f;border-bottom:2px solid #2d6a4f;padding-bottom:8px}
+  @media print{.no-print{display:none}}
+  </style></head><body>
+  <div class="no-print" style="margin-bottom:16px"><button onclick="window.print()" style="background:#2d6a4f;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:14px">🖨️ Drucken / Als PDF speichern</button></div>
+  <h1>🌿 GartenBau Manager</h1>
+  <p style="color:#555;margin-bottom:4px"><strong>Baustelle:</strong> ${esc(b.name)}</p>
+  ${b.auftraggeber?`<p style="color:#555;margin-bottom:4px"><strong>Auftraggeber:</strong> ${esc(b.auftraggeber)}</p>`:""}
+  <p style="color:#555;margin-bottom:4px"><strong>Startdatum:</strong> ${fmt(b.startdatum)}${b.gesamtzeit?" · Geplant: "+b.gesamtzeit+" "+b.gesamtzeitEinheit:""}</p>
+  <p style="color:#555;margin-bottom:16px"><strong>Erstellt am:</strong> ${dateStr}</p>
+  <hr style="border:1px solid #ddd;margin-bottom:16px">
+  ${body}
+  </body></html>`);
+  win.document.close();
 }
 
 // ── Start ─────────────────────────────────────────────────────────────────────

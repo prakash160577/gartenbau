@@ -95,11 +95,10 @@ textarea.inp{resize:vertical;min-height:70px;line-height:1.6}
 /* Print styles */
 @media print {
   #bottom-nav,.page-header,.no-print{display:none!important}
-  body{background:#fff!important;color:#000!important;font-family:Arial,sans-serif}
-  .print-doc{display:block!important}
-  .card,.cost-box,.r-block,.tagebuch-card{border:1px solid #ccc!important;background:#fff!important;color:#000!important;break-inside:avoid}
-  .r-block-title,.header-title{color:#2d6a4f!important}
-  .r-row-label,.r-row-det,.r-row-val,.sum-line span{color:#000!important}
+  #print-overlay .no-print{display:none!important}
+  #print-overlay{position:static!important;overflow:visible!important}
+  body{overflow:auto!important}
+  .card,.cost-box,.r-block,.tagebuch-card{break-inside:avoid}
 }
 .print-doc{display:none}
 
@@ -968,22 +967,49 @@ function printDoc(type,b){
     }
   }
 
-  const win=window.open("","_blank");
-  win.document.write(`<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>${titleMap[type]} – ${esc(b.name)}</title>
-  <style>*{box-sizing:border-box}body{font-family:Arial,sans-serif;max-width:800px;margin:0 auto;padding:20px;color:#000}
-  h1{color:#2d6a4f;border-bottom:2px solid #2d6a4f;padding-bottom:8px}
-  @media print{.no-print{display:none}}
-  </style></head><body>
-  <div class="no-print" style="margin-bottom:16px"><button onclick="window.print()" style="background:#2d6a4f;color:#fff;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-size:14px">🖨️ Drucken / Als PDF speichern</button></div>
-  <h1>🌿 GartenBau Manager</h1>
-  <p style="color:#555;margin-bottom:4px"><strong>Baustelle:</strong> ${esc(b.name)}</p>
-  ${b.auftraggeber?`<p style="color:#555;margin-bottom:4px"><strong>Auftraggeber:</strong> ${esc(b.auftraggeber)}</p>`:""}
-  <p style="color:#555;margin-bottom:4px"><strong>Startdatum:</strong> ${fmt(b.startdatum)}${b.gesamtzeit?" · Geplant: "+b.gesamtzeit+" "+b.gesamtzeitEinheit:""}</p>
-  <p style="color:#555;margin-bottom:16px"><strong>Erstellt am:</strong> ${dateStr}</p>
-  <hr style="border:1px solid #ddd;margin-bottom:16px">
-  ${body}
-  </body></html>`);
-  win.document.close();
+  // Overlay direkt in der App anzeigen (funktioniert auf allen Geräten)
+  showPrintOverlay(titleMap[type]+" – "+b.name, body, dateStr, b);
+}
+
+function showPrintOverlay(title, body, dateStr, b){
+  // Vorhandenes Overlay entfernen
+  const existing=document.getElementById("print-overlay");
+  if(existing)existing.remove();
+
+  const overlay=document.createElement("div");
+  overlay.id="print-overlay";
+  overlay.style.cssText="position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:9999;overflow-y:auto;font-family:Arial,sans-serif;color:#000";
+
+  // Toolbar (wird beim Drucken ausgeblendet)
+  const toolbar=document.createElement("div");
+  toolbar.className="no-print";
+  toolbar.style.cssText="position:sticky;top:0;background:#2d6a4f;padding:10px 16px;display:flex;gap:10px;align-items:center;z-index:10";
+  const printBtn=document.createElement("button");
+  printBtn.style.cssText="background:#fff;color:#2d6a4f;border:none;border-radius:7px;padding:10px 18px;cursor:pointer;font-size:14px;font-weight:bold;font-family:Arial,sans-serif";
+  printBtn.textContent="🖨️ Drucken / Als PDF speichern";
+  printBtn.addEventListener("click",()=>window.print());
+  const closeBtn=document.createElement("button");
+  closeBtn.style.cssText="background:rgba(255,255,255,0.2);color:#fff;border:1px solid rgba(255,255,255,0.4);border-radius:7px;padding:10px 14px;cursor:pointer;font-size:14px;margin-left:auto;font-family:Arial,sans-serif";
+  closeBtn.textContent="✕ Schließen";
+  closeBtn.addEventListener("click",()=>{overlay.remove();document.body.style.overflow="";});
+  toolbar.appendChild(printBtn);toolbar.appendChild(closeBtn);
+  overlay.appendChild(toolbar);
+
+  // Inhalt
+  const doc=document.createElement("div");
+  doc.style.cssText="max-width:800px;margin:0 auto;padding:24px 20px";
+  doc.innerHTML=`
+    <h1 style="color:#2d6a4f;border-bottom:2px solid #2d6a4f;padding-bottom:8px;margin-bottom:16px">🌿 GartenBau Manager</h1>
+    <p style="color:#555;margin-bottom:4px"><strong>Baustelle:</strong> ${esc(b.name)}</p>
+    ${b.auftraggeber?`<p style="color:#555;margin-bottom:4px"><strong>Auftraggeber:</strong> ${esc(b.auftraggeber)}</p>`:""}
+    <p style="color:#555;margin-bottom:4px"><strong>Startdatum:</strong> ${fmt(b.startdatum)}${b.gesamtzeit?" · Geplant: "+b.gesamtzeit+" "+b.gesamtzeitEinheit:""}</p>
+    <p style="color:#555;margin-bottom:20px"><strong>Erstellt am:</strong> ${dateStr}</p>
+    <hr style="border:none;border-top:1px solid #ddd;margin-bottom:20px">
+    ${body}`;
+  overlay.appendChild(doc);
+
+  document.body.appendChild(overlay);
+  document.body.style.overflow="hidden";
 }
 
 // ── Start ─────────────────────────────────────────────────────────────────────

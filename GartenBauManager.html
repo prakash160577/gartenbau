@@ -885,7 +885,7 @@ function printDoc(type,b,fd){
   const dateStr=new Date().toLocaleDateString("de-DE");
   const rNr="RE-"+new Date().getFullYear()+"-"+String(Math.floor(Math.random()*9000)+1000);
 
-  const trow=(l,d,v)=>`<tr><td style="padding:7px 10px;border-bottom:1px solid #eee;font-size:13px">${l}</td><td style="padding:7px 10px;border-bottom:1px solid #eee;color:#666;font-size:12px">${d}</td><td style="padding:7px 10px;border-bottom:1px solid #eee;text-align:right;font-weight:bold;font-size:13px">${v.toFixed(2)} €</td></tr>`;
+  const trow=(l,d,v)=>`<tr><td style="padding:7px 10px;border-bottom:1px solid #eee;font-size:13px">${l}${d?`<span style="color:#aaa;font-size:11px;margin-left:8px">${d}</span>`:""}</td><td style="padding:7px 10px;border-bottom:1px solid #eee;text-align:right;font-weight:bold;font-size:13px">${v.toFixed(2)} €</td></tr>`;
   const tblock=(title,rows)=>rows.length?`<h3 style="color:#2d6a4f;margin:18px 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.5px">${title}</h3><table style="width:100%;border-collapse:collapse;background:#fff">${rows.map(r=>trow(r.l,r.d,r.v)).join("")}</table>`:"";
 
   let body="",title2="";
@@ -933,10 +933,10 @@ function printDoc(type,b,fd){
     body+=`<p style="font-size:11px;color:#999;margin-top:20px;font-style:italic">Dieser Kostenvoranschlag ist unverbindlich und basiert auf der aktuellen Planung. Gültig für 30 Tage.</p>`;
   } else {
     title2="Rechnung";
-    body+=tblock("Meine Arbeitszeit",eigenH>0?[{l:"Meine Arbeitszeit",d:`${eigenH.toFixed(1)}h × ${b.stundensatz||55} €`,v:eigenE}]:[]);
-    body+=tblock("Personal",pArr.map(p=>({l:p.name||"Personal",d:`${p.h.toFixed(1)}h × ${p.ss||0} €`,v:p.h*(p.ss||0)})));
-    body+=tblock("Maschineneinsatz",mArr.map(m=>({l:m.name||"Maschine",d:`${m.h.toFixed(1)}h × ${m.ss||0} €`,v:m.h*(m.ss||0)})));
-    body+=tblock("Material",matArr.map(m=>({l:m.bz||"Material",d:`${m.mg.toFixed(2)} ${m.ei} × ${m.pr.toFixed(2)} €`,v:m.mg*m.pr})));
+    const arbeitszeitGesamt=eigenE+pT;
+    if(arbeitszeitGesamt>0)body+=tblock("Arbeitszeit",[{l:"Arbeitszeit gesamt",d:"",v:arbeitszeitGesamt}]);
+    if(mT>0)body+=tblock("Maschineneinsatz",[{l:"Maschineneinsatz gesamt",d:"",v:mT}]);
+    body+=tblock("Material",matArr.map(m=>({l:m.bz||"Material",d:`${m.mg.toFixed(2)} ${m.ei}`,v:m.mg*m.pr})));
     if(netto>0)body+=`<div style="border-top:2px solid #2d6a4f;margin-top:20px;padding-top:14px"><table style="width:100%"><tr><td style="font-size:14px;color:#555">Nettobetrag</td><td style="text-align:right;font-weight:bold;font-size:14px">${netto.toFixed(2)} €</td></tr><tr><td style="font-size:13px;color:#888;padding-top:4px">19 % MwSt.</td><td style="text-align:right;font-size:13px;color:#888;padding-top:4px">${mwst.toFixed(2)} €</td></tr></table><div style="border-top:2px solid #2d6a4f;margin-top:10px;padding-top:10px;display:flex;justify-content:space-between;font-size:18px;font-weight:bold;color:#2d6a4f"><span>Gesamtbetrag brutto</span><span>${brutto.toFixed(2)} €</span></div></div>`;
   }
 
@@ -1024,7 +1024,7 @@ function printAngebot(b,fd){
   }
   const totalEigenH=tage.reduce((a,t)=>a+(t.personal||[]).filter(p=>p.istIch).reduce((s,p)=>s+(p.stunden||0),0),0);
 
-  const trow=(l,d,v)=>`<tr><td style="padding:8px 10px;border-bottom:1px solid #eee;font-size:13px">${l}</td><td style="padding:8px 10px;border-bottom:1px solid #eee;color:#666;font-size:12px">${d}</td><td style="padding:8px 10px;border-bottom:1px solid #eee;text-align:right;font-weight:bold;font-size:13px">${v.toFixed(2)} €</td></tr>`;
+  const trow=(l,d,v)=>`<tr><td style="padding:8px 10px;border-bottom:1px solid #eee;font-size:13px">${l}${d?`<span style="color:#aaa;font-size:11px;margin-left:8px">${d}</span>`:""}</td><td style="padding:8px 10px;border-bottom:1px solid #eee;text-align:right;font-weight:bold;font-size:13px">${v.toFixed(2)} €</td></tr>`;
   const tblock=(title,rows)=>rows.length?`<h3 style="color:#2d6a4f;margin:18px 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #d8e8d0;padding-bottom:4px">${title}</h3><table style="width:100%;border-collapse:collapse">${rows.map(r=>trow(r.l,r.d,r.v)).join("")}</table>`:"";
 
   let body="";

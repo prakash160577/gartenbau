@@ -230,7 +230,6 @@ function renderBottomNav(ab){
 function makeHeader(title,sub,rightEl){
   const h=document.createElement("div");h.className="page-header";
   const left=document.createElement("div");left.className="logo-wrap";
-  left.appendChild(makeLogo());
   const txt=document.createElement("div");
   txt.innerHTML=`<div class="header-brand">${esc(state.firmendaten&&state.firmendaten.firmaName?state.firmendaten.firmaName:"Bau Manager")}</div><div class="header-title">${esc(title)}</div>${sub?`<div class="header-sub">${esc(sub)}</div>`:""}`;
   left.appendChild(txt);h.appendChild(left);
@@ -266,7 +265,7 @@ function renderUebersicht(){
       const btnRow=document.createElement("div");btnRow.style.cssText="display:flex;gap:10px;margin-top:16px";
       btnRow.appendChild(makeBtn("✓ Anlegen & starten","btn btn-green btn-full",()=>{
         if(!formData.name.trim())return;
-        const b={id:uid(),name:formData.name.trim(),startdatum:formData.startdatum||today(),bauherr:formData.bauherr,adresse:formData.adresse,erstellt:today(),tage:[],eintraege:[],stundensatz:55,maschinensatz:90};
+        const b={id:uid(),name:formData.name.trim(),startdatum:formData.startdatum||today(),bauherr:formData.bauherr,adresse:formData.adresse,erstellt:today(),tage:[],eintraege:[],stundensatz:55,maschinensatz:90,rechnungsNr:"",angebotNr:""};
         state.baustellen=[...state.baustellen,b];state.activeId=b.id;state.page="planung";saveState();render();
       }));
       btnRow.appendChild(makeBtn("Abbruch","btn btn-ghost",()=>{showForm=false;rebuild();}));
@@ -826,7 +825,12 @@ function renderRechnung(b){
   agBox.appendChild(makeField("Rechnungsadresse",adresseTa));
   const agInfo=document.createElement("div");agInfo.style.cssText="font-size:12px;color:#9ab09a;margin-top:8px";
   agInfo.textContent="Baustelle: "+b.name+" · Start: "+fmt(b.startdatum);
-  agBox.appendChild(agInfo);content.appendChild(agBox);
+  agBox.appendChild(agInfo);
+  const nrGrid=document.createElement("div");nrGrid.className="grid2";nrGrid.style.marginTop="12px";
+  nrGrid.appendChild(makeField("Rechnungsnummer",makeInput("text",b.rechnungsNr||"",v=>{b.rechnungsNr=v;updB({rechnungsNr:v});},"z.B. RE-2025-001")));
+  nrGrid.appendChild(makeField("Angebotsnummer",makeInput("text",b.angebotNr||"",v=>{b.angebotNr=v;updB({angebotNr:v});},"z.B. AN-2025-001")));
+  agBox.appendChild(nrGrid);
+  content.appendChild(agBox);
 
   // Leistungsnachweis
   const lBox=document.createElement("div");lBox.className="card";
@@ -883,7 +887,7 @@ function printDoc(type,b,fd){
   const matT=matArr.reduce((a,m)=>a+m.mg*m.pr,0);
   const netto=eigenE+pT+mT+matT,mwst=netto*0.19,brutto=netto+mwst;
   const dateStr=new Date().toLocaleDateString("de-DE");
-  const rNr="RE-"+new Date().getFullYear()+"-"+String(Math.floor(Math.random()*9000)+1000);
+  const rNr=b.rechnungsNr||"RE-"+new Date().getFullYear()+"-"+String(Math.floor(Math.random()*9000)+1000);
 
   const trow=(l,d,v)=>`<tr><td style="padding:7px 10px;border-bottom:1px solid #eee;font-size:13px">${l}${d?`<span style="color:#aaa;font-size:11px;margin-left:8px">${d}</span>`:""}</td><td style="padding:7px 10px;border-bottom:1px solid #eee;text-align:right;font-weight:bold;font-size:13px">${v.toFixed(2)} €</td></tr>`;
   const tblock=(title,rows)=>rows.length?`<h3 style="color:#2d6a4f;margin:18px 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.5px">${title}</h3><table style="width:100%;border-collapse:collapse;background:#fff">${rows.map(r=>trow(r.l,r.d,r.v)).join("")}</table>`:"";
@@ -1010,7 +1014,7 @@ function printAngebot(b,fd){
   const netto=eigenSum+persSum+mascSum+matSum;
   const mwst=netto*0.19,brutto=netto+mwst;
   const dateStr=new Date().toLocaleDateString("de-DE");
-  const angebotNr="AN-"+new Date().getFullYear()+"-"+String(Math.floor(Math.random()*9000)+1000);
+  const angebotNr=b.angebotNr||"AN-"+new Date().getFullYear()+"-"+String(Math.floor(Math.random()*9000)+1000);
 
   // Build position rows from planning data
   const pR={},mR={},matR={};

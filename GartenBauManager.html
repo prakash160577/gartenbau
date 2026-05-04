@@ -5,34 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="GartenBau">
 <meta name="theme-color" content="#ffffff">
-<title>GartenBau Manager</title>
+<title>Bau Manager</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
 html,body{height:100%;background:#f4f6f3;color:#1a2e1a;font-family:Georgia,serif;overscroll-behavior:none}
-input,select,textarea{font-family:Georgia,serif;font-size:16px}
-button{font-family:Georgia,serif}
+input,select,textarea,button{font-family:Georgia,serif}
 .page{min-height:100dvh;background:#f4f6f3;padding-bottom:88px}
 
-/* Bottom Nav */
 #bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #d8e8d0;display:flex;z-index:200;padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:0 -2px 12px rgba(0,0,0,.08)}
-.nav-btn{flex:1;background:none;border:none;color:#aac4aa;padding:10px 0 8px;cursor:default;display:flex;flex-direction:column;align-items:center;gap:2px;border-top:2px solid transparent;margin-top:-2px;font-size:10px;letter-spacing:.3px}
+.nav-btn{flex:1;background:none;border:none;color:#aac4aa;padding:10px 0 8px;cursor:default;display:flex;flex-direction:column;align-items:center;gap:2px;border-top:2px solid transparent;margin-top:-2px;font-size:10px}
 .nav-btn.active{color:#2d6a4f;border-top:2px solid #2d6a4f}
 .nav-btn.enabled{cursor:pointer;color:#5a8a5a}
 .nav-icon{font-size:22px;display:block}
 
-/* Header */
 .page-header{background:#fff;border-bottom:1px solid #d8e8d0;padding:12px 16px 10px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 6px rgba(0,0,0,.06)}
 .header-brand{font-size:8px;color:#8aaa8a;letter-spacing:2px;text-transform:uppercase;margin-bottom:1px}
 .header-title{font-size:18px;font-weight:bold;color:#2d6a4f}
 .header-sub{font-size:12px;color:#5a8a5a;margin-top:1px}
 
-/* Logo */
-.logo-wrap{display:flex;align-items:center;gap:10px}
-.logo-icon{width:38px;height:38px;flex-shrink:0}
-
-/* Cards & forms */
 .card{background:#fff;border:1px solid #d8e8d0;border-radius:12px;padding:14px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
 .card-accent{border:2px solid #2d6a4f}
 .inp{background:#f8faf7;border:1px solid #c8dcc0;border-radius:10px;color:#1a2e1a;padding:13px 14px;font-size:16px;width:100%;outline:none;-webkit-appearance:none;display:block}
@@ -41,8 +32,7 @@ button{font-family:Georgia,serif}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 
-/* Buttons */
-.btn{border:none;border-radius:10px;cursor:pointer;font-family:Georgia,serif;font-weight:600;display:inline-block}
+.btn{border:none;border-radius:10px;cursor:pointer;font-family:Georgia,serif;font-weight:600}
 .btn-green{background:#2d6a4f;color:#fff;padding:13px 18px;font-size:15px}
 .btn-ghost{background:transparent;border:1px solid #c8dcc0;color:#5a8a5a;padding:13px 18px;font-size:15px}
 .btn-danger{background:#fdf0f0;border:1px solid #e8b0b0;color:#c04040;padding:13px 18px;font-size:15px}
@@ -51,21 +41,11 @@ button{font-family:Georgia,serif}
 .btn-icon{background:none;border:none;cursor:pointer;font-size:20px;padding:4px 8px}
 .sec-head{display:flex;align-items:center;justify-content:space-between;margin:12px 0 6px}
 .sec-title{font-size:13px;color:#2d6a4f;font-weight:bold}
-.sec-add{background:#f0f8f0;border:1px solid #c8dcc0;color:#2d6a4f;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px;font-family:Georgia,serif}
+.sec-add{background:#f0f8f0;border:1px solid #c8dcc0;color:#2d6a4f;border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px}
 .item-row{background:#f8faf7;border:1px solid #e0ead8;border-radius:10px;padding:10px;margin-bottom:8px;display:flex;flex-direction:column;gap:8px}
-.remove-btn{background:#fdf0f0;border:1px solid #e8b0b0;color:#c04040;border-radius:8px;padding:10px;cursor:pointer;font-size:13px;width:100%;font-family:Georgia,serif}
+.remove-btn{background:#fdf0f0;border:1px solid #e8b0b0;color:#c04040;border-radius:8px;padding:10px;cursor:pointer;font-size:13px;width:100%}
 .sum-line{display:flex;justify-content:space-between;margin-bottom:6px}
 
-/* Calendar */
-.cal-wrap{background:#fff;border:1px solid #d8e8d0;border-radius:12px;overflow:hidden;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
-.cal-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px}
-.cal-nav{background:#f0f8f0;border:1px solid #c8dcc0;color:#2d6a4f;border-radius:8px;width:40px;height:40px;cursor:pointer;font-size:22px;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;padding:0 8px 10px}
-.cal-day-label{text-align:center;font-size:10px;color:#9ab09a;padding-bottom:4px}
-.cal-cell{border-radius:8px;min-height:54px;cursor:pointer;padding:4px 3px;border:1px solid #e0ead8;background:#f8faf7}
-.cal-cell-num{font-size:11px;color:#5a8a5a;text-align:center}
-
-/* Baustelle cards */
 .bau-card{background:#fff;border:1px solid #d8e8d0;border-radius:14px;overflow:hidden;margin-bottom:12px;cursor:pointer;box-shadow:0 1px 6px rgba(0,0,0,.06)}
 .bau-stripe{height:5px}
 .bau-body{padding:12px 14px 14px}
@@ -73,17 +53,11 @@ button{font-family:Georgia,serif}
 .mini-stat-val{font-size:14px;font-weight:bold}
 .mini-stat-lbl{font-size:10px;color:#9ab09a;margin-top:1px}
 
-/* Chips */
-.chip{background:#f0f8f0;border:1px solid #c8dcc0;border-radius:6px;padding:2px 8px;font-size:11px;color:#2d6a4f;display:inline-block}
-.chip-dim{background:#f4f6f3;border-color:#e0ead8;color:#8aaa8a}
-
-/* DChip */
 .dchip{background:#f4f6f3;border-radius:8px;padding:8px 10px}
 .dchip-label{font-size:10px;color:#8aaa8a}
 .dchip-val{font-size:14px;font-weight:bold;color:#1a2e1a}
 .dchip-sub{font-size:11px;color:#5a8a5a}
 
-/* Rechnung */
 .r-block{margin-bottom:14px}
 .r-block-title{font-size:12px;color:#2d6a4f;font-weight:bold;margin-bottom:6px;border-bottom:1px solid #d8e8d0;padding-bottom:4px}
 .r-row{display:flex;justify-content:space-between;align-items:flex-start;padding:4px 0}
@@ -91,46 +65,33 @@ button{font-family:Georgia,serif}
 .r-row-det{font-size:11px;color:#8aaa8a}
 .r-row-val{font-size:13px;color:#2d6a4f;min-width:80px;text-align:right;font-weight:600}
 
-/* Textarea */
 textarea.inp{resize:vertical;min-height:70px;line-height:1.6}
+.empty{text-align:center;padding:60px 20px;color:#9ab09a}
+.leistung-card{background:#fff;border:1px solid #d8e8d0;border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.total-line{margin-top:10px;text-align:right;font-size:15px;font-weight:bold;color:#2d6a4f;border-top:1px solid #e0ead8;padding-top:8px}
+.self-badge{background:#e8f4e8;border:1px solid #b0d4b0;border-radius:5px;font-size:10px;color:#2d6a4f;padding:1px 6px;margin-left:4px;font-weight:bold}
 
-/* Print */
-@media print {
+@media print{
   #bottom-nav,.page-header,.no-print{display:none!important}
   #print-overlay .no-print{display:none!important}
   #print-overlay{position:static!important;overflow:visible!important}
   body{overflow:auto!important}
 }
-
-/* Empty state */
-.empty{text-align:center;padding:60px 20px;color:#9ab09a}
-.cost-box{background:#fff;border:2px solid #2d6a4f;border-radius:12px;padding:14px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
-.krow{background:#f4f6f3;border-radius:8px;padding:7px 10px}
-.krow-label{font-size:10px;color:#8aaa8a}
-.krow-val{font-size:13px;font-weight:bold;color:#1a2e1a}
-.day-entry{background:#fff;border:1px solid #d8e8d0;border-radius:10px;padding:10px 14px;margin-bottom:8px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.tagebuch-card{background:#fff;border:1px solid #d8e8d0;border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.total-line{margin-top:10px;text-align:right;font-size:15px;font-weight:bold;color:#2d6a4f;border-top:1px solid #e0ead8;padding-top:8px}
-.self-badge{background:#e8f4e8;border:1px solid #b0d4b0;border-radius:5px;font-size:10px;color:#2d6a4f;padding:1px 6px;margin-left:6px;font-weight:bold}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
-// ── Storage ───────────────────────────────────────────────────────────────────
-const SK="gartenbau_v4";
+const SK="baumanager_v5";
 const load=()=>{try{const r=localStorage.getItem(SK);return r?JSON.parse(r):null;}catch{return null;}};
 const save=(d)=>{try{localStorage.setItem(SK,JSON.stringify(d));}catch{}};
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
 const uid=()=>Math.random().toString(36).slice(2,9);
 const fmt=(d)=>{if(!d)return"–";const[y,m,dy]=d.split("-");return dy+"."+m+"."+y;};
 const today=()=>new Date().toISOString().slice(0,10);
-const MONTHS=["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
-const DAYS=["So","Mo","Di","Mi","Do","Fr","Sa"];
+const esc=(s)=>String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 const PALETTE=["#2d6a4f","#1e4d8c","#7b2d8b","#b5382a","#c05c1a","#2a7a8a","#5a6e1a","#7a3b1e"];
 const bc=(i)=>PALETTE[i%PALETTE.length];
-const esc=(s)=>String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+
 const makeInput=(type,value,onchange,placeholder="")=>{
   const el=document.createElement(type==="textarea"?"textarea":"input");
   if(type!=="textarea")el.type=type;
@@ -148,52 +109,39 @@ const makeLabel=(text)=>{const d=document.createElement("div");d.className="flab
 const makeField=(label,inputEl)=>{const w=document.createElement("div");w.appendChild(makeLabel(label));w.appendChild(inputEl);return w;};
 const makeBtn=(label,cls,onclick)=>{const b=document.createElement("button");b.className="btn "+cls;b.innerHTML=label;b.addEventListener("click",onclick);return b;};
 
-// SVG Logo
-const LOGO_SVG=`<svg viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg">
-  <!-- Sky background -->
-  <rect width="38" height="38" rx="9" fill="#e8f4e8"/>
-  <!-- Ground -->
-  <rect x="0" y="26" width="38" height="12" rx="0" fill="#c8e0b8"/>
-  <rect x="0" y="33" width="38" height="5" rx="0" fill="#a0c890"/>
-  <!-- House -->
-  <rect x="6" y="18" width="14" height="10" fill="#fff" stroke="#2d6a4f" stroke-width="1.2"/>
-  <polygon points="6,18 13,11 20,18" fill="#2d6a4f"/>
-  <rect x="10" y="22" width="4" height="6" fill="#b0d4b0"/>
-  <!-- Tree / plant -->
-  <rect x="24" y="22" width="3" height="8" fill="#8b5e3c"/>
-  <circle cx="25.5" cy="18" r="6" fill="#3a8a50"/>
-  <circle cx="22" cy="20" r="4" fill="#2d6a4f"/>
-  <circle cx="29" cy="20" r="4" fill="#4aaa60"/>
-  <!-- Bagger simplified -->
-  <rect x="1" y="27" width="12" height="5" rx="2" fill="#e8a020"/>
-  <rect x="3" y="25" width="7" height="3" rx="1" fill="#d09010"/>
-  <line x1="10" y1="26" x2="15" y2="23" stroke="#c07800" stroke-width="1.5" stroke-linecap="round"/>
-  <line x1="15" y1="23" x2="17" y2="26" stroke="#c07800" stroke-width="1.5" stroke-linecap="round"/>
-  <rect x="1" y="31" width="3" height="3" rx="1.5" fill="#555"/>
-  <rect x="8" y="31" width="3" height="3" rx="1.5" fill="#555"/>
+const LOGO_SVG=`<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+<rect width="44" height="44" rx="10" fill="#e8f4e8"/>
+<rect x="0" y="30" width="44" height="14" fill="#c8e0b8"/>
+<rect x="0" y="38" width="44" height="6" fill="#a0c890"/>
+<rect x="6" y="20" width="16" height="12" fill="#fff" stroke="#2d6a4f" stroke-width="1.4"/>
+<polygon points="6,20 14,12 22,20" fill="#2d6a4f"/>
+<rect x="11" y="25" width="5" height="7" fill="#b0d4b0"/>
+<rect x="27" y="25" width="3" height="9" fill="#8b5e3c"/>
+<circle cx="28.5" cy="21" r="6" fill="#3a8a50"/>
+<circle cx="25" cy="23" r="4" fill="#2d6a4f"/>
+<circle cx="32" cy="23" r="4" fill="#4aaa60"/>
+<rect x="1" y="31" width="14" height="6" rx="2" fill="#e8a020"/>
+<rect x="3" y="28" width="9" height="4" rx="1" fill="#d09010"/>
+<line x1="12" y1="30" x2="18" y2="26" stroke="#c07800" stroke-width="2" stroke-linecap="round"/>
+<line x1="18" y1="26" x2="21" y2="30" stroke="#c07800" stroke-width="2" stroke-linecap="round"/>
+<circle cx="4" cy="37" r="2.5" fill="#444"/>
+<circle cx="12" cy="37" r="2.5" fill="#444"/>
 </svg>`;
 
-// ── State ─────────────────────────────────────────────────────────────────────
-let state={baustellen:[],activeId:null,page:"uebersicht",firmendaten:{firmaName:"",ustNr:"",bank:"",iban:"",bic:"",tel:"",email:"",strasse:"",plzOrt:""},letzeSicherung:null};
+let state={baustellen:[],activeId:null,page:"uebersicht",firmendaten:{firmaName:"",steuernr:"",bank:"",iban:"",bic:"",tel:"",email:"",strasse:"",plzOrt:""},letzeSicherung:null};
 const saved=load();
-if(saved){
-  state={...state,...saved};
-  if(!state.firmendaten)state.firmendaten={firmaName:"",ustNr:"",bank:"",iban:"",bic:"",tel:"",email:"",strasse:"",plzOrt:""};
-  if(!state.letzeSicherung)state.letzeSicherung=null;
-}
+if(saved){state={...state,...saved};if(!state.firmendaten)state.firmendaten={firmaName:"",steuernr:"",bank:"",iban:"",bic:"",tel:"",email:"",strasse:"",plzOrt:""};}
+
 function saveState(){save({baustellen:state.baustellen,activeId:state.activeId,firmendaten:state.firmendaten,letzeSicherung:state.letzeSicherung});}
 function setState(patch){Object.assign(state,typeof patch==="function"?patch(state):patch);saveState();render();}
 function getActive(){return state.baustellen.find(b=>b.id===state.activeId);}
-function updBaustelle(id,patch){state.baustellen=state.baustellen.map(b=>b.id===id?{...b,...patch}:b);saveState();render();}
+function updBaustelle(id,patch){state.baustellen=state.baustellen.map(b=>b.id===id?{...b,...patch}:b);saveState();}
 
-// ── Render root ───────────────────────────────────────────────────────────────
 function render(){
   const app=document.getElementById("app");app.innerHTML="";
   const ab=getActive();
   let page;
   if(state.page==="uebersicht")page=renderUebersicht();
-  else if(state.page==="kalender")page=renderKalenderGlobal();
-  else if(state.page==="planung"&&ab)page=renderPlanung(ab);
   else if(state.page==="leistung"&&ab)page=renderLeistung(ab);
   else if(state.page==="rechnung"&&ab)page=renderRechnung(ab);
   else page=renderUebersicht();
@@ -201,16 +149,10 @@ function render(){
   app.appendChild(renderBottomNav(ab));
 }
 
-// ── Logo helper ───────────────────────────────────────────────────────────────
-function makeLogo(){const d=document.createElement("div");d.className="logo-icon";d.innerHTML=LOGO_SVG;return d;}
-
-// ── Bottom Nav ─────────────────────────────────────────────────────────────────
 function renderBottomNav(ab){
   const nav=document.createElement("nav");nav.id="bottom-nav";
   const items=[
     {key:"uebersicht",icon:"🏠",label:"Baustellen"},
-    {key:"kalender",icon:"📅",label:"Kalender"},
-    {key:"planung",icon:"📋",label:"Planung",needs:true},
     {key:"leistung",icon:"✅",label:"Leistung",needs:true},
     {key:"rechnung",icon:"🧾",label:"Rechnung",needs:true},
   ];
@@ -226,13 +168,12 @@ function renderBottomNav(ab){
   return nav;
 }
 
-// ── Page Header ───────────────────────────────────────────────────────────────
 function makeHeader(title,sub,rightEl){
   const h=document.createElement("div");h.className="page-header";
-  const left=document.createElement("div");left.className="logo-wrap";
-  const txt=document.createElement("div");
-  txt.innerHTML=`<div class="header-brand">${esc(state.firmendaten&&state.firmendaten.firmaName?state.firmendaten.firmaName:"Bau Manager")}</div><div class="header-title">${esc(title)}</div>${sub?`<div class="header-sub">${esc(sub)}</div>`:""}`;
-  left.appendChild(txt);h.appendChild(left);
+  const left=document.createElement("div");
+  const fd=state.firmendaten;
+  left.innerHTML=`<div class="header-brand">${esc(fd&&fd.firmaName?fd.firmaName:"Bau Manager")}</div><div class="header-title">${esc(title)}</div>${sub?`<div class="header-sub">${esc(sub)}</div>`:""}`;
+  h.appendChild(left);
   if(rightEl)h.appendChild(rightEl);
   return h;
 }
@@ -249,57 +190,50 @@ function renderUebersicht(){
     const content=document.createElement("div");content.style.cssText="padding:12px 14px";
     if(showForm){
       const form=document.createElement("div");form.className="card card-accent";
-      const title=document.createElement("div");title.style.cssText="font-size:15px;font-weight:bold;color:#2d6a4f;margin-bottom:14px";title.textContent="Neue Baustelle anlegen";form.appendChild(title);
-      const n=makeInput("text",formData.name,v=>{formData.name=v;},"z.B. Mustermann – Terrasse");
-      form.appendChild(makeField("Baustellen-Name *",n));
-      const dw=document.createElement("div");dw.style.marginTop="12px";
-      dw.appendChild(makeField("Startdatum",makeInput("date",formData.startdatum,v=>{formData.startdatum=v;})));
-      form.appendChild(dw);
-      const bw=document.createElement("div");bw.style.marginTop="12px";
-      bw.appendChild(makeField("Bauherr / Auftraggeber",makeInput("text",formData.bauherr,v=>{formData.bauherr=v;},"Name des Bauherrn")));
-      form.appendChild(bw);
-      const aw=document.createElement("div");aw.style.marginTop="12px";
-      const ata=makeInput("textarea",formData.adresse,v=>{formData.adresse=v;},"Straße, PLZ Ort");
-      ata.style.minHeight="60px";
-      aw.appendChild(makeField("Rechnungsadresse",ata));form.appendChild(aw);
-      const btnRow=document.createElement("div");btnRow.style.cssText="display:flex;gap:10px;margin-top:16px";
-      btnRow.appendChild(makeBtn("✓ Anlegen & starten","btn btn-green btn-full",()=>{
+      const t=document.createElement("div");t.style.cssText="font-size:15px;font-weight:bold;color:#2d6a4f;margin-bottom:14px";t.textContent="Neue Baustelle anlegen";form.appendChild(t);
+      form.appendChild(makeField("Baustellen-Name *",makeInput("text",formData.name,v=>{formData.name=v;},"z.B. Mustermann – Terrasse")));
+      const dw=document.createElement("div");dw.style.marginTop="12px";dw.appendChild(makeField("Startdatum",makeInput("date",formData.startdatum,v=>{formData.startdatum=v;})));form.appendChild(dw);
+      const bw=document.createElement("div");bw.style.marginTop="12px";bw.appendChild(makeField("Bauherr / Auftraggeber",makeInput("text",formData.bauherr,v=>{formData.bauherr=v;},"Name des Bauherrn")));form.appendChild(bw);
+      const aw=document.createElement("div");aw.style.marginTop="12px";const ata=makeInput("textarea",formData.adresse,v=>{formData.adresse=v;},"Straße, PLZ Ort");ata.style.minHeight="60px";aw.appendChild(makeField("Rechnungsadresse",ata));form.appendChild(aw);
+      const br=document.createElement("div");br.style.cssText="display:flex;gap:10px;margin-top:16px";
+      br.appendChild(makeBtn("✓ Anlegen","btn btn-green btn-full",()=>{
         if(!formData.name.trim())return;
-        const b={id:uid(),name:formData.name.trim(),startdatum:formData.startdatum||today(),bauherr:formData.bauherr,adresse:formData.adresse,erstellt:today(),tage:[],eintraege:[],stundensatz:55,maschinensatz:90,rechnungsNr:"",angebotNr:""};
-        state.baustellen=[...state.baustellen,b];state.activeId=b.id;state.page="planung";saveState();render();
+        const b={id:uid(),name:formData.name.trim(),startdatum:formData.startdatum||today(),bauherr:formData.bauherr,adresse:formData.adresse,erstellt:today(),eintraege:[],stundensatz:55,maschinensatz:90,rechnungsNr:"",rechnungsdatum:"",angebotNr:"",bemerkungen:""};
+        state.baustellen=[...state.baustellen,b];state.activeId=b.id;state.page="leistung";saveState();render();
       }));
-      btnRow.appendChild(makeBtn("Abbruch","btn btn-ghost",()=>{showForm=false;rebuild();}));
-      form.appendChild(btnRow);content.appendChild(form);
+      br.appendChild(makeBtn("Abbruch","btn btn-ghost",()=>{showForm=false;rebuild();}));
+      form.appendChild(br);content.appendChild(form);
     }
-    if(state.baustellen.length===0&&!showForm){
+    if(!state.baustellen.length&&!showForm){
       const empty=document.createElement("div");empty.className="empty";
-      const bigLogo=document.createElement("div");bigLogo.style.cssText="width:80px;height:80px;margin:0 auto 16px";bigLogo.innerHTML=LOGO_SVG;
-      empty.appendChild(bigLogo);
-      const t=document.createElement("div");t.style.cssText="font-size:17px;color:#5a8a5a;margin-bottom:8px";t.textContent="Willkommen!";empty.appendChild(t);
-      const s=document.createElement("div");s.style.cssText="font-size:13px;color:#9ab09a";s.textContent="Lege deine erste Baustelle an oder öffne den Kalender.";empty.appendChild(s);
-      const kb=makeBtn("📅 Kalender öffnen","btn btn-ghost",()=>setState({page:"kalender"}));kb.style.marginTop="16px";empty.appendChild(kb);
+      const logoDiv=document.createElement("div");logoDiv.style.cssText="width:80px;height:80px;margin:0 auto 16px";logoDiv.innerHTML=LOGO_SVG;empty.appendChild(logoDiv);
+      empty.innerHTML+=`<div style="font-size:17px;color:#5a8a5a;margin-bottom:8px">Willkommen!</div><div style="font-size:13px;color:#9ab09a">Lege deine erste Baustelle an.</div>`;
       content.appendChild(empty);
     }
     for(let idx=0;idx<state.baustellen.length;idx++){
       const b=state.baustellen[idx];const col=bc(idx);
-      const ih=(b.eintraege||[]).reduce((a,e)=>a+(e.personalStunden||[]).filter(p=>p.istIch).reduce((s,p)=>s+(p.stunden||0),0),0);
-      const ph=(b.eintraege||[]).reduce((a,e)=>a+(e.personalStunden||[]).filter(p=>!p.istIch).reduce((s,p)=>s+(p.stunden||0),0),0);
+      const pSum=(b.eintraege||[]).reduce((a,e)=>a+(e.personalStunden||[]).reduce((s,p)=>s+(p.stunden||0),0),0);
       const matS=(b.eintraege||[]).reduce((a,e)=>a+(e.material||[]).reduce((s,m)=>s+(m.menge||0)*(m.preis||0),0),0);
+      const total=(b.eintraege||[]).reduce((a,e)=>{
+        const pS=(e.personalStunden||[]).reduce((s,p)=>s+(p.stunden||0)*(p.stundensatz||0),0);
+        const mS=(e.maschinenStunden||[]).reduce((s,m)=>s+(m.stunden||0)*(m.stundensatz||0),0);
+        return a+pS+mS+(e.material||[]).reduce((s,m)=>s+(m.menge||0)*(m.preis||0),0);
+      },0);
       const card=document.createElement("div");card.className="bau-card";
-      const stripe=document.createElement("div");stripe.className="bau-stripe";stripe.style.background=col;card.appendChild(stripe);
+      card.innerHTML=`<div class="bau-stripe" style="background:${col}"></div>`;
       const body=document.createElement("div");body.className="bau-body";
       const topRow=document.createElement("div");topRow.style.cssText="display:flex;justify-content:space-between;align-items:flex-start";
-      const nameDiv=document.createElement("div");nameDiv.style.flex="1";
-      nameDiv.innerHTML=`<div style="font-size:17px;font-weight:bold;color:#1a2e1a">${esc(b.name)}</div><div style="font-size:13px;color:#5a8a5a;margin-top:4px">📅 ${fmt(b.startdatum)}${b.bauherr?` · 👤 ${esc(b.bauherr)}`:""}`;
+      const nd=document.createElement("div");nd.style.flex="1";
+      nd.innerHTML=`<div style="font-size:17px;font-weight:bold;color:#1a2e1a">${esc(b.name)}</div><div style="font-size:13px;color:#5a8a5a;margin-top:4px">📅 ${fmt(b.startdatum)}${b.bauherr?` · 👤 ${esc(b.bauherr)}`:""}`;
       const delBtn=document.createElement("button");delBtn.style.cssText="background:none;border:none;color:#c0c0c0;font-size:22px;padding:0 0 0 12px;cursor:pointer";delBtn.textContent="✕";
       delBtn.addEventListener("click",e=>{e.stopPropagation();if(!confirm("Baustelle löschen?"))return;state.baustellen=state.baustellen.filter(x=>x.id!==b.id);if(state.activeId===b.id)state.activeId=null;saveState();rebuild();});
-      topRow.appendChild(nameDiv);topRow.appendChild(delBtn);body.appendChild(topRow);
+      topRow.appendChild(nd);topRow.appendChild(delBtn);body.appendChild(topRow);
       const stats=document.createElement("div");stats.className="grid3";stats.style.marginTop="12px";
-      for(const[l,v]of[["Eigene Std.",ih.toFixed(0)+"h"],["Pers. Std.",ph.toFixed(0)+"h"],["Material",matS>0?matS.toFixed(0)+"€":"–"]]){
+      for(const[l,v]of[["Stunden",pSum.toFixed(0)+"h"],["Material",matS>0?matS.toFixed(0)+"€":"–"],["Gesamt",total>0?total.toFixed(0)+"€":"–"]]){
         stats.innerHTML+=`<div class="mini-stat"><div class="mini-stat-val" style="color:${col}">${v}</div><div class="mini-stat-lbl">${l}</div></div>`;
       }
       body.appendChild(stats);card.appendChild(body);
-      card.addEventListener("click",()=>setState({activeId:b.id,page:"planung"}));
+      card.addEventListener("click",()=>setState({activeId:b.id,page:"leistung"}));
       content.appendChild(card);
     }
     wrap.appendChild(content);
@@ -307,340 +241,13 @@ function renderUebersicht(){
   rebuild();return wrap;
 }
 
-// ── GLOBALER KALENDER (ohne aktives Projekt) ──────────────────────────────────
-function renderKalenderGlobal(){
-  const wrap=document.createElement("div");wrap.className="page";
-  const d0=new Date();
-  let cal={year:d0.getFullYear(),month:d0.getMonth()};
-  const rebuild=()=>{
-    wrap.innerHTML="";
-    wrap.appendChild(makeHeader("Kalender","Alle Baustellen"));
-    const content=document.createElement("div");content.style.cssText="padding:12px 14px";
-    content.appendChild(buildCalendar(cal,state.baustellen,null,(newCal)=>{cal=newCal;rebuild();},(ds,bId)=>{if(bId){state.activeId=bId;state.page="planung";}setState({activeId:bId||state.activeId,page:bId?"planung":"uebersicht"});}));
-    // Legende
-    if(state.baustellen.length){
-      const leg=document.createElement("div");leg.style.cssText="margin-top:4px";
-      const lt=document.createElement("div");lt.style.cssText="font-size:12px;color:#5a8a5a;font-weight:bold;margin-bottom:8px";lt.textContent="Baustellen:";leg.appendChild(lt);
-      for(let i=0;i<state.baustellen.length;i++){
-        const b=state.baustellen[i];
-        const row=document.createElement("div");row.style.cssText="display:flex;align-items:center;gap:8px;margin-bottom:6px;cursor:pointer";
-        row.innerHTML=`<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${bc(i)};flex-shrink:0"></span><span style="font-size:13px;color:#1a2e1a">${esc(b.name)}</span><span style="font-size:11px;color:#9ab09a">📅 ${fmt(b.startdatum)}</span>`;
-        row.addEventListener("click",()=>setState({activeId:b.id,page:"planung"}));
-        leg.appendChild(row);
-      }
-      content.appendChild(leg);
-    }
-    wrap.appendChild(content);
-  };
-  rebuild();return wrap;
-}
-
-// ── SHARED CALENDAR BUILDER ───────────────────────────────────────────────────
-function buildCalendar(cal,allBaustellen,activeBId,onNavChange,onDayClick){
-  const calWrap=document.createElement("div");calWrap.className="cal-wrap";
-  const calHead=document.createElement("div");calHead.className="cal-head";
-  const prevBtn=document.createElement("button");prevBtn.className="cal-nav";prevBtn.textContent="‹";
-  prevBtn.addEventListener("click",()=>onNavChange(cal.month===0?{year:cal.year-1,month:11}:{...cal,month:cal.month-1}));
-  const nextBtn=document.createElement("button");nextBtn.className="cal-nav";nextBtn.textContent="›";
-  nextBtn.addEventListener("click",()=>onNavChange(cal.month===11?{year:cal.year+1,month:0}:{...cal,month:cal.month+1}));
-  const mt=document.createElement("span");mt.style.cssText="color:#2d6a4f;font-weight:bold;font-size:15px";mt.textContent=MONTHS[cal.month]+" "+cal.year;
-  calHead.appendChild(prevBtn);calHead.appendChild(mt);calHead.appendChild(nextBtn);calWrap.appendChild(calHead);
-  // Legend
-  if(allBaustellen.length>1){
-    const leg=document.createElement("div");leg.style.cssText="display:flex;flex-wrap:wrap;gap:6px;padding:0 10px 10px";
-    for(let li=0;li<allBaustellen.length;li++){
-      const lb=allBaustellen[li];const isAct=lb.id===activeBId;
-      const dot=document.createElement("div");
-      dot.style.cssText=`display:flex;align-items:center;gap:4px;font-size:10px;color:#5a8a5a;background:${bc(li)}15;border:1px solid ${bc(li)}44;border-radius:5px;padding:2px 7px${isAct?";font-weight:bold":""}`;
-      dot.innerHTML=`<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${bc(li)}"></span>${esc(lb.name.slice(0,16))}`;
-      leg.appendChild(dot);
-    }
-    calWrap.appendChild(leg);
-  }
-  const dayLabels=document.createElement("div");dayLabels.style.cssText="display:grid;grid-template-columns:repeat(7,1fr);padding:0 8px 4px";
-  for(const d of DAYS){const dl=document.createElement("div");dl.className="cal-day-label";dl.textContent=d;dayLabels.appendChild(dl);}
-  calWrap.appendChild(dayLabels);
-  const grid=document.createElement("div");grid.className="cal-grid";
-  const first=new Date(cal.year,cal.month,1);
-  const dim=new Date(cal.year,cal.month+1,0).getDate();
-  const sw=first.getDay();
-  // Build allDayMap
-  const allDayMap={};
-  for(let bi=0;bi<allBaustellen.length;bi++){
-    const bx=allBaustellen[bi];
-    for(const t of(bx.tage||[])){
-      if(!allDayMap[t.datum])allDayMap[t.datum]=[];
-      allDayMap[t.datum].push({bx,t,col:bc(bi),isActive:bx.id===activeBId});
-    }
-  }
-  const activeCol=activeBId?bc(allBaustellen.findIndex(x=>x.id===activeBId)):"#2d6a4f";
-  for(let i=0;i<sw;i++)grid.appendChild(document.createElement("div"));
-  for(let d=1;d<=dim;d++){
-    const ds=`${cal.year}-${String(cal.month+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
-    const entries=allDayMap[ds]||[];
-    const activeEntry=entries.find(e=>e.isActive);
-    const otherEntries=entries.filter(e=>!e.isActive);
-    const isT=ds===today();
-    const hasConflict=entries.length>1;
-    const cell=document.createElement("div");cell.className="cal-cell";cell.style.cursor="pointer";
-    if(activeEntry)cell.style.background=activeCol+"18";
-    else if(entries.length)cell.style.background=entries[0].col+"10";
-    cell.style.border=hasConflict?"2px solid #c05c1a":isT?"2px solid #2d6a4f":activeEntry?`1px solid ${activeCol}55`:entries.length?`1px solid ${entries[0].col}44`:"1px solid #e0ead8";
-    const num=document.createElement("div");num.className="cal-cell-num";
-    num.style.color=isT?"#2d6a4f":hasConflict?"#c05c1a":"#5a8a5a";
-    if(isT||hasConflict)num.style.fontWeight="bold";
-    num.textContent=d;cell.appendChild(num);
-    if(entries.length){
-      const stripes=document.createElement("div");stripes.style.cssText="display:flex;gap:1px;margin-top:2px;height:4px;border-radius:2px;overflow:hidden";
-      for(const e of entries){const s=document.createElement("div");s.style.cssText=`flex:1;background:${e.col};opacity:${e.isActive?1:0.7}`;stripes.appendChild(s);}
-      cell.appendChild(stripes);
-      if(activeEntry){
-        const info=document.createElement("div");info.style.cssText=`font-size:9px;color:${activeCol};text-align:center;margin-top:1px;line-height:1.4`;
-        info.textContent=activeEntry.t.stunden+"h";
-        if((activeEntry.t.personal||[]).length)info.innerHTML+=`<br>👷${activeEntry.t.personal.length}`;
-        if((activeEntry.t.maschinen||[]).length)info.innerHTML+=`<br>🚜${activeEntry.t.maschinen.length}`;
-        cell.appendChild(info);
-      }
-      for(const e of otherEntries){const ob=document.createElement("div");ob.style.cssText=`font-size:8px;color:${e.col};text-align:center;line-height:1.3`;ob.textContent=e.bx.name.slice(0,5)+"…";cell.appendChild(ob);}
-    }
-    const clickedBId=entries.length===1?entries[0].bx.id:activeBId;
-    cell.addEventListener("click",()=>onDayClick(ds,clickedBId));
-    grid.appendChild(cell);
-  }
-  calWrap.appendChild(grid);
-  // Conflict warning
-  const conflictDays=Object.entries(allDayMap).filter(([ds,entries])=>{
-    const y=parseInt(ds.slice(0,4)),mo=parseInt(ds.slice(5,7))-1;
-    return entries.length>1&&y===cal.year&&mo===cal.month;
-  });
-  if(conflictDays.length){
-    const cw=document.createElement("div");cw.style.cssText="background:#fff8f0;border:1px solid #c05c1a;border-radius:8px;padding:8px 12px;margin:0 8px 10px;font-size:12px;color:#c05c1a";
-    cw.innerHTML="⚠️ Überschneidungen: "+conflictDays.map(([ds,entries])=>fmt(ds)+" ("+entries.map(e=>e.bx.name.slice(0,10)).join(", ")+")").join(" · ");
-    calWrap.appendChild(cw);
-  }
-  return calWrap;
-}
-
-// ── PLANUNG ───────────────────────────────────────────────────────────────────
-function renderPlanung(b){
-  const wrap=document.createElement("div");wrap.className="page";
-  const d0=new Date(b.startdatum||today());
-  let cal={year:d0.getFullYear(),month:d0.getMonth()};
-  let selDay=null;let settOpen=false;
-  const updB=patch=>{state.baustellen=state.baustellen.map(x=>x.id===b.id?{...x,...patch}:x);Object.assign(b,patch);saveState();};
-  const rebuild=()=>{
-    wrap.innerHTML="";
-    const rightBtn=makeBtn("⚙️","btn btn-ghost btn-small",()=>{settOpen=!settOpen;rebuild();});
-    wrap.appendChild(makeHeader("Planung",b.name,rightBtn));
-    const content=document.createElement("div");content.style.cssText="padding:12px 14px";
-    if(settOpen){
-      const sBox=document.createElement("div");sBox.className="card";
-      const st=document.createElement("div");st.style.cssText="font-size:14px;color:#2d6a4f;font-weight:bold;margin-bottom:10px";st.textContent="Einstellungen";sBox.appendChild(st);
-      const sg=document.createElement("div");sg.className="grid2";
-      sg.appendChild(makeField("Eigener Std.satz €",makeInput("number",b.stundensatz,v=>{updB({stundensatz:parseFloat(v)||0});})));
-      sg.appendChild(makeField("Maschinen Std.satz €",makeInput("number",b.maschinensatz,v=>{updB({maschinensatz:parseFloat(v)||0});})));
-      sBox.appendChild(sg);
-      const sg2=document.createElement("div");sg2.style.marginTop="10px";
-      sg2.appendChild(makeField("Bauherr",makeInput("text",b.bauherr||"",v=>updB({bauherr:v}),"Name des Bauherrn")));
-      sBox.appendChild(sg2);
-      const sg3=document.createElement("div");sg3.style.marginTop="10px";
-      const ata=makeInput("textarea",b.adresse||"",v=>updB({adresse:v}),"Straße, PLZ Ort");ata.style.minHeight="60px";
-      sg3.appendChild(makeField("Rechnungsadresse",ata));sBox.appendChild(sg3);
-      content.appendChild(sBox);
-    }
-    // Calendar using shared builder
-    const calEl=buildCalendar(cal,state.baustellen,b.id,(newCal)=>{cal=newCal;rebuild();},(ds)=>{selDay=ds;rebuild();});
-    content.appendChild(calEl);
-    // Day form
-    if(selDay){
-      const tageMap={};(b.tage||[]).forEach(t=>tageMap[t.datum]=t);
-      const existing=tageMap[selDay]||{datum:selDay,stunden:0,personal:[],maschinen:[],material:[],notiz:""};
-      const df=JSON.parse(JSON.stringify(existing));
-      content.appendChild(renderDayForm(df,b,()=>{
-        const tage=(b.tage||[]).filter(t=>t.datum!==df.datum);tage.push(df);tage.sort((a,z)=>a.datum.localeCompare(z.datum));
-        updB({tage});selDay=null;rebuild();
-      },()=>{
-        updB({tage:(b.tage||[]).filter(t=>t.datum!==df.datum)});selDay=null;rebuild();
-      },()=>{selDay=null;rebuild();}));
-    }
-    // Cost summary + day list
-    if((b.tage||[]).length>0&&!selDay){
-      const tage=b.tage||[];
-      const eigenSum=tage.reduce((a,t)=>a+(t.personal||[]).filter(p=>p.istIch).reduce((s,p)=>s+(p.stunden||0)*(p.stundensatz||b.stundensatz||55),0),0);
-      const persSum=tage.reduce((a,t)=>a+(t.personal||[]).filter(p=>!p.istIch).reduce((s,p)=>s+(p.stunden||0)*(p.stundensatz||0),0),0);
-      const mascSum=tage.reduce((a,t)=>a+(t.maschinen||[]).reduce((s,m)=>s+(m.stunden||0)*(m.stundensatz||0),0),0);
-      const matSum=tage.reduce((a,t)=>a+(t.material||[]).reduce((s,m)=>s+(m.menge||0)*(m.preis||0),0),0);
-      const netto=eigenSum+persSum+mascSum+matSum;
-      const cbox=document.createElement("div");cbox.className="cost-box";
-      const ct=document.createElement("div");ct.style.cssText="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px";
-      const ctLabel=document.createElement("div");ctLabel.style.cssText="font-size:13px;color:#2d6a4f;font-weight:bold";ctLabel.textContent="💰 Voraussichtliche Gesamtkosten";
-      const angebotBtn=document.createElement("button");angebotBtn.style.cssText="background:#2d6a4f;border:none;color:#fff;border-radius:7px;padding:6px 12px;cursor:pointer;font-size:12px;font-family:Georgia,serif;font-weight:600";angebotBtn.textContent="📄 Als Angebot drucken";
-      angebotBtn.addEventListener("click",()=>printAngebot(b,state.firmendaten));
-      ct.appendChild(ctLabel);ct.appendChild(angebotBtn);cbox.appendChild(ct);
-      const kg=document.createElement("div");kg.className="grid2";kg.style.marginBottom="10px";
-      for(const[l,v]of[["Eigenleistung",eigenSum],["Personal",persSum],["Maschinen",mascSum],["Material",matSum]]){
-        if(v>0){const k=document.createElement("div");k.className="krow";k.innerHTML=`<div class="krow-label">${l}</div><div class="krow-val">${v.toFixed(2)} €</div>`;kg.appendChild(k);}
-      }
-      cbox.appendChild(kg);
-      const dv=document.createElement("div");dv.style.cssText="border-top:1px solid #d8e8d0;padding-top:10px;display:flex;flex-direction:column;gap:4px";
-      dv.innerHTML=`<div class="sum-line" style="font-size:13px;color:#5a8a5a"><span>Netto</span><span>${netto.toFixed(2)} €</span></div><div class="sum-line" style="font-size:13px;color:#9ab09a"><span>19 % MwSt.</span><span>${(netto*0.19).toFixed(2)} €</span></div><div class="sum-line" style="font-size:17px;font-weight:bold;color:#2d6a4f;border-top:1px solid #2d6a4f;padding-top:8px;margin-top:4px"><span>Gesamt brutto</span><span>${(netto*1.19).toFixed(2)} €</span></div>`;
-      cbox.appendChild(dv);content.appendChild(cbox);
-      const lt=document.createElement("div");lt.style.cssText="font-size:13px;color:#2d6a4f;font-weight:bold;margin-bottom:8px";lt.textContent=`Geplante Tage (${tage.length})`;content.appendChild(lt);
-      for(const tag of tage){
-        const de=document.createElement("div");de.className="day-entry";de.style.cursor="default";
-        const top=document.createElement("div");top.style.cssText="display:flex;justify-content:space-between;align-items:center";
-        const dateSpan=document.createElement("span");dateSpan.style.cssText="color:#2d6a4f;font-weight:bold;font-size:14px;cursor:pointer";dateSpan.textContent=fmt(tag.datum);
-        dateSpan.addEventListener("click",()=>{selDay=tag.datum;rebuild();});
-        const hSpan=document.createElement("span");hSpan.style.cssText="color:#5a8a5a;font-size:13px";
-        const totalH=(tag.personal||[]).reduce((s,p)=>s+(p.stunden||0),0);
-        hSpan.textContent="⏱ "+totalH+"h";
-        top.appendChild(dateSpan);top.appendChild(hSpan);de.appendChild(top);
-        const chips=document.createElement("div");chips.style.cssText="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px";
-        for(const p of(tag.personal||[])){
-          const c=document.createElement("span");c.className="chip";
-          c.innerHTML=(p.istIch?"🧑‍💼 Ich":"👷 "+esc(p.name||"Personal"))+(p.istIch?`<span class="self-badge">ICH</span>`:"");
-          chips.appendChild(c);
-        }
-        for(const m of(tag.maschinen||[]))chips.innerHTML+=`<span class="chip chip-dim">🚜 ${esc(m.name||"Maschine")}</span>`;
-        if(tag.notiz)chips.innerHTML+=`<span class="chip chip-dim">💬 ${esc(tag.notiz.slice(0,30))}</span>`;
-        de.appendChild(chips);
-        const actions=document.createElement("div");actions.style.cssText="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap";
-        const abs="background:#f0f8f0;border:1px solid #c8dcc0;border-radius:7px;padding:6px 12px;cursor:pointer;font-size:12px;font-family:Georgia,serif;color:#2d6a4f";
-        const eBtn=document.createElement("button");eBtn.style.cssText=abs;eBtn.textContent="✏️ Bearbeiten";eBtn.addEventListener("click",()=>{selDay=tag.datum;rebuild();});actions.appendChild(eBtn);
-        const cBtn=document.createElement("button");cBtn.style.cssText=abs.replace("#2d6a4f","#5a8a5a");cBtn.textContent="📋 Kopieren";
-        cBtn.addEventListener("click",()=>{
-          const nd=prompt("Auf welches Datum kopieren? (TT.MM.JJJJ)","");if(!nd)return;
-          const pts=nd.split(".");if(pts.length!==3){alert("Bitte TT.MM.JJJJ eingeben");return;}
-          const iso=pts[2]+"-"+pts[1].padStart(2,"0")+"-"+pts[0].padStart(2,"0");
-          if(!/^\d{4}-\d{2}-\d{2}$/.test(iso)){alert("Ungültiges Datum");return;}
-          if((b.tage||[]).find(t=>t.datum===iso)&&!confirm("Dieser Tag ist bereits geplant. Überschreiben?"))return;
-          const copy=JSON.parse(JSON.stringify(tag));copy.datum=iso;
-          const tage2=(b.tage||[]).filter(t=>t.datum!==iso);tage2.push(copy);tage2.sort((a,z)=>a.datum.localeCompare(z.datum));
-          updB({tage:tage2});b.tage=tage2;rebuild();
-        });actions.appendChild(cBtn);
-        const mBtn=document.createElement("button");mBtn.style.cssText=abs.replace("#2d6a4f","#5a8a5a");mBtn.textContent="📅 Verschieben";
-        mBtn.addEventListener("click",()=>{
-          const nd=prompt("Verschieben auf welches Datum? (TT.MM.JJJJ)","");if(!nd)return;
-          const pts=nd.split(".");if(pts.length!==3){alert("Bitte TT.MM.JJJJ eingeben");return;}
-          const iso=pts[2]+"-"+pts[1].padStart(2,"0")+"-"+pts[0].padStart(2,"0");
-          if(!/^\d{4}-\d{2}-\d{2}$/.test(iso)){alert("Ungültiges Datum");return;}
-          if(iso===tag.datum)return;
-          if((b.tage||[]).find(t=>t.datum===iso)&&!confirm("Dieser Tag ist bereits geplant. Überschreiben?"))return;
-          const moved=JSON.parse(JSON.stringify(tag));moved.datum=iso;
-          const tage2=(b.tage||[]).filter(t=>t.datum!==tag.datum&&t.datum!==iso);
-          tage2.push(moved);tage2.sort((a,z)=>a.datum.localeCompare(z.datum));
-          updB({tage:tage2});b.tage=tage2;rebuild();
-        });actions.appendChild(mBtn);
-        de.appendChild(actions);content.appendChild(de);
-      }
-    }
-    wrap.appendChild(content);
-  };
-  rebuild();return wrap;
-}
-
-function renderDayForm(df,b,onSave,onRemove,onClose){
-  const isExisting=!!(b.tage||[]).find(t=>t.datum===df.datum);
-  const wrap=document.createElement("div");wrap.className="card card-accent";
-  const rebuild=()=>{
-    wrap.innerHTML="";
-    const head=document.createElement("div");head.style.cssText="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px";
-    head.innerHTML=`<div style="color:#2d6a4f;font-weight:bold;font-size:15px">📅 ${fmt(df.datum)}</div>`;
-    const cb=document.createElement("button");cb.className="btn-icon";cb.style.color="#aaa";cb.textContent="✕";cb.addEventListener("click",onClose);
-    head.appendChild(cb);wrap.appendChild(head);
-    const g2=document.createElement("div");g2.className="grid2";g2.style.marginBottom="4px";
-    g2.appendChild(makeField("Notiz / Aufgabe",makeInput("text",df.notiz,v=>{df.notiz=v;},"z.B. Pflasterarbeiten")));
-    wrap.appendChild(g2);
-    // Personal (inkl. Ich)
-    const secHead=document.createElement("div");secHead.className="sec-head";
-    const st=document.createElement("span");st.className="sec-title";st.textContent="👷 Personal & eigene Arbeit";
-    const addBtn=document.createElement("button");addBtn.className="sec-add";addBtn.textContent="+ hinzufügen";
-    addBtn.addEventListener("click",()=>{
-      // Dropdown: Ich oder fremdes Personal
-      const menu=document.createElement("div");menu.style.cssText="position:absolute;background:#fff;border:1px solid #d8e8d0;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.12);z-index:300;right:14px;min-width:180px";
-      const opt1=document.createElement("div");opt1.style.cssText="padding:12px 16px;cursor:pointer;font-size:14px;color:#2d6a4f;border-bottom:1px solid #e8f4e8;font-weight:bold";
-      opt1.textContent="🧑‍💼 Ich (Inhaber)";
-      opt1.addEventListener("click",()=>{df.personal=[...(df.personal||[]),{id:uid(),name:"Ich",istIch:true,stunden:0,stundensatz:0}];menu.remove();rebuild();});
-      const opt2=document.createElement("div");opt2.style.cssText="padding:12px 16px;cursor:pointer;font-size:14px;color:#1a2e1a";
-      opt2.textContent="👷 Mitarbeiter / Subunternehmer";
-      opt2.addEventListener("click",()=>{df.personal=[...(df.personal||[]),{id:uid(),name:"",istIch:false,typ:"Helfer",stunden:0,stundensatz:0}];menu.remove();rebuild();});
-      menu.appendChild(opt1);menu.appendChild(opt2);
-      document.body.appendChild(menu);
-      const r=addBtn.getBoundingClientRect();menu.style.top=(r.bottom+window.scrollY+4)+"px";
-      setTimeout(()=>document.addEventListener("click",()=>menu.remove(),{once:true}),10);
-    });
-    secHead.appendChild(st);secHead.appendChild(addBtn);wrap.appendChild(secHead);
-    for(const p of(df.personal||[])){
-      const irow=document.createElement("div");irow.className="item-row";
-      if(p.istIch){
-        irow.style.borderColor="#2d6a4f44";irow.style.background="#f0f8f0";
-        const badge=document.createElement("div");badge.style.cssText="font-size:13px;font-weight:bold;color:#2d6a4f;margin-bottom:4px";badge.textContent="🧑‍💼 Meine eigene Arbeit";irow.appendChild(badge);
-      } else {
-        irow.appendChild(makeInput("text",p.name,v=>p.name=v,"Name des Mitarbeiters"));
-        const tsel=makeSelect(["Helfer","Fachkraft","Subunternehmer","Azubi"],p.typ||"Helfer",v=>p.typ=v);irow.appendChild(tsel);
-      }
-      const r2=document.createElement("div");r2.style.cssText="display:flex;gap:8px";
-      r2.appendChild(makeField("Stunden",makeInput("number","",v=>{p.stunden=parseFloat(v)||0;},p.stunden>0?String(p.stunden):"")));
-      r2.appendChild(makeField(p.istIch?"€/Std. (Inhaber)":"€/Std.",makeInput("number","",v=>{p.stundensatz=parseFloat(v)||0;},p.stundensatz>0?String(p.stundensatz):"")));
-      irow.appendChild(r2);
-      const tot=document.createElement("div");tot.style.cssText="font-size:12px;color:#5a8a5a;text-align:right";tot.textContent="= "+((p.stunden||0)*(p.stundensatz||0)).toFixed(2)+" €";irow.appendChild(tot);
-      const db=document.createElement("button");db.className="remove-btn";db.textContent="Entfernen";db.addEventListener("click",()=>{df.personal=df.personal.filter(x=>x.id!==p.id);rebuild();});irow.appendChild(db);
-      wrap.appendChild(irow);
-    }
-    // Maschinen
-    renderSection(wrap,"🚜 Maschinen",df.maschinen||[],
-      ()=>{df.maschinen=[...(df.maschinen||[]),{id:uid(),name:"",stunden:0,stundensatz:0}];rebuild();},
-      (m,del)=>{
-        const irow=document.createElement("div");irow.className="item-row";
-        irow.appendChild(makeInput("text",m.name,v=>m.name=v,"z.B. Bagger, Rüttelplatte"));
-        const r2=document.createElement("div");r2.style.cssText="display:flex;gap:8px";
-        r2.appendChild(makeField("Stunden",makeInput("number","",v=>{m.stunden=parseFloat(v)||0;},m.stunden>0?String(m.stunden):"")));
-        r2.appendChild(makeField("€/Std.",makeInput("number","",v=>{m.stundensatz=parseFloat(v)||0;},m.stundensatz>0?String(m.stundensatz):"")));
-        irow.appendChild(r2);
-        const tot=document.createElement("div");tot.style.cssText="font-size:12px;color:#5a8a5a;text-align:right";tot.textContent="= "+((m.stunden||0)*(m.stundensatz||0)).toFixed(2)+" €";irow.appendChild(tot);
-        const db=document.createElement("button");db.className="remove-btn";db.textContent="Entfernen";db.addEventListener("click",del);irow.appendChild(db);
-        return irow;
-      }
-    );
-    // Material
-    renderSection(wrap,"📦 Material (geplant)",df.material||[],
-      ()=>{df.material=[...(df.material||[]),{id:uid(),bezeichnung:"",menge:0,einheit:"m²",preis:0}];rebuild();},
-      (m,del)=>{
-        const irow=document.createElement("div");irow.className="item-row";
-        irow.appendChild(makeInput("text",m.bezeichnung,v=>m.bezeichnung=v,"Material"));
-        const r3=document.createElement("div");r3.style.cssText="display:flex;gap:8px";
-        r3.appendChild(makeField("Menge",makeInput("number","",v=>{m.menge=parseFloat(v)||0;},m.menge>0?String(m.menge):"")));
-        r3.appendChild(makeField("Einheit",makeSelect(["m²","m³","m","Stk","kg","t","l","Pal.","Sack"],m.einheit,v=>m.einheit=v)));
-        r3.appendChild(makeField("Preis €",makeInput("number","",v=>{m.preis=parseFloat(v)||0;},m.preis>0?String(m.preis):"")));
-        irow.appendChild(r3);
-        const tot=document.createElement("div");tot.style.cssText="font-size:12px;color:#5a8a5a;text-align:right";tot.textContent="= "+((m.menge||0)*(m.preis||0)).toFixed(2)+" €";irow.appendChild(tot);
-        const db=document.createElement("button");db.className="remove-btn";db.textContent="Entfernen";db.addEventListener("click",del);irow.appendChild(db);
-        return irow;
-      }
-    );
-    const btnRow=document.createElement("div");btnRow.style.cssText="display:flex;gap:10px;margin-top:14px";
-    btnRow.appendChild(makeBtn("💾 Speichern","btn btn-green btn-full",onSave));
-    if(isExisting)btnRow.appendChild(makeBtn("🗑","btn btn-danger",onRemove));
-    wrap.appendChild(btnRow);
-  };
-  rebuild();return wrap;
-}
-
-function renderSection(parent,title,arr,onAdd,rowFn){
-  const head=document.createElement("div");head.className="sec-head";
-  const t=document.createElement("span");t.className="sec-title";t.textContent=title;
-  const a=document.createElement("button");a.className="sec-add";a.textContent="+ hinzufügen";a.addEventListener("click",onAdd);
-  head.appendChild(t);head.appendChild(a);parent.appendChild(head);
-  for(let i=0;i<arr.length;i++){parent.appendChild(rowFn(arr[i],()=>{arr.splice(i,1);}));}
-}
-
-// ── LEISTUNG ERBRACHT ────────────────────────────────────────────────────────
+// ── LEISTUNG ERBRACHT ─────────────────────────────────────────────────────────
 function renderLeistung(b){
   const wrap=document.createElement("div");wrap.className="page";
   let showForm=false;
-  const fresh=()=>({id:uid(),datum:today(),personalStunden:[],maschinenStunden:[],material:[],wetter:"",notiz:""});
+  const fresh=()=>({id:uid(),datum:today(),personalStunden:[],maschinenStunden:[],material:[],notiz:""});
   let form=fresh();
-  const updB=patch=>{state.baustellen=state.baustellen.map(x=>x.id===b.id?{...x,...patch}:x);Object.assign(b,patch);saveState();};
+  const updB=patch=>{updBaustelle(b.id,patch);Object.assign(b,patch);};
   const rebuild=()=>{
     wrap.innerHTML="";
     const rightBtn=makeBtn(showForm?"✕":"+ Neu","btn btn-green btn-small",()=>{if(!showForm)form=fresh();showForm=!showForm;rebuild();});
@@ -651,100 +258,113 @@ function renderLeistung(b){
       const ft=document.createElement("div");ft.style.cssText="font-size:15px;color:#2d6a4f;font-weight:bold;margin-bottom:12px";ft.textContent="Tagesbericht erfassen";fbox.appendChild(ft);
       const g2=document.createElement("div");g2.className="grid2";g2.style.marginBottom="4px";
       g2.appendChild(makeField("Datum",makeInput("date",form.datum,v=>{form.datum=v;})));
-      g2.appendChild(makeField("Notizen",makeInput("text",form.wetter,v=>{form.wetter=v;},"z.B. Notiz zum Tag…")));
-      g2.appendChild(makeField("Leistungen",makeInput("text",form.notiz,v=>{form.notiz=v;},"Was wurde gemacht?")));
+      g2.appendChild(makeField("Notizen",makeInput("text",form.notiz,v=>{form.notiz=v;},"z.B. Notiz zum Tag…")));
       fbox.appendChild(g2);
+
       // Personal inkl. Ich
-      const secHead=document.createElement("div");secHead.className="sec-head";
-      const st2=document.createElement("span");st2.className="sec-title";st2.textContent="👷 Personal & eigene Arbeit";
-      const addBtn2=document.createElement("button");addBtn2.className="sec-add";addBtn2.textContent="+ hinzufügen";
-      addBtn2.addEventListener("click",()=>{
-        const menu=document.createElement("div");menu.style.cssText="position:absolute;background:#fff;border:1px solid #d8e8d0;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.12);z-index:300;right:14px;min-width:180px";
-        const opt1=document.createElement("div");opt1.style.cssText="padding:12px 16px;cursor:pointer;font-size:14px;color:#2d6a4f;border-bottom:1px solid #e8f4e8;font-weight:bold";opt1.textContent="🧑‍💼 Ich (Inhaber)";
-        opt1.addEventListener("click",()=>{form.personalStunden.push({id:uid(),name:"Ich",istIch:true,stunden:0,stundensatz:0});menu.remove();rebuild();});
-        const opt2=document.createElement("div");opt2.style.cssText="padding:12px 16px;cursor:pointer;font-size:14px;color:#1a2e1a";opt2.textContent="👷 Mitarbeiter / Subunternehmer";
-        opt2.addEventListener("click",()=>{form.personalStunden.push({id:uid(),name:"",istIch:false,stunden:0,stundensatz:0});menu.remove();rebuild();});
-        menu.appendChild(opt1);menu.appendChild(opt2);
-        document.body.appendChild(menu);
-        const r=addBtn2.getBoundingClientRect();menu.style.top=(r.bottom+window.scrollY+4)+"px";
-        setTimeout(()=>document.addEventListener("click",()=>menu.remove(),{once:true}),10);
+      const sh=document.createElement("div");sh.className="sec-head";
+      const st=document.createElement("span");st.className="sec-title";st.textContent="👷 Personal & eigene Arbeit";
+      const addBtn=document.createElement("button");addBtn.className="sec-add";addBtn.textContent="+ hinzufügen";
+      addBtn.addEventListener("click",()=>{
+        const menu=document.createElement("div");menu.style.cssText="position:fixed;background:#fff;border:1px solid #d8e8d0;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.15);z-index:5000;min-width:220px;overflow:hidden";
+        const o1=document.createElement("div");o1.style.cssText="padding:14px 16px;cursor:pointer;font-size:14px;color:#2d6a4f;font-weight:bold;border-bottom:1px solid #e8f4e8;background:#f8fdf8";o1.textContent="🧑‍💼 Ich (Inhaber)";
+        o1.addEventListener("click",()=>{form.personalStunden.push({id:uid(),name:"Ich",istIch:true,stunden:0,stundensatz:0});menu.remove();rebuild();});
+        const o2=document.createElement("div");o2.style.cssText="padding:14px 16px;cursor:pointer;font-size:14px;color:#1a2e1a";o2.textContent="👷 Mitarbeiter / Subunternehmer";
+        o2.addEventListener("click",()=>{form.personalStunden.push({id:uid(),name:"",istIch:false,stunden:0,stundensatz:0});menu.remove();rebuild();});
+        menu.appendChild(o1);menu.appendChild(o2);document.body.appendChild(menu);
+        const r=addBtn.getBoundingClientRect();
+        menu.style.top=(r.bottom+window.scrollY+4)+"px";
+        menu.style.right=(window.innerWidth-r.right)+"px";
+        setTimeout(()=>document.addEventListener("click",()=>menu.remove(),{once:true}),50);
       });
-      secHead.appendChild(st2);secHead.appendChild(addBtn2);fbox.appendChild(secHead);
+      sh.appendChild(st);sh.appendChild(addBtn);fbox.appendChild(sh);
       for(const p of form.personalStunden){
         const irow=document.createElement("div");irow.className="item-row";
-        if(p.istIch){irow.style.borderColor="#2d6a4f44";irow.style.background="#f0f8f0";const badge=document.createElement("div");badge.style.cssText="font-size:13px;font-weight:bold;color:#2d6a4f;margin-bottom:4px";badge.textContent="🧑‍💼 Meine eigene Arbeit";irow.appendChild(badge);}
-        else{irow.appendChild(makeInput("text",p.name,v=>p.name=v,"Name des Mitarbeiters"));}
+        if(p.istIch){irow.style.cssText="background:#f0f8f0;border:1px solid #b0d4b0;border-radius:10px;padding:10px;margin-bottom:8px;display:flex;flex-direction:column;gap:8px";
+          const badge=document.createElement("div");badge.style.cssText="font-size:13px;font-weight:bold;color:#2d6a4f";badge.textContent="🧑‍💼 Meine eigene Arbeit";irow.appendChild(badge);}
+        else irow.appendChild(makeInput("text",p.name,v=>p.name=v,"Name des Mitarbeiters"));
         const r2=document.createElement("div");r2.style.cssText="display:flex;gap:8px";
         r2.appendChild(makeField("Stunden",makeInput("number","",v=>{p.stunden=parseFloat(v)||0;},p.stunden>0?String(p.stunden):"")));
-        r2.appendChild(makeField(p.istIch?"€/Std. (Inhaber)":"€/Std.",makeInput("number","",v=>{p.stundensatz=parseFloat(v)||0;},p.stundensatz>0?String(p.stundensatz):"")));
+        r2.appendChild(makeField(p.istIch?"€/Std.":"€/Std.",makeInput("number","",v=>{p.stundensatz=parseFloat(v)||0;},p.stundensatz>0?String(p.stundensatz):"")));
         irow.appendChild(r2);
-        const tot=document.createElement("div");tot.style.cssText="font-size:12px;color:#5a8a5a;text-align:right";tot.textContent=((p.stunden||0)*(p.stundensatz||0)).toFixed(2)+" €";irow.appendChild(tot);
+        const tot=document.createElement("div");tot.style.cssText="font-size:12px;color:#5a8a5a;text-align:right";tot.textContent="= "+((p.stunden||0)*(p.stundensatz||0)).toFixed(2)+" €";irow.appendChild(tot);
         const db=document.createElement("button");db.className="remove-btn";db.textContent="Entfernen";db.addEventListener("click",()=>{form.personalStunden=form.personalStunden.filter(x=>x.id!==p.id);rebuild();});irow.appendChild(db);
         fbox.appendChild(irow);
       }
-      renderSection(fbox,"🚜 Maschinen",form.maschinenStunden,
-        ()=>{form.maschinenStunden.push({id:uid(),name:"",stunden:0,stundensatz:0});rebuild();},
-        (m,del)=>{
-          const irow=document.createElement("div");irow.className="item-row";
-          irow.appendChild(makeInput("text",m.name,v=>m.name=v,"Maschine"));
-          const r2=document.createElement("div");r2.style.cssText="display:flex;gap:8px";
-          r2.appendChild(makeField("Stunden",makeInput("number","",v=>{m.stunden=parseFloat(v)||0;},m.stunden>0?String(m.stunden):"")));
-          r2.appendChild(makeField("€/Std.",makeInput("number","",v=>{m.stundensatz=parseFloat(v)||0;},m.stundensatz>0?String(m.stundensatz):"")));
-          irow.appendChild(r2);
-          const tot=document.createElement("div");tot.style.cssText="font-size:12px;color:#5a8a5a;text-align:right";tot.textContent=((m.stunden||0)*(m.stundensatz||0)).toFixed(2)+" €";irow.appendChild(tot);
-          const db=document.createElement("button");db.className="remove-btn";db.textContent="Entfernen";db.addEventListener("click",del);irow.appendChild(db);return irow;
-        }
-      );
-      renderSection(fbox,"📦 Verbrauchtes Material",form.material,
-        ()=>{form.material.push({id:uid(),bezeichnung:"",menge:0,einheit:"m²",preis:0});rebuild();},
-        (m,del)=>{
-          const irow=document.createElement("div");irow.className="item-row";
-          irow.appendChild(makeInput("text",m.bezeichnung,v=>m.bezeichnung=v,"Material"));
-          const r3=document.createElement("div");r3.style.cssText="display:flex;gap:8px";
-          r3.appendChild(makeField("Menge",makeInput("number","",v=>{m.menge=parseFloat(v)||0;},m.menge>0?String(m.menge):"")));
-          r3.appendChild(makeField("Einheit",makeSelect(["m²","m³","m","Stk","kg","t","l","Pal.","Sack"],m.einheit,v=>m.einheit=v)));
-          r3.appendChild(makeField("Preis €",makeInput("number","",v=>{m.preis=parseFloat(v)||0;},m.preis>0?String(m.preis):"")));
-          irow.appendChild(r3);
-          const tot=document.createElement("div");tot.style.cssText="font-size:12px;color:#5a8a5a;text-align:right";tot.textContent=((m.menge||0)*(m.preis||0)).toFixed(2)+" €";irow.appendChild(tot);
-          const db=document.createElement("button");db.className="remove-btn";db.textContent="Entfernen";db.addEventListener("click",del);irow.appendChild(db);return irow;
-        }
-      );
-      const btnRow=document.createElement("div");btnRow.style.cssText="display:flex;gap:10px;margin-top:14px";
-      btnRow.appendChild(makeBtn("💾 Speichern","btn btn-green btn-full",()=>{
+
+      // Maschinen
+      const msh=document.createElement("div");msh.className="sec-head";
+      const mst=document.createElement("span");mst.className="sec-title";mst.textContent="🚜 Maschinen";
+      const mAdd=document.createElement("button");mAdd.className="sec-add";mAdd.textContent="+ hinzufügen";
+      mAdd.addEventListener("click",()=>{form.maschinenStunden.push({id:uid(),name:"",stunden:0,stundensatz:0});rebuild();});
+      msh.appendChild(mst);msh.appendChild(mAdd);fbox.appendChild(msh);
+      for(const m of form.maschinenStunden){
+        const irow=document.createElement("div");irow.className="item-row";
+        irow.appendChild(makeInput("text",m.name,v=>m.name=v,"z.B. Bagger, Rüttelplatte"));
+        const r2=document.createElement("div");r2.style.cssText="display:flex;gap:8px";
+        r2.appendChild(makeField("Stunden",makeInput("number","",v=>{m.stunden=parseFloat(v)||0;},m.stunden>0?String(m.stunden):"")));
+        r2.appendChild(makeField("€/Std.",makeInput("number","",v=>{m.stundensatz=parseFloat(v)||0;},m.stundensatz>0?String(m.stundensatz):"")));
+        irow.appendChild(r2);
+        const tot=document.createElement("div");tot.style.cssText="font-size:12px;color:#5a8a5a;text-align:right";tot.textContent="= "+((m.stunden||0)*(m.stundensatz||0)).toFixed(2)+" €";irow.appendChild(tot);
+        const db=document.createElement("button");db.className="remove-btn";db.textContent="Entfernen";db.addEventListener("click",()=>{form.maschinenStunden=form.maschinenStunden.filter(x=>x.id!==m.id);rebuild();});irow.appendChild(db);
+        fbox.appendChild(irow);
+      }
+
+      // Material
+      const matsh=document.createElement("div");matsh.className="sec-head";
+      const matst=document.createElement("span");matst.className="sec-title";matst.textContent="📦 Material";
+      const matAdd=document.createElement("button");matAdd.className="sec-add";matAdd.textContent="+ hinzufügen";
+      matAdd.addEventListener("click",()=>{form.material.push({id:uid(),bezeichnung:"",menge:0,einheit:"m²",preis:0});rebuild();});
+      matsh.appendChild(matst);matsh.appendChild(matAdd);fbox.appendChild(matsh);
+      for(const m of form.material){
+        const irow=document.createElement("div");irow.className="item-row";
+        irow.appendChild(makeInput("text",m.bezeichnung,v=>m.bezeichnung=v,"Material"));
+        const r3=document.createElement("div");r3.style.cssText="display:flex;gap:8px";
+        r3.appendChild(makeField("Menge",makeInput("number","",v=>{m.menge=parseFloat(v)||0;},m.menge>0?String(m.menge):"")));
+        r3.appendChild(makeField("Einheit",makeSelect(["m²","m³","m","Stk","kg","t","l","Pal.","Sack"],m.einheit,v=>m.einheit=v)));
+        r3.appendChild(makeField("Preis €",makeInput("number","",v=>{m.preis=parseFloat(v)||0;},m.preis>0?String(m.preis):"")));
+        irow.appendChild(r3);
+        const tot=document.createElement("div");tot.style.cssText="font-size:12px;color:#5a8a5a;text-align:right";tot.textContent="= "+((m.menge||0)*(m.preis||0)).toFixed(2)+" €";irow.appendChild(tot);
+        const db=document.createElement("button");db.className="remove-btn";db.textContent="Entfernen";db.addEventListener("click",()=>{form.material=form.material.filter(x=>x.id!==m.id);rebuild();});irow.appendChild(db);
+        fbox.appendChild(irow);
+      }
+
+      const br=document.createElement("div");br.style.cssText="display:flex;gap:10px;margin-top:14px";
+      br.appendChild(makeBtn("💾 Speichern","btn btn-green btn-full",()=>{
         const eintraege=(b.eintraege||[]).filter(e=>e.id!==form.id);
         eintraege.push({...form});eintraege.sort((a,z)=>a.datum.localeCompare(z.datum));
         updB({eintraege});showForm=false;form=fresh();rebuild();
       }));
-      btnRow.appendChild(makeBtn("Abbruch","btn btn-ghost",()=>{showForm=false;rebuild();}));
-      fbox.appendChild(btnRow);content.appendChild(fbox);
+      br.appendChild(makeBtn("Abbruch","btn btn-ghost",()=>{showForm=false;rebuild();}));
+      fbox.appendChild(br);content.appendChild(fbox);
     }
+
     if(!(b.eintraege||[]).length&&!showForm){
       const empty=document.createElement("div");empty.className="empty";
       empty.innerHTML=`<div style="font-size:40px;margin-bottom:12px">✅</div><div style="font-size:15px;color:#5a8a5a">Noch keine Leistungen erfasst.</div>`;
       content.appendChild(empty);
     }
+
     for(const e of[...(b.eintraege||[])].reverse()){
-      const eS=(e.personalStunden||[]).reduce((a,p)=>a+(p.stunden||0)*(p.stundensatz||0),0);
+      const pS=(e.personalStunden||[]).reduce((a,p)=>a+(p.stunden||0)*(p.stundensatz||0),0);
       const mS=(e.maschinenStunden||[]).reduce((a,m)=>a+(m.stunden||0)*(m.stundensatz||0),0);
       const matS=(e.material||[]).reduce((a,m)=>a+(m.menge||0)*(m.preis||0),0);
-      const total=eS+mS+matS;
-      const card=document.createElement("div");card.className="tagebuch-card";
+      const total=pS+mS+matS;
+      const card=document.createElement("div");card.className="leistung-card";
       const topRow=document.createElement("div");topRow.style.cssText="display:flex;justify-content:space-between;align-items:flex-start";
-      const leftDiv=document.createElement("div");
-      leftDiv.innerHTML=`<div style="color:#2d6a4f;font-weight:bold;font-size:15px">${fmt(e.datum)}</div>${e.wetter?`<div style="font-size:12px;color:#9ab09a">📝 ${esc(e.wetter)}</div>`:""}${e.notiz?`<div style="font-size:13px;color:#5a8a5a;margin-top:2px;font-style:italic">${esc(e.notiz)}</div>`:""}`;
-      const actions2=document.createElement("div");actions2.style.cssText="display:flex;gap:4px";
+      const ld=document.createElement("div");
+      ld.innerHTML=`<div style="color:#2d6a4f;font-weight:bold;font-size:15px">${fmt(e.datum)}</div>${e.notiz?`<div style="font-size:13px;color:#5a8a5a;margin-top:2px;font-style:italic">${esc(e.notiz)}</div>`:""}`;
+      const acts=document.createElement("div");acts.style.cssText="display:flex;gap:4px";
       const editBtn=document.createElement("button");editBtn.className="btn-icon";editBtn.textContent="✏️";
       editBtn.addEventListener("click",()=>{form=JSON.parse(JSON.stringify(e));showForm=true;rebuild();});
       const delBtn=document.createElement("button");delBtn.className="btn-icon";delBtn.style.color="#c0c0c0";delBtn.textContent="✕";
       delBtn.addEventListener("click",()=>{if(!confirm("Löschen?"))return;updB({eintraege:(b.eintraege||[]).filter(x=>x.id!==e.id)});rebuild();});
-      actions2.appendChild(editBtn);actions2.appendChild(delBtn);topRow.appendChild(leftDiv);topRow.appendChild(actions2);card.appendChild(topRow);
-      const chips2=document.createElement("div");chips2.className="grid2";chips2.style.marginTop="10px";
-      for(const p of(e.personalStunden||[])){
-        chips2.innerHTML+=`<div class="dchip"><div class="dchip-label">${p.istIch?"🧑‍💼 Ich":esc(p.name||"Personal")}</div><div class="dchip-val">${p.stunden}h</div><div class="dchip-sub">${((p.stunden||0)*(p.stundensatz||0)).toFixed(0)} €</div></div>`;
-      }
-      for(const m of(e.maschinenStunden||[]))chips2.innerHTML+=`<div class="dchip"><div class="dchip-label">🚜 ${esc(m.name||"Maschine")}</div><div class="dchip-val">${m.stunden}h</div><div class="dchip-sub">${((m.stunden||0)*(m.stundensatz||0)).toFixed(0)} €</div></div>`;
-      for(const m of(e.material||[]))chips2.innerHTML+=`<div class="dchip"><div class="dchip-label">📦 ${esc(m.bezeichnung||"Material")}</div><div class="dchip-val">${m.menge} ${esc(m.einheit)}</div><div class="dchip-sub">${((m.menge||0)*(m.preis||0)).toFixed(0)} €</div></div>`;
-      card.appendChild(chips2);
+      acts.appendChild(editBtn);acts.appendChild(delBtn);topRow.appendChild(ld);topRow.appendChild(acts);card.appendChild(topRow);
+      const chips=document.createElement("div");chips.className="grid2";chips.style.marginTop="10px";
+      for(const p of(e.personalStunden||[]))chips.innerHTML+=`<div class="dchip"><div class="dchip-label">${p.istIch?"🧑‍💼 Ich":esc(p.name||"Personal")}</div><div class="dchip-val">${p.stunden}h</div><div class="dchip-sub">${((p.stunden||0)*(p.stundensatz||0)).toFixed(0)} €</div></div>`;
+      for(const m of(e.maschinenStunden||[]))chips.innerHTML+=`<div class="dchip"><div class="dchip-label">🚜 ${esc(m.name||"Maschine")}</div><div class="dchip-val">${m.stunden}h</div><div class="dchip-sub">${((m.stunden||0)*(m.stundensatz||0)).toFixed(0)} €</div></div>`;
+      for(const m of(e.material||[]))chips.innerHTML+=`<div class="dchip"><div class="dchip-label">📦 ${esc(m.bezeichnung||"Material")}</div><div class="dchip-val">${m.menge} ${esc(m.einheit)}</div><div class="dchip-sub">${((m.menge||0)*(m.preis||0)).toFixed(0)} €</div></div>`;
+      card.appendChild(chips);
       const totLine=document.createElement("div");totLine.className="total-line";totLine.textContent=total.toFixed(2)+" €";card.appendChild(totLine);
       content.appendChild(card);
     }
@@ -756,50 +376,46 @@ function renderLeistung(b){
 // ── RECHNUNG ──────────────────────────────────────────────────────────────────
 function renderRechnung(b){
   const wrap=document.createElement("div");wrap.className="page";
-  const updB=patch=>{state.baustellen=state.baustellen.map(x=>x.id===b.id?{...x,...patch}:x);Object.assign(b,patch);saveState();};
+  const updB=patch=>{updBaustelle(b.id,patch);Object.assign(b,patch);};
   const eintraege=b.eintraege||[];
-  let eigenH=0,eigenE=0;
-  const pRows={},mRows={},matRows={};
+  let arbeitszeitGesamt=0;
+  const mRows={},matRows={};
   for(const e of eintraege){
-    for(const p of(e.personalStunden||[])){
-      if(p.istIch){eigenH+=p.stunden||0;eigenE+=(p.stunden||0)*(p.stundensatz||b.stundensatz||55);}
-      else{const k=p.name+"__"+p.stundensatz;if(!pRows[k])pRows[k]={name:p.name,ss:p.stundensatz,h:0};pRows[k].h+=p.stunden||0;}
-    }
+    arbeitszeitGesamt+=(e.personalStunden||[]).reduce((a,p)=>a+(p.stunden||0)*(p.stundensatz||0),0);
     for(const m of(e.maschinenStunden||[])){const k=m.name+"__"+(m.stundensatz||0);if(!mRows[k])mRows[k]={name:m.name,ss:m.stundensatz||0,h:0};mRows[k].h+=m.stunden||0;}
     for(const m of(e.material||[])){const k=m.bezeichnung+"__"+m.einheit+"__"+m.preis;if(!matRows[k])matRows[k]={bz:m.bezeichnung,ei:m.einheit,pr:m.preis,mg:0};matRows[k].mg+=m.menge||0;}
   }
-  const pArr=Object.values(pRows),mArr=Object.values(mRows),matArr=Object.values(matRows);
-  const pT=pArr.reduce((a,p)=>a+p.h*(p.ss||0),0);
+  const mArr=Object.values(mRows),matArr=Object.values(matRows);
   const mT=mArr.reduce((a,m)=>a+m.h*(m.ss||0),0);
   const matT=matArr.reduce((a,m)=>a+m.mg*m.pr,0);
-  const netto=eigenE+pT+mT+matT,mwst=netto*0.19,brutto=netto+mwst;
+  const netto=arbeitszeitGesamt+mT+matT;
+  const mwst=netto*0.19,brutto=netto+mwst;
 
   wrap.appendChild(makeHeader("Rechnung",b.name));
-  // Print buttons
+
   const printBar=document.createElement("div");printBar.className="no-print";
   printBar.style.cssText="display:flex;gap:10px;padding:10px 14px 0;flex-wrap:wrap";
   const mkPB=(label,fn)=>{const pb=document.createElement("button");pb.style.cssText="background:#2d6a4f;border:none;color:#fff;border-radius:9px;padding:10px 16px;cursor:pointer;font-size:13px;font-family:Georgia,serif;font-weight:600";pb.textContent=label;pb.addEventListener("click",fn);return pb;};
-  printBar.appendChild(mkPB("🖨️ Rechnung",()=>printDoc("rechnung",b,state.firmendaten)));
-  printBar.appendChild(mkPB("📄 Kostenvoranschlag",()=>printDoc("kva",b,state.firmendaten)));
-  printBar.appendChild(mkPB("📋 Tagesberichte",()=>printDoc("tage",b,state.firmendaten)));
+  printBar.appendChild(mkPB("🖨️ Rechnung (Endkunde)",()=>printRechnung(b,state.firmendaten,"endkunde")));
+  printBar.appendChild(mkPB("🔄 Rechnung §13b (Subunternehmer)",()=>printRechnung(b,state.firmendaten,"13b")));
   wrap.appendChild(printBar);
+
   const content=document.createElement("div");content.style.cssText="padding:12px 14px";
 
   // Firmendaten
   const fdBox=document.createElement("div");fdBox.className="card";
-  const fdt=document.createElement("div");fdt.style.cssText="font-size:14px;color:#2d6a4f;font-weight:bold;margin-bottom:12px";fdt.style.cssText="font-size:14px;color:#2d6a4f;font-weight:bold;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center";
-  const fdLabel=document.createElement("span");fdLabel.textContent="⚙️ Meine Firmendaten (für alle Rechnungen)";fdt.appendChild(fdLabel);
+  const fdt=document.createElement("div");
+  fdt.style.cssText="font-size:14px;color:#2d6a4f;font-weight:bold;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center";
+  const fdLabel=document.createElement("span");fdLabel.textContent="⚙️ Meine Firmendaten";fdt.appendChild(fdLabel);
   const restoreBtn=document.createElement("button");
-  restoreBtn.style.cssText="background:#fdf0f0;border:1px solid #e8b0b0;color:#c04040;border-radius:7px;padding:5px 10px;cursor:pointer;font-size:11px;font-family:Georgia,serif";
-  restoreBtn.textContent="📂 Wiederherstellen";
-  restoreBtn.title="Gesicherte Daten wiederherstellen";
-  restoreBtn.addEventListener("click",showRestoreDialog);
-  fdt.appendChild(restoreBtn);
+  restoreBtn.style.cssText="background:#fdf0f0;border:1px solid #e8b0b0;color:#c04040;border-radius:7px;padding:5px 10px;cursor:pointer;font-size:11px";
+  restoreBtn.textContent="📂 Wiederherstellen";restoreBtn.addEventListener("click",showRestoreDialog);fdt.appendChild(restoreBtn);
   fdBox.appendChild(fdt);
   const fd=state.firmendaten;
   const fdg1=document.createElement("div");fdg1.className="grid2";
-  fdg1.appendChild(makeField("Firmenname / Inhaber",makeInput("text",fd.firmaName,v=>{fd.firmaName=v;saveState();},"Max Mustermann GmbH")));
-  fdg1.appendChild(makeField("USt-IdNr.",makeInput("text",fd.ustNr,v=>{fd.ustNr=v;saveState();},"DE123456789")));
+  const firmaTA=makeInput("textarea",fd.firmaName,v=>{fd.firmaName=v;saveState();},"Max Mustermann\nGarten- und Landschaftsbau");firmaTA.style.minHeight="56px";firmaTA.rows=2;
+  const firmaWrap=document.createElement("div");firmaWrap.style.cssText="grid-column:span 2";firmaWrap.appendChild(makeLabel("Firmenname / Inhaber (zweizeilig möglich)"));firmaWrap.appendChild(firmaTA);fdg1.insertBefore(firmaWrap,fdg1.firstChild);
+  fdg1.appendChild(makeField("Steuernummer",makeInput("text",fd.steuernr,v=>{fd.steuernr=v;saveState();},"123/456/78901")));
   fdg1.appendChild(makeField("Telefon",makeInput("text",fd.tel,v=>{fd.tel=v;saveState();},"0800 123456")));
   fdg1.appendChild(makeField("E-Mail",makeInput("text",fd.email,v=>{fd.email=v;saveState();},"info@firma.de")));
   fdBox.appendChild(fdg1);
@@ -815,44 +431,42 @@ function renderRechnung(b){
   fdBox.appendChild(fdg4);
   content.appendChild(fdBox);
 
-  // Auftraggeber
+  // Auftraggeber + Nummern
   const agBox=document.createElement("div");agBox.className="card";
-  agBox.innerHTML=`<div style="font-size:14px;color:#2d6a4f;font-weight:bold;margin-bottom:10px">👤 Auftraggeber</div>`;
+  agBox.innerHTML=`<div style="font-size:14px;color:#2d6a4f;font-weight:bold;margin-bottom:10px">👤 Auftraggeber & Rechnungsdaten</div>`;
   const bauherrInp=makeInput("text",b.bauherr||"",v=>updB({bauherr:v}),"Name des Bauherrn");
   agBox.appendChild(makeField("Bauherr / Name",bauherrInp));
-  const adresseTa=makeInput("textarea",b.adresse||"",v=>updB({adresse:v}),"Straße, PLZ Ort");
-  adresseTa.style.minHeight="60px";adresseTa.style.marginTop="10px";
+  const adresseTa=makeInput("textarea",b.adresse||"",v=>updB({adresse:v}),"Straße, PLZ Ort");adresseTa.style.minHeight="60px";adresseTa.style.marginTop="10px";
   agBox.appendChild(makeField("Rechnungsadresse",adresseTa));
-  const agInfo=document.createElement("div");agInfo.style.cssText="font-size:12px;color:#9ab09a;margin-top:8px";
-  agInfo.textContent="Baustelle: "+b.name+" · Start: "+fmt(b.startdatum);
-  agBox.appendChild(agInfo);
   const nrGrid=document.createElement("div");nrGrid.className="grid2";nrGrid.style.marginTop="12px";
-  nrGrid.appendChild(makeField("Rechnungsnummer",makeInput("text",b.rechnungsNr||"",v=>{b.rechnungsNr=v;updB({rechnungsNr:v});},"z.B. RE-2025-001")));
-  nrGrid.appendChild(makeField("Angebotsnummer",makeInput("text",b.angebotNr||"",v=>{b.angebotNr=v;updB({angebotNr:v});},"z.B. AN-2025-001")));
+  nrGrid.appendChild(makeField("Rechnungsnummer",makeInput("text",b.rechnungsNr||"",v=>updB({rechnungsNr:v}),"z.B. RE-2025-001")));
+  nrGrid.appendChild(makeField("Rechnungsdatum",makeInput("date",b.rechnungsdatum||today(),v=>updB({rechnungsdatum:v}))));
   agBox.appendChild(nrGrid);
+  const bemTA=makeInput("textarea",b.bemerkungen||"",v=>updB({bemerkungen:v}),"z.B. Besondere Hinweise, Skonto-Vereinbarungen, Gewährleistungshinweise…");bemTA.style.cssText="min-height:70px;margin-top:10px;width:100%;background:#f8faf7;border:1px solid #c8dcc0;border-radius:10px;color:#1a2e1a;padding:13px 14px;font-size:16px;outline:none;resize:vertical";
+  agBox.appendChild(makeField("Bemerkungen / Hinweise (erscheinen auf der Rechnung)",bemTA));
   content.appendChild(agBox);
 
-  // Leistungsnachweis
+  // Leistungsübersicht
   const lBox=document.createElement("div");lBox.className="card";
-  lBox.innerHTML=`<div style="font-size:15px;color:#2d6a4f;font-weight:bold;margin-bottom:12px">Leistungsnachweis</div>`;
+  lBox.innerHTML=`<div style="font-size:15px;color:#2d6a4f;font-weight:bold;margin-bottom:12px">Leistungsübersicht</div>`;
   const addRBlock=(title,rows)=>{
     if(!rows.length)return;
     const bl=document.createElement("div");bl.className="r-block";
     bl.innerHTML=`<div class="r-block-title">${title}</div>`;
-    for(const{label,det,val}of rows){const row=document.createElement("div");row.className="r-row";row.innerHTML=`<div><div class="r-row-label">${esc(label)}</div><div class="r-row-det">${esc(det)}</div></div><div class="r-row-val">${val.toFixed(2)} €</div>`;bl.appendChild(row);}
+    for(const{label,det,val}of rows){const row=document.createElement("div");row.className="r-row";row.innerHTML=`<div><div class="r-row-label">${esc(label)}</div>${det?`<div class="r-row-det">${esc(det)}</div>`:""}</div><div class="r-row-val">${val.toFixed(2)} €</div>`;bl.appendChild(row);}
     lBox.appendChild(bl);
   };
-  if(eigenH>0)addRBlock("🧑‍💼 Meine Arbeitszeit",[{label:"Meine Arbeitszeit",det:`${eigenH.toFixed(1)}h × ${b.stundensatz||55} €`,val:eigenE}]);
-  addRBlock("👷 Personal",pArr.map(p=>({label:p.name||"Personal",det:`${p.h.toFixed(1)}h × ${p.ss||0} €`,val:p.h*(p.ss||0)})));
-  addRBlock("🚜 Maschinen",mArr.map(m=>({label:m.name||"Maschine",det:`${m.h.toFixed(1)}h × ${m.ss||0} €`,val:m.h*(m.ss||0)})));
-  addRBlock("📦 Material",matArr.map(m=>({label:m.bz||"Material",det:`${m.mg.toFixed(2)} ${m.ei} × ${m.pr.toFixed(2)} €`,val:m.mg*m.pr})));
+  if(arbeitszeitGesamt>0)addRBlock("🧑‍💼 Arbeitszeit",[{label:"Arbeitszeit gesamt",det:"",val:arbeitszeitGesamt}]);
+  addRBlock("🚜 Maschinen",mArr.map(m=>({label:m.name||"Maschine",det:`${m.h.toFixed(1)}h · ${m.ss||0} €/Std.`,val:m.h*(m.ss||0)})));
+  addRBlock("📦 Material",matArr.map(m=>({label:m.bz||"Material",det:`${m.mg.toFixed(2)} ${m.ei} · ${m.pr.toFixed(2)} €`,val:m.mg*m.pr})));
   if(!eintraege.length){const nd=document.createElement("div");nd.style.cssText="text-align:center;padding:24px 0;color:#9ab09a;font-size:13px";nd.textContent="Noch keine Leistungen erfasst.";lBox.appendChild(nd);}
   if(netto>0){
     const sdiv=document.createElement("div");sdiv.style.cssText="border-top:2px solid #d8e8d0;margin-top:12px;padding-top:12px";
-    sdiv.innerHTML=`<div class="sum-line" style="font-size:15px;color:#5a8a5a;font-weight:bold"><span>Netto gesamt</span><span>${netto.toFixed(2)} €</span></div><div class="sum-line" style="font-size:13px;color:#9ab09a"><span>19 % MwSt.</span><span>${mwst.toFixed(2)} €</span></div><div style="border-top:2px solid #2d6a4f;margin:10px 0"></div><div class="sum-line" style="font-size:17px;font-weight:bold;color:#2d6a4f"><span>Brutto gesamt</span><span>${brutto.toFixed(2)} €</span></div>`;
+    sdiv.innerHTML=`<div class="sum-line" style="font-size:15px;color:#5a8a5a;font-weight:bold"><span>Netto</span><span>${netto.toFixed(2)} €</span></div><div class="sum-line" style="font-size:13px;color:#9ab09a"><span>19 % MwSt.</span><span>${mwst.toFixed(2)} €</span></div><div style="border-top:2px solid #2d6a4f;margin:10px 0"></div><div class="sum-line" style="font-size:17px;font-weight:bold;color:#2d6a4f"><span>Brutto</span><span>${brutto.toFixed(2)} €</span></div>`;
     lBox.appendChild(sdiv);
   }
   content.appendChild(lBox);
+
   // Tagesnachweis
   if(eintraege.length){
     const tnBox=document.createElement("div");tnBox.className="card";
@@ -860,7 +474,7 @@ function renderRechnung(b){
     for(const e of eintraege){
       const t=(e.personalStunden||[]).reduce((a,p)=>a+(p.stunden||0)*(p.stundensatz||0),0)+(e.maschinenStunden||[]).reduce((a,m)=>a+(m.stunden||0)*(m.stundensatz||0),0)+(e.material||[]).reduce((a,m)=>a+(m.menge||0)*(m.preis||0),0);
       const row=document.createElement("div");row.style.cssText="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #e8f0e0";
-      row.innerHTML=`<span style="color:#5a8a5a;font-size:13px">${fmt(e.datum)}</span><span style="color:#2d6a4f;font-weight:bold;font-size:13px">${t.toFixed(2)} €</span>`;
+      row.innerHTML=`<span style="color:#5a8a5a;font-size:13px">${fmt(e.datum)}${e.notiz?` · <em>${esc(e.notiz.slice(0,30))}</em>`:""}</span><span style="color:#2d6a4f;font-weight:bold;font-size:13px">${t.toFixed(2)} €</span>`;
       tnBox.appendChild(row);
     }
     content.appendChild(tnBox);
@@ -868,273 +482,165 @@ function renderRechnung(b){
   wrap.appendChild(content);return wrap;
 }
 
-// ── PRINT / PDF ───────────────────────────────────────────────────────────────
-function printDoc(type,b,fd){
+// ── RECHNUNG DRUCKEN ──────────────────────────────────────────────────────────
+function printRechnung(b,fd,typ){
   const eintraege=b.eintraege||[];
-  let eigenH=0,eigenE=0;
-  const pRows={},mRows={},matRows={};
+  let arbeitszeitGesamt=0;
+  const mRows={},matRows={};
   for(const e of eintraege){
-    for(const p of(e.personalStunden||[])){
-      if(p.istIch){eigenH+=p.stunden||0;eigenE+=(p.stunden||0)*(p.stundensatz||b.stundensatz||55);}
-      else{const k=p.name+"__"+p.stundensatz;if(!pRows[k])pRows[k]={name:p.name,ss:p.stundensatz,h:0};pRows[k].h+=p.stunden||0;}
-    }
+    arbeitszeitGesamt+=(e.personalStunden||[]).reduce((a,p)=>a+(p.stunden||0)*(p.stundensatz||0),0);
     for(const m of(e.maschinenStunden||[])){const k=m.name+"__"+(m.stundensatz||0);if(!mRows[k])mRows[k]={name:m.name,ss:m.stundensatz||0,h:0};mRows[k].h+=m.stunden||0;}
     for(const m of(e.material||[])){const k=m.bezeichnung+"__"+m.einheit+"__"+m.preis;if(!matRows[k])matRows[k]={bz:m.bezeichnung,ei:m.einheit,pr:m.preis,mg:0};matRows[k].mg+=m.menge||0;}
   }
-  const pArr=Object.values(pRows),mArr=Object.values(mRows),matArr=Object.values(matRows);
-  const pT=pArr.reduce((a,p)=>a+p.h*(p.ss||0),0);
+  const mArr=Object.values(mRows),matArr=Object.values(matRows);
   const mT=mArr.reduce((a,m)=>a+m.h*(m.ss||0),0);
   const matT=matArr.reduce((a,m)=>a+m.mg*m.pr,0);
-  const netto=eigenE+pT+mT+matT,mwst=netto*0.19,brutto=netto+mwst;
-  const dateStr=new Date().toLocaleDateString("de-DE");
-  const rNr=b.rechnungsNr||"RE-"+new Date().getFullYear()+"-"+String(Math.floor(Math.random()*9000)+1000);
-
-  const trow=(l,d,v)=>`<tr><td style="padding:7px 10px;border-bottom:1px solid #eee;font-size:13px">${l}${d?`<span style="color:#aaa;font-size:11px;margin-left:8px">${d}</span>`:""}</td><td style="padding:7px 10px;border-bottom:1px solid #eee;text-align:right;font-weight:bold;font-size:13px">${v.toFixed(2)} €</td></tr>`;
-  const tblock=(title,rows)=>rows.length?`<h3 style="color:#2d6a4f;margin:18px 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.5px">${title}</h3><table style="width:100%;border-collapse:collapse;background:#fff">${rows.map(r=>trow(r.l,r.d,r.v)).join("")}</table>`:"";
-
-  let body="",title2="";
-
-  if(type==="tage"){
-    title2="Leistungsnachweis / Tagesberichte";
-    body=`<h2 style="color:#2d6a4f;font-size:18px;margin-bottom:16px">Tagesberichte</h2>`;
-    for(const e of eintraege){
-      const eS=(e.personalStunden||[]).reduce((a,p)=>a+(p.stunden||0)*(p.stundensatz||0),0);
-      const mS=(e.maschinenStunden||[]).reduce((a,m)=>a+(m.stunden||0)*(m.stundensatz||0),0);
-      const matS=(e.material||[]).reduce((a,m)=>a+(m.menge||0)*(m.preis||0),0);
-      const tot=eS+mS+matS;
-      body+=`<div style="border:1px solid #ddd;border-radius:6px;padding:14px;margin-bottom:14px;page-break-inside:avoid">
-        <div style="font-weight:bold;color:#2d6a4f;font-size:14px;margin-bottom:4px">${fmt(e.datum)}</div>
-        ${e.wetter?`<div style="font-size:11px;color:#888;margin-bottom:4px">🌤 ${esc(e.wetter)}</div>`:""}
-        ${e.notiz?`<div style="font-style:italic;color:#555;font-size:12px;margin-bottom:8px">${esc(e.notiz)}</div>`:""}
-        <table style="width:100%;border-collapse:collapse">
-          ${(e.personalStunden||[]).map(p=>trow(p.istIch?"Eigenleistung (Inhaber)":esc(p.name||"Personal"),p.stunden+"h × "+p.stundensatz+" €",(p.stunden||0)*(p.stundensatz||0))).join("")}
-          ${(e.maschinenStunden||[]).map(m=>trow(esc(m.name||"Maschine"),m.stunden+"h × "+m.stundensatz+" €",(m.stunden||0)*(m.stundensatz||0))).join("")}
-          ${(e.material||[]).map(m=>trow(esc(m.bezeichnung||"Material"),m.menge+" "+m.einheit+" × "+m.preis+" €",(m.menge||0)*(m.preis||0))).join("")}
-        </table>
-        <div style="text-align:right;font-weight:bold;color:#2d6a4f;border-top:1px solid #eee;padding-top:8px;margin-top:8px;font-size:14px">Tagessumme: ${tot.toFixed(2)} €</div>
-      </div>`;
-    }
-  } else if(type==="kva"){
-    title2="Kostenvoranschlag";
-    const tage=b.tage||[];
-    const eS2=tage.reduce((a,t)=>a+(t.personal||[]).filter(p=>p.istIch).reduce((s,p)=>s+(p.stunden||0)*(p.stundensatz||b.stundensatz||55),0),0);
-    const pS2=tage.reduce((a,t)=>a+(t.personal||[]).filter(p=>!p.istIch).reduce((s,p)=>s+(p.stunden||0)*(p.stundensatz||0),0),0);
-    const mS2=tage.reduce((a,t)=>a+(t.maschinen||[]).reduce((s,m)=>s+(m.stunden||0)*(m.stundensatz||0),0),0);
-    const matS2=tage.reduce((a,t)=>a+(t.material||[]).reduce((s,m)=>s+(m.menge||0)*(m.preis||0),0),0);
-    const n2=eS2+pS2+mS2+matS2;
-    const pR2={},mR2={},matR2={};
-    for(const t of tage){
-      for(const p of(t.personal||[])){if(p.istIch)continue;const k=p.name+"__"+p.stundensatz;if(!pR2[k])pR2[k]={name:p.name,ss:p.stundensatz,h:0};pR2[k].h+=p.stunden||0;}
-      for(const m of(t.maschinen||[])){const k=m.name+"__"+(m.stundensatz||0);if(!mR2[k])mR2[k]={name:m.name,ss:m.stundensatz||0,h:0};mR2[k].h+=m.stunden||0;}
-      for(const m of(t.material||[])){const k=m.bezeichnung+"__"+m.einheit+"__"+m.preis;if(!matR2[k])matR2[k]={bz:m.bezeichnung,ei:m.einheit,pr:m.preis,mg:0};matR2[k].mg+=m.menge||0;}
-    }
-    const totalH=tage.reduce((a,t)=>a+(t.personal||[]).filter(p=>p.istIch).reduce((s,p)=>s+(p.stunden||0),0),0);
-    body+=tblock("🧑‍💼 Eigenleistung",eS2>0?[{l:"Eigenleistung (Inhaber)",d:`${totalH.toFixed(1)}h × ${b.stundensatz||55} €`,v:eS2}]:[]);
-    body+=tblock("👷 Personal",Object.values(pR2).map(p=>({l:p.name||"Personal",d:`${p.h.toFixed(1)}h × ${p.ss||0} €`,v:p.h*(p.ss||0)})));
-    body+=tblock("🚜 Maschinen",Object.values(mR2).map(m=>({l:m.name||"Maschine",d:`${m.h.toFixed(1)}h × ${m.ss||0} €`,v:m.h*(m.ss||0)})));
-    body+=tblock("📦 Material",Object.values(matR2).map(m=>({l:m.bz||"Material",d:`${m.mg.toFixed(2)} ${m.ei} × ${m.pr.toFixed(2)} €`,v:m.mg*m.pr})));
-    body+=`<div style="border-top:2px solid #2d6a4f;margin-top:20px;padding-top:14px"><table style="width:100%"><tr><td style="font-size:14px;color:#555">Nettobetrag</td><td style="text-align:right;font-weight:bold;font-size:14px">${n2.toFixed(2)} €</td></tr><tr><td style="font-size:13px;color:#888;padding-top:4px">19 % MwSt.</td><td style="text-align:right;font-size:13px;color:#888;padding-top:4px">${(n2*0.19).toFixed(2)} €</td></tr></table><div style="border-top:2px solid #2d6a4f;margin-top:10px;padding-top:10px;display:flex;justify-content:space-between;font-size:18px;font-weight:bold;color:#2d6a4f"><span>Gesamtbetrag brutto</span><span>${(n2*1.19).toFixed(2)} €</span></div></div>`;
-    body+=`<p style="font-size:11px;color:#999;margin-top:20px;font-style:italic">Dieser Kostenvoranschlag ist unverbindlich und basiert auf der aktuellen Planung. Gültig für 30 Tage.</p>`;
-  } else {
-    title2="Rechnung";
-    const arbeitszeitGesamt=eigenE+pT;
-    if(arbeitszeitGesamt>0)body+=tblock("Arbeitszeit",[{l:"Arbeitszeit gesamt",d:"",v:arbeitszeitGesamt}]);
-    if(mT>0)body+=tblock("Maschineneinsatz",[{l:"Maschineneinsatz gesamt",d:"",v:mT}]);
-    body+=tblock("Material",matArr.map(m=>({l:m.bz||"Material",d:`${m.mg.toFixed(2)} ${m.ei}`,v:m.mg*m.pr})));
-    if(netto>0)body+=`<div style="border-top:2px solid #2d6a4f;margin-top:20px;padding-top:14px"><table style="width:100%"><tr><td style="font-size:14px;color:#555">Nettobetrag</td><td style="text-align:right;font-weight:bold;font-size:14px">${netto.toFixed(2)} €</td></tr><tr><td style="font-size:13px;color:#888;padding-top:4px">19 % MwSt.</td><td style="text-align:right;font-size:13px;color:#888;padding-top:4px">${mwst.toFixed(2)} €</td></tr></table><div style="border-top:2px solid #2d6a4f;margin-top:10px;padding-top:10px;display:flex;justify-content:space-between;font-size:18px;font-weight:bold;color:#2d6a4f"><span>Gesamtbetrag brutto</span><span>${brutto.toFixed(2)} €</span></div></div>`;
-  }
-
-  const existing=document.getElementById("print-overlay");if(existing)existing.remove();
-  const overlay=document.createElement("div");overlay.id="print-overlay";
-  overlay.style.cssText="position:fixed;top:0;left:0;right:0;bottom:0;background:#f0f0f0;z-index:9999;overflow-y:auto;font-family:Arial,sans-serif;color:#000";
-  const toolbar=document.createElement("div");toolbar.className="no-print";
-  toolbar.style.cssText="position:sticky;top:0;background:#2d6a4f;padding:10px 16px;display:flex;gap:10px;align-items:center;z-index:10";
-  const printBtn=document.createElement("button");printBtn.style.cssText="background:#fff;color:#2d6a4f;border:none;border-radius:7px;padding:10px 18px;cursor:pointer;font-size:14px;font-weight:bold";printBtn.textContent="🖨️ Drucken / Als PDF speichern";printBtn.addEventListener("click",()=>window.print());
-  const closeBtn=document.createElement("button");closeBtn.style.cssText="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:7px;padding:10px 14px;cursor:pointer;font-size:14px;margin-left:auto";closeBtn.textContent="✕ Schließen";closeBtn.addEventListener("click",()=>{overlay.remove();document.body.style.overflow="";});
-  toolbar.appendChild(printBtn);toolbar.appendChild(closeBtn);overlay.appendChild(toolbar);
-
-  const doc=document.createElement("div");
-  doc.style.cssText="max-width:780px;margin:20px auto;background:#fff;padding:32px 36px;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,.1)";
-  doc.innerHTML=`
-    <!-- HEADER -->
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;padding-bottom:16px;border-bottom:3px solid #2d6a4f">
-      <div>
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
-          <svg viewBox="0 0 38 38" width="42" height="42" xmlns="http://www.w3.org/2000/svg"><rect width="38" height="38" rx="9" fill="#e8f4e8"/><rect x="0" y="26" width="38" height="12" fill="#c8e0b8"/><rect x="0" y="33" width="38" height="5" fill="#a0c890"/><rect x="6" y="18" width="14" height="10" fill="#fff" stroke="#2d6a4f" stroke-width="1.2"/><polygon points="6,18 13,11 20,18" fill="#2d6a4f"/><rect x="10" y="22" width="4" height="6" fill="#b0d4b0"/><rect x="24" y="22" width="3" height="8" fill="#8b5e3c"/><circle cx="25.5" cy="18" r="6" fill="#3a8a50"/><circle cx="22" cy="20" r="4" fill="#2d6a4f"/><circle cx="29" cy="20" r="4" fill="#4aaa60"/><rect x="1" y="27" width="12" height="5" rx="2" fill="#e8a020"/><rect x="3" y="25" width="7" height="3" rx="1" fill="#d09010"/><line x1="10" y1="26" x2="15" y2="23" stroke="#c07800" stroke-width="1.5" stroke-linecap="round"/><line x1="15" y1="23" x2="17" y2="26" stroke="#c07800" stroke-width="1.5" stroke-linecap="round"/><rect x="1" y="31" width="3" height="3" rx="1.5" fill="#555"/><rect x="8" y="31" width="3" height="3" rx="1.5" fill="#555"/></svg>
-          <div style="font-size:22px;font-weight:bold;color:#2d6a4f">${esc(fd.firmaName||"Firmenname")}</div>
-        </div>
-        ${fd.strasse?`<div style="font-size:13px;color:#555;margin-top:2px">${esc(fd.strasse)}</div>`:""}
-        ${fd.tel?`<div style="font-size:13px;color:#555">Tel: ${esc(fd.tel)}</div>`:""}
-        ${fd.email?`<div style="font-size:13px;color:#555">${esc(fd.email)}</div>`:""}
-      </div>
-      <div style="text-align:right">
-        <div style="font-size:20px;font-weight:bold;color:#333">${title2}</div>
-        ${type==="rechnung"?`<div style="font-size:13px;color:#888;margin-top:4px">Rechnungsnr.: ${rNr}</div>`:""}
-        <div style="font-size:13px;color:#888">Datum: ${dateStr}</div>
-      </div>
-    </div>
-    <!-- EMPFÄNGER -->
-    <div style="display:flex;justify-content:space-between;margin-bottom:28px">
-      <div>
-        <div style="font-size:11px;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Auftraggeber</div>
-        <div style="font-size:14px;font-weight:bold;color:#222">${esc(b.bauherr||"–")}</div>
-        ${b.adresse?`<div style="font-size:13px;color:#555;white-space:pre-line">${esc(b.adresse)}</div>`:""}
-      </div>
-      <div style="text-align:right">
-        <div style="font-size:11px;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Baustelle</div>
-        <div style="font-size:14px;font-weight:bold;color:#222">${esc(b.name)}</div>
-        <div style="font-size:13px;color:#555">Start: ${fmt(b.startdatum)}</div>
-      </div>
-    </div>
-    <!-- POSITIONEN -->
-    ${body}
-    <!-- FUSSZEILE -->
-    <div style="margin-top:40px;padding-top:16px;border-top:1px solid #eee;display:grid;grid-template-columns:1fr 1fr;gap:20px;font-size:12px;color:#666">
-      <div>
-        ${fd.bank?`<div><strong>Bank:</strong> ${esc(fd.bank)}</div>`:""}
-        ${fd.iban?`<div><strong>IBAN:</strong> ${esc(fd.iban)}</div>`:""}
-        ${fd.bic?`<div><strong>BIC:</strong> ${esc(fd.bic)}</div>`:""}
-      </div>
-      <div style="text-align:right">
-        ${fd.ustNr?`<div><strong>USt-IdNr.:</strong> ${esc(fd.ustNr)}</div>`:""}
-        ${type==="rechnung"?`<div style="margin-top:8px;color:#888">Zahlbar innerhalb von 14 Tagen ohne Abzug.</div>`:""}
-      </div>
-    </div>`;
-  overlay.appendChild(doc);document.body.appendChild(overlay);document.body.style.overflow="hidden";
-}
-
-
-// ── ANGEBOT DRUCKEN ───────────────────────────────────────────────────────────
-function printAngebot(b,fd){
-  const tage=b.tage||[];
-  const eigenSum=tage.reduce((a,t)=>a+(t.personal||[]).filter(p=>p.istIch).reduce((s,p)=>s+(p.stunden||0)*(p.stundensatz||b.stundensatz||55),0),0);
-  const persSum=tage.reduce((a,t)=>a+(t.personal||[]).filter(p=>!p.istIch).reduce((s,p)=>s+(p.stunden||0)*(p.stundensatz||0),0),0);
-  const mascSum=tage.reduce((a,t)=>a+(t.maschinen||[]).reduce((s,m)=>s+(m.stunden||0)*(m.stundensatz||0),0),0);
-  const matSum=tage.reduce((a,t)=>a+(t.material||[]).reduce((s,m)=>s+(m.menge||0)*(m.preis||0),0),0);
-  const netto=eigenSum+persSum+mascSum+matSum;
+  const netto=arbeitszeitGesamt+mT+matT;
   const mwst=netto*0.19,brutto=netto+mwst;
-  const dateStr=new Date().toLocaleDateString("de-DE");
-  const angebotNr=b.angebotNr||"AN-"+new Date().getFullYear()+"-"+String(Math.floor(Math.random()*9000)+1000);
+  const ist13b=typ==="13b";
+  const rDatum=b.rechnungsdatum?fmt(b.rechnungsdatum):new Date().toLocaleDateString("de-DE");
+  const rNr=b.rechnungsNr||("RE-"+new Date().getFullYear()+"-"+String(Math.floor(Math.random()*9000)+1000));
 
-  // Build position rows from planning data
-  const pR={},mR={},matR={};
-  for(const t of tage){
-    for(const p of(t.personal||[])){
-      if(p.istIch)continue;
-      const k=p.name+"__"+p.stundensatz;if(!pR[k])pR[k]={name:p.name,ss:p.stundensatz,h:0};pR[k].h+=p.stunden||0;
+  // Build positions HTML
+  // Build individual person rows
+  const personRows={};
+  for(const e of eintraege){
+    for(const p of(e.personalStunden||[])){
+      const k=(p.istIch?"__ICH__":p.name)+"__"+(p.stundensatz||0);
+      if(!personRows[k])personRows[k]={name:p.istIch?"Eigene Arbeitszeit":p.name||"Mitarbeiter",ss:p.stundensatz||0,h:0};
+      personRows[k].h+=p.stunden||0;
     }
-    for(const m of(t.maschinen||[])){const k=m.name+"__"+(m.stundensatz||0);if(!mR[k])mR[k]={name:m.name,ss:m.stundensatz||0,h:0};mR[k].h+=m.stunden||0;}
-    for(const m of(t.material||[])){const k=m.bezeichnung+"__"+m.einheit+"__"+m.preis;if(!matR[k])matR[k]={bz:m.bezeichnung,ei:m.einheit,pr:m.preis,mg:0};matR[k].mg+=m.menge||0;}
   }
-  const totalEigenH=tage.reduce((a,t)=>a+(t.personal||[]).filter(p=>p.istIch).reduce((s,p)=>s+(p.stunden||0),0),0);
+  const pRowsArr=Object.values(personRows);
+  const posRows=[];
+  let pos=1;
+  for(const p of pRowsArr)posRows.push({pos:pos++,bez:p.name,detail:`${p.h.toFixed(1)} h · ${p.ss.toFixed(2)} €/Std.`,betrag:p.h*(p.ss||0)});
+  for(const m of mArr)posRows.push({pos:pos++,bez:m.name||"Maschine",detail:`${m.h.toFixed(1)} h · ${m.ss.toFixed(2)} €/Std.`,betrag:m.h*(m.ss||0)});
+  for(const m of matArr)posRows.push({pos:pos++,bez:m.bz||"Material",detail:`${m.mg.toFixed(2)} ${m.ei} · ${m.pr.toFixed(2)} €/${m.ei}`,betrag:m.mg*m.pr});
 
-  const trow=(l,d,v)=>`<tr><td style="padding:8px 10px;border-bottom:1px solid #eee;font-size:13px">${l}${d?`<span style="color:#aaa;font-size:11px;margin-left:8px">${d}</span>`:""}</td><td style="padding:8px 10px;border-bottom:1px solid #eee;text-align:right;font-weight:bold;font-size:13px">${v.toFixed(2)} €</td></tr>`;
-  const tblock=(title,rows)=>rows.length?`<h3 style="color:#2d6a4f;margin:18px 0 6px;font-size:13px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #d8e8d0;padding-bottom:4px">${title}</h3><table style="width:100%;border-collapse:collapse">${rows.map(r=>trow(r.l,r.d,r.v)).join("")}</table>`:"";
+  const posHTML=posRows.map(r=>`
+    <tr>
+      <td style="padding:10px 14px;border-bottom:1px solid #f0f0f0;color:#666;font-size:13px;width:32px">${r.pos}</td>
+      <td style="padding:10px 14px;border-bottom:1px solid #f0f0f0;font-size:14px">${esc(r.bez)}${r.detail?`<br><span style="font-size:11px;color:#aaa">${esc(r.detail)}</span>`:""}</td>
+      <td style="padding:10px 14px;border-bottom:1px solid #f0f0f0;text-align:right;font-weight:bold;font-size:14px;white-space:nowrap">${r.betrag.toFixed(2)} €</td>
+    </tr>`).join("");
 
-  let body="";
-  body+=tblock("Meine Arbeitszeit",eigenSum>0?[{l:"Arbeitszeit (Inhaber)",d:`${totalEigenH.toFixed(1)}h × ${b.stundensatz||55} €`,v:eigenSum}]:[]);
-  body+=tblock("Personal",Object.values(pR).map(p=>({l:p.name||"Personal",d:`${p.h.toFixed(1)}h × ${p.ss||0} €`,v:p.h*(p.ss||0)})));
-  body+=tblock("Maschineneinsatz",Object.values(mR).map(m=>({l:m.name||"Maschine",d:`${m.h.toFixed(1)}h × ${m.ss||0} €`,v:m.h*(m.ss||0)})));
-  body+=tblock("Material",Object.values(matR).map(m=>({l:m.bz||"Material",d:`${m.mg.toFixed(2)} ${m.ei} × ${m.pr.toFixed(2)} €`,v:m.mg*m.pr})));
+  const steuerzeile=ist13b
+    ?`<tr><td colspan="2" style="padding:8px 14px;font-size:13px;color:#666">Steuerschuldnerschaft des Leistungsempfängers (§ 13b UStG)</td><td style="padding:8px 14px;text-align:right;font-size:13px;color:#666">0,00 €</td></tr>`
+    :`<tr><td colspan="2" style="padding:8px 14px;font-size:13px;color:#666">zzgl. 19 % Umsatzsteuer</td><td style="padding:8px 14px;text-align:right;font-size:13px;color:#666">${mwst.toFixed(2)} €</td></tr>`;
 
-  if(netto>0)body+=`<div style="border-top:2px solid #2d6a4f;margin-top:20px;padding-top:14px">
-    <table style="width:100%">
-      <tr><td style="font-size:14px;color:#555">Nettobetrag</td><td style="text-align:right;font-weight:bold;font-size:14px">${netto.toFixed(2)} €</td></tr>
-      <tr><td style="font-size:13px;color:#888;padding-top:4px">19 % MwSt.</td><td style="text-align:right;font-size:13px;color:#888;padding-top:4px">${mwst.toFixed(2)} €</td></tr>
-    </table>
-    <div style="border-top:2px solid #2d6a4f;margin-top:10px;padding-top:10px;display:flex;justify-content:space-between;font-size:18px;font-weight:bold;color:#2d6a4f">
-      <span>Angebotssumme brutto</span><span>${brutto.toFixed(2)} €</span>
-    </div>
-  </div>`;
+  const bruttozeile=ist13b
+    ?`<tr style="background:#f0f7f0"><td colspan="2" style="padding:12px 14px;font-size:16px;font-weight:bold;color:#2d6a4f">Rechnungsbetrag (netto)</td><td style="padding:12px 14px;text-align:right;font-size:18px;font-weight:bold;color:#2d6a4f">${netto.toFixed(2)} €</td></tr>`
+    :`<tr style="background:#f0f7f0"><td colspan="2" style="padding:12px 14px;font-size:16px;font-weight:bold;color:#2d6a4f">Rechnungsbetrag (brutto)</td><td style="padding:12px 14px;text-align:right;font-size:18px;font-weight:bold;color:#2d6a4f">${brutto.toFixed(2)} €</td></tr>`;
 
   const existing=document.getElementById("print-overlay");if(existing)existing.remove();
   const overlay=document.createElement("div");overlay.id="print-overlay";
-  overlay.style.cssText="position:fixed;top:0;left:0;right:0;bottom:0;background:#f0f0f0;z-index:9999;overflow-y:auto;font-family:Arial,sans-serif;color:#000";
+  overlay.style.cssText="position:fixed;top:0;left:0;right:0;bottom:0;background:#e8e8e8;z-index:9999;overflow-y:auto;font-family:Arial,Helvetica,sans-serif;color:#000";
   const toolbar=document.createElement("div");toolbar.className="no-print";
-  toolbar.style.cssText="position:sticky;top:0;background:#2d6a4f;padding:10px 16px;display:flex;gap:10px;align-items:center;z-index:10";
-  const printBtn=document.createElement("button");printBtn.style.cssText="background:#fff;color:#2d6a4f;border:none;border-radius:7px;padding:10px 18px;cursor:pointer;font-size:14px;font-weight:bold";printBtn.textContent="🖨️ Drucken / Als PDF speichern";printBtn.addEventListener("click",()=>window.print());
+  toolbar.style.cssText="position:sticky;top:0;background:#2d6a4f;padding:10px 16px;display:flex;gap:10px;align-items:center;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,.2)";
+  const printBtn=document.createElement("button");printBtn.style.cssText="background:#fff;color:#2d6a4f;border:none;border-radius:7px;padding:10px 20px;cursor:pointer;font-size:14px;font-weight:bold";printBtn.textContent="🖨️ Drucken / Als PDF speichern";printBtn.addEventListener("click",()=>window.print());
+  const typ13bBadge=ist13b?`<span style="background:#fff3e0;color:#c05c1a;border:1px solid #c05c1a;border-radius:5px;padding:4px 10px;font-size:12px;font-weight:bold">§ 13b UStG</span>`:"";
   const closeBtn=document.createElement("button");closeBtn.style.cssText="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:7px;padding:10px 14px;cursor:pointer;font-size:14px;margin-left:auto";closeBtn.textContent="✕ Schließen";closeBtn.addEventListener("click",()=>{overlay.remove();document.body.style.overflow="";});
-  toolbar.appendChild(printBtn);toolbar.appendChild(closeBtn);overlay.appendChild(toolbar);
+  toolbar.appendChild(printBtn);if(ist13b)toolbar.insertAdjacentHTML("beforeend",typ13bBadge);toolbar.appendChild(closeBtn);overlay.appendChild(toolbar);
 
   const doc=document.createElement("div");
-  doc.style.cssText="max-width:780px;margin:20px auto;background:#fff;padding:32px 36px;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,.1)";
+  doc.style.cssText="max-width:794px;margin:24px auto 40px;background:#fff;box-shadow:0 4px 24px rgba(0,0,0,.15);font-family:Arial,Helvetica,sans-serif";
   doc.innerHTML=`
-    <!-- HEADER -->
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;padding-bottom:16px;border-bottom:3px solid #2d6a4f">
-      <div>
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
-          <svg viewBox="0 0 38 38" width="42" height="42" xmlns="http://www.w3.org/2000/svg"><rect width="38" height="38" rx="9" fill="#e8f4e8"/><rect x="0" y="26" width="38" height="12" fill="#c8e0b8"/><rect x="0" y="33" width="38" height="5" fill="#a0c890"/><rect x="6" y="18" width="14" height="10" fill="#fff" stroke="#2d6a4f" stroke-width="1.2"/><polygon points="6,18 13,11 20,18" fill="#2d6a4f"/><rect x="10" y="22" width="4" height="6" fill="#b0d4b0"/><rect x="24" y="22" width="3" height="8" fill="#8b5e3c"/><circle cx="25.5" cy="18" r="6" fill="#3a8a50"/><circle cx="22" cy="20" r="4" fill="#2d6a4f"/><circle cx="29" cy="20" r="4" fill="#4aaa60"/><rect x="1" y="27" width="12" height="5" rx="2" fill="#e8a020"/><rect x="3" y="25" width="7" height="3" rx="1" fill="#d09010"/><line x1="10" y1="26" x2="15" y2="23" stroke="#c07800" stroke-width="1.5" stroke-linecap="round"/><line x1="15" y1="23" x2="17" y2="26" stroke="#c07800" stroke-width="1.5" stroke-linecap="round"/><rect x="1" y="31" width="3" height="3" rx="1.5" fill="#555"/><rect x="8" y="31" width="3" height="3" rx="1.5" fill="#555"/></svg>
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
-          <svg viewBox="0 0 38 38" width="42" height="42" xmlns="http://www.w3.org/2000/svg"><rect width="38" height="38" rx="9" fill="#e8f4e8"/><rect x="0" y="26" width="38" height="12" fill="#c8e0b8"/><rect x="0" y="33" width="38" height="5" fill="#a0c890"/><rect x="6" y="18" width="14" height="10" fill="#fff" stroke="#2d6a4f" stroke-width="1.2"/><polygon points="6,18 13,11 20,18" fill="#2d6a4f"/><rect x="10" y="22" width="4" height="6" fill="#b0d4b0"/><rect x="24" y="22" width="3" height="8" fill="#8b5e3c"/><circle cx="25.5" cy="18" r="6" fill="#3a8a50"/><circle cx="22" cy="20" r="4" fill="#2d6a4f"/><circle cx="29" cy="20" r="4" fill="#4aaa60"/><rect x="1" y="27" width="12" height="5" rx="2" fill="#e8a020"/><rect x="3" y="25" width="7" height="3" rx="1" fill="#d09010"/><line x1="10" y1="26" x2="15" y2="23" stroke="#c07800" stroke-width="1.5" stroke-linecap="round"/><line x1="15" y1="23" x2="17" y2="26" stroke="#c07800" stroke-width="1.5" stroke-linecap="round"/><rect x="1" y="31" width="3" height="3" rx="1.5" fill="#555"/><rect x="8" y="31" width="3" height="3" rx="1.5" fill="#555"/></svg>
-          <div style="font-size:22px;font-weight:bold;color:#2d6a4f">${esc(fd.firmaName||"Firmenname")}</div>
+    <!-- KOPFZEILE -->
+    <div style="background:#2d6a4f;padding:32px 40px 28px;display:flex;justify-content:space-between;align-items:flex-start">
+      <div style="display:flex;align-items:flex-start;gap:16px">
+        <div style="width:52px;height:52px;flex-shrink:0">${LOGO_SVG}</div>
+        <div>
+          <div style="font-size:24px;font-weight:bold;color:#fff;letter-spacing:.5px;white-space:pre-line;line-height:1.25">${esc(fd.firmaName||"Firmenname eintragen")}</div>
+          ${fd.strasse?`<div style="font-size:13px;color:#a8d4a8;margin-top:4px">${esc(fd.strasse)}</div>`:""}
+          <div style="font-size:13px;color:#a8d4a8;margin-top:2px">${[fd.tel?`Tel.: ${esc(fd.tel)}`:"",fd.email?`E-Mail: ${esc(fd.email)}`:""].filter(Boolean).join(" · ")}</div>
         </div>
-        </div>
-        ${fd.strasse?`<div style="font-size:13px;color:#555">${esc(fd.strasse)}</div>`:""}
-        ${fd.tel?`<div style="font-size:13px;color:#555">Tel: ${esc(fd.tel)}</div>`:""}
-        ${fd.email?`<div style="font-size:13px;color:#555">${esc(fd.email)}</div>`:""}
       </div>
       <div style="text-align:right">
-        <div style="font-size:22px;font-weight:bold;color:#333">Angebot</div>
-        <div style="font-size:13px;color:#888;margin-top:4px">Angebotsnr.: ${angebotNr}</div>
-        <div style="font-size:13px;color:#888">Datum: ${dateStr}</div>
+        <div style="font-size:28px;font-weight:bold;color:#fff;letter-spacing:1px">RECHNUNG</div>
+        ${ist13b?`<div style="background:#c05c1a;color:#fff;border-radius:5px;padding:3px 10px;font-size:12px;font-weight:bold;margin-top:4px;display:inline-block">§ 13b UStG</div>`:""}
       </div>
     </div>
-    <!-- EMPFÄNGER & BAUSTELLE -->
-    <div style="display:flex;justify-content:space-between;margin-bottom:28px">
+
+    <!-- RECHNUNGSINFOS -->
+    <div style="background:#f8fdf8;padding:20px 40px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #d8e8d0">
       <div>
-        <div style="font-size:11px;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Auftraggeber</div>
-        <div style="font-size:14px;font-weight:bold;color:#222">${esc(b.bauherr||"–")}</div>
-        ${b.adresse?`<div style="font-size:13px;color:#555;white-space:pre-line">${esc(b.adresse)}</div>`:""}
+        <div style="font-size:10px;color:#8aaa8a;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Rechnungsempfänger</div>
+        <div style="font-size:15px;font-weight:bold;color:#1a2e1a">${esc(b.bauherr||"—")}</div>
+        ${b.adresse?`<div style="font-size:13px;color:#5a8a5a;margin-top:2px;white-space:pre-line">${esc(b.adresse)}</div>`:""}
       </div>
       <div style="text-align:right">
-        <div style="font-size:11px;color:#999;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Baustelle</div>
-        <div style="font-size:14px;font-weight:bold;color:#222">${esc(b.name)}</div>
-        <div style="font-size:13px;color:#555">Geplanter Start: ${fmt(b.startdatum)}</div>
+        <table style="font-size:13px;border-collapse:collapse">
+          <tr><td style="color:#8aaa8a;padding:2px 12px 2px 0">Rechnungsnr.:</td><td style="font-weight:bold;color:#1a2e1a">${esc(rNr)}</td></tr>
+          <tr><td style="color:#8aaa8a;padding:2px 12px 2px 0">Datum:</td><td style="color:#1a2e1a">${rDatum}</td></tr>
+          <tr><td style="color:#8aaa8a;padding:2px 12px 2px 0">Baustelle:</td><td style="color:#1a2e1a">${esc(b.name)}</td></tr>
+
+        </table>
       </div>
     </div>
-    <p style="font-size:13px;color:#444;margin-bottom:20px;line-height:1.6">Sehr geehrte Damen und Herren,<br>wir erlauben uns, Ihnen für die oben genannte Maßnahme folgendes Angebot zu unterbreiten:</p>
-    <!-- POSITIONEN -->
-    ${body}
-    <!-- HINWEIS -->
-    <p style="font-size:11px;color:#999;margin-top:24px;line-height:1.6;font-style:italic">Dieses Angebot ist freibleibend und gilt für 30 Tage ab Ausstellungsdatum. Änderungen des Leistungsumfangs können zu Preisanpassungen führen.</p>
-    <!-- UNTERSCHRIFT -->
-    <div style="margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:40px">
-      <div><div style="border-top:1px solid #aaa;padding-top:6px;font-size:12px;color:#666">Ort, Datum</div></div>
-      <div><div style="border-top:1px solid #aaa;padding-top:6px;font-size:12px;color:#666">Unterschrift / Stempel</div></div>
+
+    <!-- LEISTUNGSBESCHREIBUNG -->
+    <div style="padding:0 40px">
+      <p style="font-size:13px;color:#5a8a5a;padding:16px 0 8px">Für die erbrachten Leistungen erlaube ich mir, folgendes in Rechnung zu stellen:</p>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:0">
+        <thead>
+          <tr style="background:#f0f7f0">
+            <th style="padding:10px 14px;text-align:left;font-size:11px;color:#5a8a5a;text-transform:uppercase;letter-spacing:.5px;font-weight:600;width:32px">Pos.</th>
+            <th style="padding:10px 14px;text-align:left;font-size:11px;color:#5a8a5a;text-transform:uppercase;letter-spacing:.5px;font-weight:600">Leistung / Material</th>
+            <th style="padding:10px 14px;text-align:right;font-size:11px;color:#5a8a5a;text-transform:uppercase;letter-spacing:.5px;font-weight:600">Betrag</th>
+          </tr>
+        </thead>
+        <tbody>${posHTML}</tbody>
+        <tfoot>
+          <tr><td colspan="3" style="padding:8px 0"></td></tr>
+          <tr><td colspan="2" style="padding:8px 14px;font-size:13px;color:#666;border-top:1px solid #e0e0e0">Nettobetrag</td><td style="padding:8px 14px;text-align:right;font-size:13px;font-weight:bold;border-top:1px solid #e0e0e0">${netto.toFixed(2)} €</td></tr>
+          ${steuerzeile}
+          <tr><td colspan="3" style="padding:4px 0;border-top:2px solid #2d6a4f"></td></tr>
+          ${bruttozeile}
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- BEMERKUNGEN -->
+    ${b.bemerkungen?`<div style="padding:20px 40px 0;font-size:13px;color:#444;line-height:1.7"><strong>Bemerkungen:</strong><br>${esc(b.bemerkungen)}</div>`:""}
+
+    <!-- ZAHLUNGSINFO -->
+    <div style="padding:24px 40px;background:#f8fdf8;border-top:1px solid #e0ead8;margin-top:16px">
+      <p style="font-size:13px;color:#1a2e1a;margin-bottom:16px">Bitte überweisen Sie den Rechnungsbetrag innerhalb von <strong>14 Tagen</strong> auf folgendes Konto:</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;font-size:13px">
+        <div>
+          ${fd.bank?`<div style="margin-bottom:4px"><span style="color:#8aaa8a">Bank:</span> ${esc(fd.bank)}</div>`:""}
+          ${fd.iban?`<div style="margin-bottom:4px"><span style="color:#8aaa8a">IBAN:</span> ${esc(fd.iban)}</div>`:""}
+          ${fd.bic?`<div><span style="color:#8aaa8a">BIC:</span> ${esc(fd.bic)}</div>`:""}
+        </div>
+        <div style="text-align:right">
+          ${fd.steuernr?`<div style="margin-bottom:4px"><span style="color:#8aaa8a">Steuernummer:</span> ${esc(fd.steuernr)}</div>`:""}
+          ${ist13b?`<div style="background:#fff3e0;border:1px solid #f0c080;border-radius:5px;padding:8px 12px;font-size:12px;color:#8a5a00;margin-top:4px">Die Umsatzsteuer ist vom Leistungsempfänger nach § 13b UStG zu entrichten.</div>`:""}
+        </div>
+      </div>
     </div>
     <!-- FUSSZEILE -->
-    <div style="margin-top:32px;padding-top:14px;border-top:1px solid #eee;display:grid;grid-template-columns:1fr 1fr;gap:20px;font-size:11px;color:#888">
-      <div>
-        ${fd.bank?`<div><strong>Bank:</strong> ${esc(fd.bank)}</div>`:""}
-        ${fd.iban?`<div><strong>IBAN:</strong> ${esc(fd.iban)}</div>`:""}
-        ${fd.bic?`<div><strong>BIC:</strong> ${esc(fd.bic)}</div>`:""}
-      </div>
-      <div style="text-align:right">
-        ${fd.ustNr?`<div><strong>USt-IdNr.:</strong> ${esc(fd.ustNr)}</div>`:""}
-      </div>
+    <div style="padding:16px 40px;border-top:1px solid #e0ead8;margin-top:16px;text-align:center;font-size:11px;color:#aaa">
+      ${esc(fd.firmaName||"")}${fd.strasse?" · "+esc(fd.strasse):""}${fd.tel?" · Tel.: "+esc(fd.tel):""}${fd.email?" · E-Mail: "+esc(fd.email):""}
     </div>`;
+
   overlay.appendChild(doc);document.body.appendChild(overlay);document.body.style.overflow="hidden";
 }
-
 
 // ── SICHERUNG & WIEDERHERSTELLUNG ─────────────────────────────────────────────
 function exportData(){
   const data=JSON.stringify({baustellen:state.baustellen,firmendaten:state.firmendaten,exportDatum:today(),version:1},null,2);
   const blob=new Blob([data],{type:"application/json"});
   const url=URL.createObjectURL(blob);
-  const a=document.createElement("a");
-  const datum=today();
-  a.href=url;a.download=`BauManager_${datum}.json`;
-  document.body.appendChild(a);a.click();
-  document.body.removeChild(a);URL.revokeObjectURL(url);
+  const a=document.createElement("a");a.href=url;a.download=`BauManager_${today()}.json`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
   state.letzeSicherung=today();saveState();
-  // Close overlay if open
   const ov=document.getElementById("backup-overlay");if(ov)ov.remove();
   document.body.style.overflow="";
 }
 
 function showRestoreDialog(){
-  if(!confirm("⚠️ ACHTUNG: Alle aktuellen Daten werden durch die Sicherungsdatei ersetzt.\n\nBist du wirklich sicher?\n\nDieser Vorgang kann nicht rückgängig gemacht werden."))return;
+  if(!confirm("⚠️ ACHTUNG: Alle aktuellen Daten werden durch die Sicherungsdatei ersetzt.\n\nBist du wirklich sicher?"))return;
   if(!confirm("Letzte Bestätigung: Wirklich wiederherstellen und aktuelle Daten überschreiben?"))return;
   const input=document.createElement("input");input.type="file";input.accept=".json";
   input.addEventListener("change",e=>{
@@ -1144,12 +650,10 @@ function showRestoreDialog(){
       try{
         const data=JSON.parse(ev.target.result);
         if(!data.baustellen)throw new Error("Ungültige Datei");
-        state.baustellen=data.baustellen||[];
-        state.firmendaten=data.firmendaten||state.firmendaten;
-        state.activeId=null;state.page="uebersicht";
-        saveState();render();
+        state.baustellen=data.baustellen||[];state.firmendaten=data.firmendaten||state.firmendaten;
+        state.activeId=null;state.page="uebersicht";saveState();render();
         alert("✅ Daten erfolgreich wiederhergestellt!");
-      }catch(err){alert("❌ Fehler beim Lesen der Datei. Bitte eine gültige BauManager-Sicherungsdatei auswählen.");}
+      }catch{alert("❌ Fehler beim Lesen der Datei.");}
     };
     reader.readAsText(file);
   });
@@ -1157,55 +661,29 @@ function showRestoreDialog(){
 }
 
 function checkBackupReminder(){
+  if(!state.baustellen.length)return;
   const last=state.letzeSicherung;
-  if(!last){
-    // Noch nie gesichert - nach 1 Tag erinnern
-    const created=state.baustellen.length>0;
-    if(!created)return; // Noch keine Daten, keine Erinnerung nötig
-  }
   const lastDate=last?new Date(last):new Date(0);
-  const now=new Date();
-  const diffDays=Math.floor((now-lastDate)/(1000*60*60*24));
-  // Reminder key: today's date - show max once per day
-  const reminderKey="backup_reminded_"+today();
-  if(localStorage.getItem(reminderKey))return;
-  if(diffDays>=1||!last){
-    localStorage.setItem(reminderKey,"1");
-    showBackupOverlay(diffDays,last);
-  }
+  const diffDays=Math.floor((new Date()-lastDate)/(1000*60*60*24));
+  const key="backup_reminded_"+today();
+  if(localStorage.getItem(key))return;
+  if(diffDays>=1||!last){localStorage.setItem(key,"1");showBackupOverlay(diffDays,last);}
 }
 
 function showBackupOverlay(diffDays,last){
   const overlay=document.createElement("div");overlay.id="backup-overlay";
-  overlay.style.cssText="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px";
+  overlay.style.cssText="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px";
   const box=document.createElement("div");
   box.style.cssText="background:#fff;border-radius:16px;padding:28px 24px;max-width:360px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,.2);text-align:center";
-  const icon=document.createElement("div");icon.style.cssText="font-size:52px;margin-bottom:12px";icon.textContent="💾";box.appendChild(icon);
-  const title=document.createElement("div");title.style.cssText="font-size:18px;font-weight:bold;color:#1a2e1a;margin-bottom:8px";
-  title.textContent=last?"Daten sichern":"Erste Datensicherung";box.appendChild(title);
-  const msg=document.createElement("div");msg.style.cssText="font-size:14px;color:#5a8a5a;margin-bottom:20px;line-height:1.6";
-  msg.textContent=last
-    ?`Letzte Sicherung: ${fmt(last)} (vor ${diffDays} Tag${diffDays===1?"":"en"}).\nBitte sichere jetzt deine Daten.`
-    :"Du hast noch keine Sicherung erstellt. Bitte jetzt sichern!";
-  box.appendChild(msg);
-  const saveBtn=document.createElement("button");
-  saveBtn.style.cssText="background:#2d6a4f;color:#fff;border:none;border-radius:10px;padding:14px 0;width:100%;font-size:16px;font-weight:bold;cursor:pointer;font-family:Georgia,serif;margin-bottom:10px";
-  saveBtn.textContent="💾 Jetzt sichern";
-  saveBtn.addEventListener("click",exportData);
-  box.appendChild(saveBtn);
-  const laterBtn=document.createElement("button");
-  laterBtn.style.cssText="background:transparent;color:#9ab09a;border:1px solid #d8e8d0;border-radius:10px;padding:11px 0;width:100%;font-size:14px;cursor:pointer;font-family:Georgia,serif";
-  laterBtn.textContent="Später erinnern";
-  laterBtn.addEventListener("click",()=>{overlay.remove();document.body.style.overflow="";});
-  box.appendChild(laterBtn);
-  overlay.appendChild(box);
-  document.body.appendChild(overlay);
-  document.body.style.overflow="hidden";
+  box.innerHTML=`<div style="font-size:52px;margin-bottom:12px">💾</div><div style="font-size:18px;font-weight:bold;color:#1a2e1a;margin-bottom:8px">${last?"Daten sichern":"Erste Datensicherung"}</div><div style="font-size:14px;color:#5a8a5a;margin-bottom:20px;line-height:1.6">${last?`Letzte Sicherung: ${fmt(last)} (vor ${diffDays} Tag${diffDays===1?"":"en"}).<br>Bitte jetzt sichern!`:"Du hast noch keine Sicherung erstellt.<br>Bitte jetzt sichern!"}</div>`;
+  const saveBtn=document.createElement("button");saveBtn.style.cssText="background:#2d6a4f;color:#fff;border:none;border-radius:10px;padding:14px 0;width:100%;font-size:16px;font-weight:bold;cursor:pointer;margin-bottom:10px";saveBtn.textContent="💾 Jetzt sichern";saveBtn.addEventListener("click",exportData);box.appendChild(saveBtn);
+  const laterBtn=document.createElement("button");laterBtn.style.cssText="background:transparent;color:#9ab09a;border:1px solid #d8e8d0;border-radius:10px;padding:11px 0;width:100%;font-size:14px;cursor:pointer";laterBtn.textContent="Später erinnern";laterBtn.addEventListener("click",()=>{overlay.remove();document.body.style.overflow="";});box.appendChild(laterBtn);
+  overlay.appendChild(box);document.body.appendChild(overlay);document.body.style.overflow="hidden";
 }
 
 // ── Start ─────────────────────────────────────────────────────────────────────
 render();
-setTimeout(checkBackupReminder, 800);
+setTimeout(checkBackupReminder,800);
 </script>
 </body>
 </html>

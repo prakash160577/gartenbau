@@ -73,10 +73,12 @@ textarea.inp{resize:vertical;min-height:70px;line-height:1.6}
 
 @media print{
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}
-  #bottom-nav,.page-header,.no-print{display:none!important}
+  /* Hide everything by default */
+  body > *{display:none!important}
+  /* Show only the print overlay */
+  #print-overlay{display:block!important;position:static!important;overflow:visible!important;background:none!important;z-index:auto!important}
   #print-overlay .no-print{display:none!important}
-  #print-overlay{position:static!important;overflow:visible!important;background:#e8e8e8!important}
-  body{overflow:auto!important;background:#fff!important;margin:0!important;padding:0!important}
+  /* The document card */
   #print-overlay > div:last-child{margin:0!important;box-shadow:none!important;max-width:100%!important;width:100%!important}
   @page{margin:0;size:A4}
 }

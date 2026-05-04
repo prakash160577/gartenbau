@@ -81,6 +81,20 @@ textarea.inp{resize:vertical;min-height:70px;line-height:1.6}
   /* The document card */
   #print-overlay > div:last-child{margin:0!important;box-shadow:none!important;max-width:100%!important;width:100%!important}
   @page{margin:0;size:A4}
+  /* Force all text to black for readability */
+  #print-overlay *{color:#000!important}
+  #print-overlay span[style*="color:#8aaa8a"],
+  #print-overlay span[style*="color:#666"],
+  #print-overlay span[style*="color:#aaa"],
+  #print-overlay td[style*="color:#666"],
+  #print-overlay td[style*="color:#8aaa8a"],
+  #print-overlay div[style*="color:#5a8a5a"],
+  #print-overlay div[style*="color:#aaa"],
+  #print-overlay p[style*="color:#5a8a5a"],
+  #print-overlay div[style*="color:#444"]{color:#000!important}
+  /* Keep green header white text */
+  #print-overlay div[style*="background:#2d6a4f"] *{color:#fff!important}
+  #print-overlay div[style*="background:#2d6a4f"] div[style*="color:#a8d4a8"]{color:#e0f0e0!important}
 }
 </style>
 </head>
@@ -149,6 +163,7 @@ function render(){
   if(state.page==="uebersicht")page=renderUebersicht();
   else if(state.page==="leistung"&&ab)page=renderLeistung(ab);
   else if(state.page==="rechnung"&&ab)page=renderRechnung(ab);
+  else if(state.page==="archiv")page=renderArchiv();
   else page=renderUebersicht();
   app.appendChild(page);
   app.appendChild(renderBottomNav(ab));
@@ -160,6 +175,7 @@ function renderBottomNav(ab){
     {key:"uebersicht",icon:"🏠",label:"Baustellen"},
     {key:"leistung",icon:"✅",label:"Leistung",needs:true},
     {key:"rechnung",icon:"🧾",label:"Rechnung",needs:true},
+    {key:"archiv",icon:"📁",label:"Archiv"},
   ];
   for(const it of items){
     const disabled=it.needs&&!ab;
@@ -639,6 +655,8 @@ function printRechnung(b,fd,typ){
       ${esc(fd.firmaName||"")}${fd.strasse?" · "+esc(fd.strasse):""}${fd.tel?" · Tel.: "+esc(fd.tel):""}${fd.email?" · E-Mail: "+esc(fd.email):""}
     </div>`;
 
+  // Save to archive
+  saveToArchiv(b,fd,typ,netto,mwst,brutto);
   overlay.appendChild(doc);document.body.appendChild(overlay);document.body.style.overflow="hidden";
 }
 
@@ -697,6 +715,50 @@ function showBackupOverlay(diffDays,last){
 }
 
 // ── Start ─────────────────────────────────────────────────────────────────────
+// ── RECHNUNGSARCHIV ──────────────────────────────────────────────────────────
+const ARCHIVE_KEY="baumanager_archiv";
+function loadArchiv(){try{const r=localStorage.getItem(ARCHIVE_KEY);return r?JSON.parse(r):[];}catch{return[];}}
+function saveToArchiv(b,fd,typ,netto,mwst,brutto){
+  const archiv=loadArchiv();
+  const eintrag={id:uid(),datum:b.rechnungsdatum||today(),gespeichertAm:new Date().toISOString(),rechnungsNr:b.rechnungsNr||"",baustelle:b.name,bauherr:b.bauherr||"",typ:typ,netto:netto,mwst:mwst,brutto:brutto,snapshot:{b:JSON.parse(JSON.stringify(b)),fd:JSON.parse(JSON.stringify(fd))}};
+  archiv.push(eintrag);
+  try{localStorage.setItem(ARCHIVE_KEY,JSON.stringify(archiv));}catch{archiv.shift();try{localStorage.setItem(ARCHIVE_KEY,JSON.stringify(archiv));}catch{}}
+}
+function renderArchiv(){
+  const wrap=document.createElement("div");wrap.className="page";
+  wrap.appendChild(makeHeader("Rechnungsarchiv",null));
+  const content=document.createElement("div");content.style.cssText="padding:12px 14px";
+  const archiv=loadArchiv().reverse();
+  if(!archiv.length){
+    const empty=document.createElement("div");empty.className="empty";
+    empty.innerHTML=`<div style="font-size:40px;margin-bottom:12px">📁</div><div style="font-size:15px;color:#5a8a5a">Noch keine archivierten Rechnungen.</div><div style="font-size:13px;color:#9ab09a;margin-top:8px">Jede gedruckte Rechnung wird automatisch hier gespeichert.</div>`;
+    content.appendChild(empty);wrap.appendChild(content);return wrap;
+  }
+  const byYear={};
+  for(const e of archiv){const y=e.datum?e.datum.slice(0,4):"?";if(!byYear[y])byYear[y]=[];byYear[y].push(e);}
+  for(const[year,entries]of Object.entries(byYear)){
+    const yHead=document.createElement("div");yHead.style.cssText="font-size:13px;color:#2d6a4f;font-weight:bold;margin:8px 0 6px;border-bottom:1px solid #d8e8d0;padding-bottom:4px";yHead.textContent="📅 "+year;content.appendChild(yHead);
+    for(const e of entries){
+      const card=document.createElement("div");card.className="card";card.style.padding="12px 14px";
+      const top=document.createElement("div");top.style.cssText="display:flex;justify-content:space-between;align-items:flex-start";
+      const left=document.createElement("div");
+      left.innerHTML=`<div style="font-weight:bold;color:#1a2e1a;font-size:14px">${esc(e.rechnungsNr||"(keine Nr.)")}</div><div style="font-size:12px;color:#5a8a5a;margin-top:2px">${fmt(e.datum)} · ${esc(e.baustelle)}</div>${e.bauherr?`<div style="font-size:12px;color:#8aaa8a">👤 ${esc(e.bauherr)}</div>`:""}`;
+      const right=document.createElement("div");right.style.cssText="text-align:right;flex-shrink:0;margin-left:12px";
+      const betrag=e.typ==="13b"?e.netto:e.brutto;
+      right.innerHTML=`<div style="font-weight:bold;color:#2d6a4f;font-size:16px">${betrag.toFixed(2)} €</div><div style="font-size:10px;color:#9ab09a">${e.typ==="13b"?"§13b netto":"brutto"}</div>`;
+      top.appendChild(left);top.appendChild(right);card.appendChild(top);
+      const btnRow=document.createElement("div");btnRow.style.cssText="display:flex;gap:8px;margin-top:10px";
+      const viewBtn=document.createElement("button");viewBtn.style.cssText="background:#f0f8f0;border:1px solid #c8dcc0;color:#2d6a4f;border-radius:7px;padding:7px 14px;cursor:pointer;font-size:12px;font-family:Georgia,serif";viewBtn.textContent="🖨️ Erneut drucken";
+      viewBtn.addEventListener("click",()=>printRechnung(e.snapshot.b,e.snapshot.fd,e.typ));
+      const delBtn=document.createElement("button");delBtn.style.cssText="background:#fdf0f0;border:1px solid #e8b0b0;color:#c04040;border-radius:7px;padding:7px 14px;cursor:pointer;font-size:12px;font-family:Georgia,serif";delBtn.textContent="🗑 Löschen";
+      delBtn.addEventListener("click",()=>{if(!confirm("Archiveintrag löschen?"))return;const a=loadArchiv().filter(x=>x.id!==e.id);localStorage.setItem(ARCHIVE_KEY,JSON.stringify(a));setState({page:"archiv"});});
+      btnRow.appendChild(viewBtn);btnRow.appendChild(delBtn);card.appendChild(btnRow);
+      content.appendChild(card);
+    }
+  }
+  wrap.appendChild(content);return wrap;
+}
+
 render();
 setTimeout(checkBackupReminder,800);
 </script>

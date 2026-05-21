@@ -800,25 +800,85 @@ function exportData(){
   document.body.style.overflow="";
 }
 
+function importData(jsonText){
+  try{
+    const data=JSON.parse(jsonText);
+    if(!data.baustellen)throw new Error("Ungültige Daten");
+    state.baustellen=data.baustellen||[];
+    if(data.firmendaten)Object.assign(state.firmendaten,data.firmendaten);
+    if(data.kunden)state.kunden=data.kunden;
+    state.activeId=null;state.page="uebersicht";
+    saveState();render();
+    return true;
+  }catch(e){return false;}
+}
+
 function showRestoreDialog(){
-  if(!confirm("⚠️ ACHTUNG: Alle aktuellen Daten werden durch die Sicherungsdatei ersetzt.\n\nBist du wirklich sicher?"))return;
-  if(!confirm("Letzte Bestätigung: Wirklich wiederherstellen und aktuelle Daten überschreiben?"))return;
-  const input=document.createElement("input");input.type="file";input.accept=".json";
-  input.addEventListener("change",e=>{
-    const file=e.target.files[0];if(!file)return;
-    const reader=new FileReader();
-    reader.onload=ev=>{
-      try{
-        const data=JSON.parse(ev.target.result);
-        if(!data.baustellen)throw new Error("Ungültige Datei");
-        state.baustellen=data.baustellen||[];state.firmendaten=data.firmendaten||state.firmendaten;
-        state.activeId=null;state.page="uebersicht";saveState();render();
-        alert("✅ Daten erfolgreich wiederhergestellt!");
-      }catch{alert("❌ Fehler beim Lesen der Datei.");}
-    };
-    reader.readAsText(file);
+  // Try file picker first, fall back to paste dialog
+  const tryFilePicker=()=>{
+    const input=document.createElement("input");input.type="file";input.accept=".json";
+    input.addEventListener("change",e=>{
+      const file=e.target.files[0];if(!file)return;
+      const reader=new FileReader();
+      reader.onload=ev=>{
+        if(importData(ev.target.result))alert("✅ Daten erfolgreich wiederhergestellt!");
+        else alert("❌ Fehler beim Lesen der Datei. Bitte Text-Import versuchen.");
+      };
+      reader.readAsText(file);
+    });
+    document.body.appendChild(input);input.click();document.body.removeChild(input);
+  };
+
+  // Show dialog with both options
+  const overlay=document.createElement("div");
+  overlay.style.cssText="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px";
+  const box=document.createElement("div");
+  box.style.cssText="background:#fff;border-radius:14px;padding:24px;max-width:420px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,.2)";
+  box.innerHTML=`
+    <div style="font-size:16px;font-weight:bold;color:#1a2e1a;margin-bottom:6px">📂 Daten wiederherstellen</div>
+    <div style="font-size:12px;color:#c04040;background:#fdf0f0;border:1px solid #e8b0b0;border-radius:6px;padding:8px 10px;margin-bottom:14px">
+      ⚠️ Achtung: Aktuelle Daten werden überschrieben!
+    </div>`;
+
+  // Option 1: File picker
+  const fileBtn=document.createElement("button");
+  fileBtn.style.cssText="background:#2d6a4f;color:#fff;border:none;border-radius:9px;padding:11px 0;width:100%;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:10px;font-family:Georgia,serif";
+  fileBtn.textContent="📁 Datei auswählen (.json)";
+  fileBtn.addEventListener("click",()=>{overlay.remove();document.body.style.overflow="";tryFilePicker();});
+  box.appendChild(fileBtn);
+
+  // Divider
+  const div=document.createElement("div");
+  div.style.cssText="text-align:center;font-size:12px;color:#9ab09a;margin:8px 0";
+  div.textContent="— oder JSON-Text direkt einfügen —";
+  box.appendChild(div);
+
+  // Option 2: Paste textarea
+  const ta=document.createElement("textarea");
+  ta.style.cssText="width:100%;height:100px;border:1px solid #c8dcc0;border-radius:8px;padding:10px;font-size:12px;font-family:monospace;resize:vertical;outline:none;margin-bottom:8px;background:#f8faf7";
+  ta.placeholder='Hier den kopierten JSON-Text einfügen (Strg+V)…';
+  box.appendChild(ta);
+
+  const pasteBtn=document.createElement("button");
+  pasteBtn.style.cssText="background:#1e4d8c;color:#fff;border:none;border-radius:9px;padding:11px 0;width:100%;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:10px;font-family:Georgia,serif";
+  pasteBtn.textContent="✓ Text importieren";
+  pasteBtn.addEventListener("click",()=>{
+    if(!ta.value.trim()){alert("Bitte zuerst den JSON-Text einfügen.");return;}
+    if(!confirm("Wirklich wiederherstellen und aktuelle Daten überschreiben?"))return;
+    if(importData(ta.value.trim())){overlay.remove();document.body.style.overflow="";alert("✅ Daten erfolgreich wiederhergestellt!");}
+    else alert("❌ Ungültiger JSON-Text. Bitte nochmal kopieren.");
   });
-  document.body.appendChild(input);input.click();document.body.removeChild(input);
+  box.appendChild(pasteBtn);
+
+  const cancelBtn=document.createElement("button");
+  cancelBtn.style.cssText="background:transparent;color:#9ab09a;border:1px solid #d8e8d0;border-radius:9px;padding:9px 0;width:100%;font-size:13px;cursor:pointer;font-family:Georgia,serif";
+  cancelBtn.textContent="Abbrechen";
+  cancelBtn.addEventListener("click",()=>{overlay.remove();document.body.style.overflow="";});
+  box.appendChild(cancelBtn);
+
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+  document.body.style.overflow="hidden";
 }
 
 function checkBackupReminder(){

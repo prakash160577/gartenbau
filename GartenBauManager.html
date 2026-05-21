@@ -294,6 +294,24 @@ function renderUebersicht(){
     const rightBtn=makeBtn(showForm?"✕":"+ Neu","btn btn-green btn-small",()=>{showForm=!showForm;rebuild();});
     wrap.appendChild(makeHeader("Meine Baustellen",null,rightBtn));
     const content=document.createElement("div");content.style.cssText="padding:12px 14px";
+
+    // Sicherung-Toolbar
+    const sicherBar=document.createElement("div");
+    sicherBar.style.cssText="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap";
+    const sichBtn=document.createElement("button");
+    sichBtn.style.cssText="background:#2d6a4f;border:none;color:#fff;border-radius:9px;padding:9px 16px;cursor:pointer;font-size:13px;font-family:Georgia,serif;font-weight:600;display:flex;align-items:center;gap:6px";
+    sichBtn.innerHTML="💾 Daten sichern";
+    sichBtn.title="Alle Daten als Sicherungsdatei herunterladen";
+    sichBtn.addEventListener("click",exportData);
+    sicherBar.appendChild(sichBtn);
+    if(state.letzeSicherung){
+      const lastInfo=document.createElement("span");
+      lastInfo.style.cssText="font-size:11px;color:#9ab09a;align-self:center";
+      lastInfo.textContent="Letzte Sicherung: "+fmt(state.letzeSicherung);
+      sicherBar.appendChild(lastInfo);
+    }
+    content.appendChild(sicherBar);
+
     if(showForm){
       const form=document.createElement("div");form.className="card card-accent";
       const t=document.createElement("div");t.style.cssText="font-size:15px;font-weight:bold;color:#2d6a4f;margin-bottom:14px";t.textContent="Neue Baustelle anlegen";form.appendChild(t);
@@ -361,6 +379,24 @@ function renderLeistung(b){
     const rightBtn=makeBtn(showForm?"✕":"+ Neu","btn btn-green btn-small",()=>{if(!showForm)form=fresh();showForm=!showForm;rebuild();});
     wrap.appendChild(makeHeader("Leistung erbracht:",b.name,rightBtn));
     const content=document.createElement("div");content.style.cssText="padding:12px 14px";
+
+    // Sicherung-Toolbar
+    const sicherBar=document.createElement("div");
+    sicherBar.style.cssText="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap";
+    const sichBtn=document.createElement("button");
+    sichBtn.style.cssText="background:#2d6a4f;border:none;color:#fff;border-radius:9px;padding:9px 16px;cursor:pointer;font-size:13px;font-family:Georgia,serif;font-weight:600;display:flex;align-items:center;gap:6px";
+    sichBtn.innerHTML="💾 Daten sichern";
+    sichBtn.title="Alle Daten als Sicherungsdatei herunterladen";
+    sichBtn.addEventListener("click",exportData);
+    sicherBar.appendChild(sichBtn);
+    if(state.letzeSicherung){
+      const lastInfo=document.createElement("span");
+      lastInfo.style.cssText="font-size:11px;color:#9ab09a;align-self:center";
+      lastInfo.textContent="Letzte Sicherung: "+fmt(state.letzeSicherung);
+      sicherBar.appendChild(lastInfo);
+    }
+    content.appendChild(sicherBar);
+
     if(showForm){
       const fbox=document.createElement("div");fbox.className="card card-accent";
       const ft=document.createElement("div");ft.style.cssText="font-size:15px;color:#2d6a4f;font-weight:bold;margin-bottom:12px";ft.textContent="Tagesbericht erfassen";fbox.appendChild(ft);

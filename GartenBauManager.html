@@ -248,6 +248,7 @@ function render(){
   if(state.page==="uebersicht")page=renderUebersicht();
   else if(state.page==="leistung"&&ab)page=renderLeistung(ab);
   else if(state.page==="rechnung"&&ab)page=renderRechnung(ab);
+  else if(state.page==="kunden")page=renderKunden();
   else if(state.page==="archiv")page=renderArchiv();
   else page=renderUebersicht();
   app.appendChild(page);
@@ -258,6 +259,7 @@ function renderBottomNav(ab){
   const nav=document.createElement("nav");nav.id="bottom-nav";
   const items=[
     {key:"uebersicht",icon:"🏠",label:"Baustellen"},
+    {key:"kunden",icon:"👥",label:"Kunden"},
     {key:"leistung",icon:"✅",label:"Leistung",needs:true},
     {key:"rechnung",icon:"🧾",label:"Rechnung",needs:true},
     {key:"archiv",icon:"📁",label:"Archiv"},
@@ -903,6 +905,83 @@ function showBackupOverlay(diffDays,last){
 }
 
 // ── Start ─────────────────────────────────────────────────────────────────────
+
+// ── KUNDEN ────────────────────────────────────────────────────────────────────
+function renderKunden(){
+  const wrap=document.createElement("div");wrap.className="page";
+  let editId=null;
+  let editForm={name:"",adresse:""};
+
+  const rebuild=()=>{
+    wrap.innerHTML="";
+    const rightBtn=makeBtn("+ Neuer Kunde","btn btn-green btn-small",()=>{
+      editId="__new__";editForm={name:"",adresse:""};rebuild();
+    });
+    wrap.appendChild(makeHeader("Kunden","Gespeicherte Kontakte",rightBtn));
+    const content=document.createElement("div");content.style.cssText="padding:12px 14px";
+
+    // Edit / New form
+    if(editId){
+      const fbox=document.createElement("div");fbox.className="card card-accent";
+      const ft=document.createElement("div");ft.style.cssText="font-size:15px;color:#2d6a4f;font-weight:bold;margin-bottom:12px";
+      ft.textContent=editId==="__new__"?"Neuer Kunde":"Kunde bearbeiten";fbox.appendChild(ft);
+      fbox.appendChild(makeField("Name *",makeInput("text",editForm.name,v=>{editForm.name=v;},"Name des Kunden")));
+      const aw=document.createElement("div");aw.style.marginTop="12px";
+      const ata=makeInput("textarea",editForm.adresse,v=>{editForm.adresse=v;},"Straße, PLZ Ort");
+      ata.style.minHeight="60px";
+      aw.appendChild(makeField("Adresse",ata));fbox.appendChild(aw);
+      const br=document.createElement("div");br.style.cssText="display:flex;gap:10px;margin-top:16px";
+      br.appendChild(makeBtn("💾 Speichern","btn btn-green btn-full",()=>{
+        if(!editForm.name.trim())return;
+        if(editId==="__new__"){
+          state.kunden=[...(state.kunden||[]),{id:uid(),name:editForm.name.trim(),adresse:editForm.adresse}];
+        } else {
+          state.kunden=(state.kunden||[]).map(k=>k.id===editId?{...k,name:editForm.name.trim(),adresse:editForm.adresse}:k);
+        }
+        saveState();editId=null;rebuild();
+      }));
+      br.appendChild(makeBtn("Abbruch","btn btn-ghost",()=>{editId=null;rebuild();}));
+      fbox.appendChild(br);content.appendChild(fbox);
+    }
+
+    if(!(state.kunden||[]).length&&!editId){
+      const empty=document.createElement("div");empty.className="empty";
+      empty.innerHTML=`<div style="font-size:40px;margin-bottom:12px">👥</div><div style="font-size:15px;color:#5a8a5a">Noch keine Kunden gespeichert.</div><div style="font-size:13px;color:#9ab09a;margin-top:8px">Kunden werden automatisch beim Anlegen einer Baustelle oder beim Drucken einer Rechnung gespeichert.</div>`;
+      content.appendChild(empty);
+    }
+
+    for(const k of(state.kunden||[]).slice().reverse()){
+      const card=document.createElement("div");card.className="card";card.style.padding="12px 14px";
+      const top=document.createElement("div");top.style.cssText="display:flex;justify-content:space-between;align-items:flex-start";
+      const left=document.createElement("div");left.style.flex="1";
+      left.innerHTML=`<div style="font-size:16px;font-weight:bold;color:#1a2e1a">${esc(k.name)}</div>${k.adresse?`<div style="font-size:13px;color:#5a8a5a;margin-top:3px;white-space:pre-line">${esc(k.adresse)}</div>`:""}`;
+      const acts=document.createElement("div");acts.style.cssText="display:flex;gap:4px;flex-shrink:0;margin-left:8px";
+      const editBtn=document.createElement("button");editBtn.className="btn-icon";editBtn.textContent="✏️";
+      editBtn.addEventListener("click",()=>{editId=k.id;editForm={name:k.name,adresse:k.adresse||""};rebuild();});
+      const delBtn=document.createElement("button");delBtn.className="btn-icon";delBtn.style.color="#c0c0c0";delBtn.textContent="✕";
+      delBtn.addEventListener("click",()=>{if(!confirm("Kunden löschen?"))return;state.kunden=(state.kunden||[]).filter(x=>x.id!==k.id);saveState();rebuild();});
+      acts.appendChild(editBtn);acts.appendChild(delBtn);top.appendChild(left);top.appendChild(acts);card.appendChild(top);
+
+      // Buttons: Neue Baustelle + Rechnung öffnen
+      const btnRow=document.createElement("div");btnRow.style.cssText="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap";
+      const neuBtn=document.createElement("button");
+      neuBtn.style.cssText="background:#2d6a4f;border:none;color:#fff;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:13px;font-family:Georgia,serif;font-weight:600";
+      neuBtn.textContent="+ Neue Baustelle";
+      neuBtn.addEventListener("click",()=>{
+        const name=prompt("Baustellen-Name:",k.name+" – ");
+        if(!name||!name.trim())return;
+        const b={id:uid(),name:name.trim(),startdatum:today(),bauherr:k.name,adresse:k.adresse||"",erstellt:today(),eintraege:[],stundensatz:55,maschinensatz:90,rechnungsNr:"",rechnungsdatum:"",angebotNr:"",bemerkungen:""};
+        state.baustellen=[...state.baustellen,b];state.activeId=b.id;state.page="leistung";saveState();render();
+      });
+      btnRow.appendChild(neuBtn);
+      card.appendChild(btnRow);
+      content.appendChild(card);
+    }
+    wrap.appendChild(content);
+  };
+  rebuild();return wrap;
+}
+
 // ── RECHNUNGSARCHIV ──────────────────────────────────────────────────────────
 const ARCHIVE_KEY="baumanager_archiv";
 function loadArchiv(){try{const r=localStorage.getItem(ARCHIVE_KEY);return r?JSON.parse(r):[];}catch{return[];}}

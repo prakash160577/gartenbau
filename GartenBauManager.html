@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#ffffff">
-<title>Bau Manager</title>
+<title>GartenBau Manager</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
 html,body{height:100%;background:#f4f6f3;color:#1a2e1a;font-family:Georgia,serif;overscroll-behavior:none}
@@ -161,7 +161,30 @@ const LOGO_SVG=`<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
 
 let state={baustellen:[],activeId:null,page:"uebersicht",firmendaten:{firmaName:"",steuernr:"",bank:"",iban:"",bic:"",tel:"",email:"",strasse:"",plzOrt:""},letzeSicherung:null,kunden:[]};
 const saved=load();
-if(saved){state={...state,...saved};if(!state.firmendaten)state.firmendaten={firmaName:"",steuernr:"",bank:"",iban:"",bic:"",tel:"",email:"",strasse:"",plzOrt:""};if(!state.kunden)state.kunden=[];}
+if(saved){
+  state={...state,...saved};
+  if(!state.firmendaten)state.firmendaten={firmaName:"",steuernr:"",bank:"",iban:"",bic:"",tel:"",email:"",strasse:"",plzOrt:""};
+  if(!state.kunden)state.kunden=[];
+} else {
+  // Migrate from older versions
+  const oldKeys=["gartenbau_v2","gartenbau_v3","gartenbau_v4","baumanager_v4"];
+  for(const key of oldKeys){
+    try{
+      const old=localStorage.getItem(key);
+      if(old){
+        const d=JSON.parse(old);
+        if(d.baustellen&&d.baustellen.length){
+          state.baustellen=d.baustellen;
+          if(d.firmendaten)Object.assign(state.firmendaten,d.firmendaten);
+          if(d.activeId)state.activeId=d.activeId;
+          saveState();
+          console.log("Migrated from",key);
+          break;
+        }
+      }
+    }catch(e){}
+  }
+}
 
 function saveState(){save({baustellen:state.baustellen,activeId:state.activeId,firmendaten:state.firmendaten,letzeSicherung:state.letzeSicherung,kunden:state.kunden||[]});}
 function setState(patch){Object.assign(state,typeof patch==="function"?patch(state):patch);saveState();render();}
@@ -255,7 +278,7 @@ function makeHeader(title,sub,rightEl){
   const h=document.createElement("div");h.className="page-header";
   const left=document.createElement("div");
   const fd=state.firmendaten;
-  left.innerHTML=`<div class="header-brand">${esc(fd&&fd.firmaName?fd.firmaName:"Bau Manager")}</div><div class="header-title">${esc(title)}</div>${sub?`<div class="header-sub">${esc(sub)}</div>`:""}`;
+  left.innerHTML=`<div class="header-brand">${esc(fd&&fd.firmaName?fd.firmaName:"GartenBau Manager")}</div><div class="header-title">${esc(title)}</div>${sub?`<div class="header-sub">${esc(sub)}</div>`:""}`;
   h.appendChild(left);
   if(rightEl)h.appendChild(rightEl);
   return h;

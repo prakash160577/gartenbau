@@ -66,6 +66,7 @@ input,select,textarea,button{font-family:Georgia,serif}
 .r-row-val{font-size:13px;color:#2d6a4f;min-width:80px;text-align:right;font-weight:600}
 
 textarea.inp{resize:vertical;min-height:70px;line-height:1.6}
+.editable-field:hover,.editable-field:focus{background:#f0f8f0!important;border-radius:3px}
 .empty{text-align:center;padding:60px 20px;color:#9ab09a}
 .leistung-card{background:#fff;border:1px solid #d8e8d0;border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
 .total-line{margin-top:10px;text-align:right;font-size:15px;font-weight:bold;color:#2d6a4f;border-top:1px solid #e0ead8;padding-top:8px}
@@ -696,7 +697,7 @@ function printRechnung(b,fd,typ){
   const posHTML=posRows.map(r=>`
     <tr>
       <td style="padding:7px 8px;border-bottom:1px solid #f0f0f0;color:#555;font-size:11px;width:24px;vertical-align:middle">${r.pos}</td>
-      <td style="padding:7px 8px;border-bottom:1px solid #f0f0f0;font-size:11px;color:#555;white-space:nowrap;vertical-align:middle">${r.datum}</td>
+      <td style="padding:7px 8px;border-bottom:1px solid #f0f0f0;font-size:11px;color:#555;white-space:nowrap;vertical-align:middle"><span contenteditable="true" style="outline:none;border-bottom:1px dashed #c8dcc0;min-width:60px;display:inline-block">${r.datum}</span></td>
       <td style="padding:7px 8px;border-bottom:1px solid #f0f0f0;font-size:13px;vertical-align:middle">${esc(r.bez)}</td>
       <td style="padding:7px 8px;border-bottom:1px solid #f0f0f0;font-size:11px;color:#444;vertical-align:middle;white-space:nowrap">${esc(r.detail)}</td>
       <td style="padding:7px 8px;border-bottom:1px solid #f0f0f0;text-align:right;font-weight:bold;font-size:13px;white-space:nowrap;vertical-align:middle">${r.betrag.toFixed(2)} €</td>
@@ -718,7 +719,25 @@ function printRechnung(b,fd,typ){
   const printBtn=document.createElement("button");printBtn.style.cssText="background:#fff;color:#2d6a4f;border:none;border-radius:7px;padding:10px 20px;cursor:pointer;font-size:14px;font-weight:bold";printBtn.textContent="🖨️ Drucken / Als PDF speichern";
   printBtn.title="Tipp: Im Druckdialog unter Weitere Einstellungen → Hintergrundgrafiken aktivieren";
   printBtn.addEventListener("click",()=>{
-    // Ensure background graphics setting hint
+    // Save editable fields back to app data
+    const doc2=document.getElementById("rechnung-doc");
+    if(doc2){
+      const rNrEl=doc2.querySelector("#edit-rNr");
+      const rDatumEl=doc2.querySelector("#edit-rDatum");
+      const zeitraumEl=doc2.querySelector("#edit-zeitraum");
+      const bauherrEl=doc2.querySelector("#edit-bauherr");
+      const adresseEl=doc2.querySelector("#edit-adresse");
+      const bemEl=doc2.querySelector("#edit-bemerkungen");
+      if(rNrEl&&rNrEl.textContent.trim()){updBaustelle(b.id,{rechnungsNr:rNrEl.textContent.trim()});commitRechnungsNr(rNrEl.textContent.trim());}
+      if(rDatumEl&&rDatumEl.textContent.trim()){
+        // Convert DD.MM.YYYY back to YYYY-MM-DD for storage
+        const parts=rDatumEl.textContent.trim().split(".");
+        if(parts.length===3)updBaustelle(b.id,{rechnungsdatum:`${parts[2]}-${parts[1].padStart(2,"0")}-${parts[0].padStart(2,"0")}`});
+      }
+      if(bauherrEl)updBaustelle(b.id,{bauherr:bauherrEl.textContent.trim()});
+      if(adresseEl)updBaustelle(b.id,{adresse:adresseEl.innerText.trim()});
+      if(bemEl)updBaustelle(b.id,{bemerkungen:bemEl.textContent.trim()});
+    }
     window.print();
   });
   const typ13bBadge=ist13b?`<span style="background:#fff3e0;color:#c05c1a;border:1px solid #c05c1a;border-radius:5px;padding:4px 10px;font-size:12px;font-weight:bold">§ 13b UStG</span>`:"";
@@ -726,7 +745,7 @@ function printRechnung(b,fd,typ){
   const hint=document.createElement("div");
   hint.className="no-print";
   hint.style.cssText="font-size:11px;color:rgba(255,255,255,.7);margin-left:8px;max-width:200px;line-height:1.4";
-  hint.textContent="💡 Tipp: Im Druckdialog → Weitere Einstellungen → Hintergrundgrafiken aktivieren";
+  hint.textContent="💡 Felder mit gestrichelter Linie sind direkt bearbeitbar. Änderungen werden beim Drucken gespeichert.";
   toolbar.appendChild(hint);
   toolbar.appendChild(printBtn);if(ist13b)toolbar.insertAdjacentHTML("beforeend",typ13bBadge);toolbar.appendChild(closeBtn);overlay.appendChild(toolbar);
 
@@ -753,15 +772,15 @@ function printRechnung(b,fd,typ){
     <div class="doc-info" style="background:#f8fdf8;padding:20px 40px;display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #d8e8d0;-webkit-print-color-adjust:exact;print-color-adjust:exact">
       <div>
         <div style="font-size:10px;color:#8aaa8a;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Rechnungsempfänger</div>
-        <div style="font-size:15px;font-weight:bold;color:#1a2e1a">${esc(b.bauherr||"—")}</div>
-        ${b.adresse?`<div style="font-size:13px;color:#5a8a5a;margin-top:2px;white-space:pre-line">${esc(b.adresse)}</div>`:""}
+        <div contenteditable="true" id="edit-bauherr" style="font-size:15px;font-weight:bold;color:#1a2e1a;outline:none;border-bottom:1px dashed #c8dcc0;min-width:150px;display:inline-block">${esc(b.bauherr||"—")}</div>
+        <div contenteditable="true" id="edit-adresse" style="font-size:13px;color:#444;margin-top:4px;outline:none;border-bottom:1px dashed #c8dcc0;min-width:150px;white-space:pre-line;min-height:16px">${esc(b.adresse||"")}</div>
       </div>
       <div style="text-align:right">
         <table style="font-size:13px;border-collapse:collapse">
-          <tr><td style="color:#8aaa8a;padding:2px 12px 2px 0">Rechnungsnr.:</td><td style="font-weight:bold;color:#1a2e1a">${esc(rNr)}</td></tr>
-          <tr><td style="color:#8aaa8a;padding:2px 12px 2px 0">Datum:</td><td style="color:#1a2e1a">${rDatum}</td></tr>
+          <tr><td style="color:#8aaa8a;padding:2px 12px 2px 0">Rechnungsnr.:</td><td><span contenteditable="true" id="edit-rNr" style="font-weight:bold;color:#1a2e1a;outline:none;border-bottom:1px dashed #c8dcc0;min-width:80px;display:inline-block">${esc(rNr)}</span></td></tr>
+          <tr><td style="color:#8aaa8a;padding:2px 12px 2px 0">Datum:</td><td><span contenteditable="true" id="edit-rDatum" style="color:#1a2e1a;outline:none;border-bottom:1px dashed #c8dcc0;min-width:80px;display:inline-block">${rDatum}</span></td></tr>
           <tr><td style="color:#8aaa8a;padding:2px 12px 2px 0">Baustelle:</td><td style="color:#1a2e1a">${esc(b.name)}</td></tr>
-          ${(()=>{const dates=eintraege.map(e=>e.datum).sort();if(!dates.length)return"";const von=fmt(dates[0]),bis=fmt(dates[dates.length-1]);return `<tr><td style="color:#8aaa8a;padding:2px 12px 2px 0">Leistungszeitraum:</td><td style="color:#1a2e1a">${von===bis?von:von+" – "+bis}</td></tr>`;})()}
+          ${(()=>{const dates=eintraege.map(e=>e.datum).sort();if(!dates.length)return"";const von=fmt(dates[0]),bis=fmt(dates[dates.length-1]);const zeitraum=von===bis?von:von+" – "+bis;return `<tr><td style="color:#8aaa8a;padding:2px 12px 2px 0">Leistungszeitraum:</td><td><span contenteditable="true" id="edit-zeitraum" style="color:#1a2e1a;outline:none;border-bottom:1px dashed #c8dcc0;min-width:120px;display:inline-block">${zeitraum}</span></td></tr>`;})()}
 
         </table>
       </div>
@@ -792,7 +811,7 @@ function printRechnung(b,fd,typ){
     </div>
 
     <!-- BEMERKUNGEN -->
-    ${b.bemerkungen?`<div class="doc-bemerk" style="padding:20px 40px 0;font-size:13px;color:#444;line-height:1.7"><strong>Bemerkungen:</strong> ${esc(b.bemerkungen)}</div>`:""}
+    `<div class="doc-bemerk" style="padding:20px 40px 0;font-size:13px;color:#444;line-height:1.7"><strong>Bemerkungen:</strong> <span contenteditable="true" id="edit-bemerkungen" style="outline:none;border-bottom:1px dashed #c8dcc0;min-width:100px;display:inline-block">${esc(b.bemerkungen||"")}</span></div>`
 
     <!-- ZAHLUNGSINFO -->
     <div class="doc-zahlung" style="padding:24px 40px;background:#f8fdf8;border-top:1px solid #e0ead8;margin-top:12px;-webkit-print-color-adjust:exact;print-color-adjust:exact">

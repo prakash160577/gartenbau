@@ -159,7 +159,7 @@ const LOGO_SVG=`<svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
 <circle cx="12" cy="37" r="2.5" fill="#444"/>
 </svg>`;
 
-let state={baustellen:[],activeId:null,page:"uebersicht",firmendaten:{firmaName:"",steuernr:"",bank:"",iban:"",bic:"",tel:"",email:"",strasse:"",plzOrt:""},letzeSicherung:null,kunden:[]};
+let state={baustellen:[],activeId:null,page:"uebersicht",firmendaten:{firmaName:"",steuernr:"",bank:"",iban:"",bic:"",tel:"",email:"",strasse:"",plzOrt:"",lastRechnungsNr:0},letzeSicherung:null,kunden:[]};
 const saved=load();
 if(saved){
   state={...state,...saved};
@@ -190,6 +190,23 @@ function saveState(){save({baustellen:state.baustellen,activeId:state.activeId,f
 function setState(patch){Object.assign(state,typeof patch==="function"?patch(state):patch);saveState();render();}
 function getActive(){return state.baustellen.find(b=>b.id===state.activeId);}
 function updBaustelle(id,patch){state.baustellen=state.baustellen.map(b=>b.id===id?{...b,...patch}:b);saveState();}
+
+function nextRechnungsNr(){
+  const fd=state.firmendaten;
+  const year=new Date().getFullYear();
+  const last=fd.lastRechnungsNr||0;
+  const next=last+1;
+  return `RE-${year}-${String(next).padStart(3,"0")}`;
+}
+function commitRechnungsNr(nr){
+  // Extract number from RE-YYYY-NNN format
+  const parts=nr.split("-");
+  const num=parseInt(parts[parts.length-1])||0;
+  if(num>=(state.firmendaten.lastRechnungsNr||0)){
+    state.firmendaten.lastRechnungsNr=num;
+    saveState();
+  }
+}
 
 function saveKunde(bauherr,adresse){
   if(!bauherr||!bauherr.trim())return;
@@ -523,6 +540,11 @@ function renderLeistung(b){
 function renderRechnung(b){
   const wrap=document.createElement("div");wrap.className="page";
   const updB=patch=>{updBaustelle(b.id,patch);Object.assign(b,patch);};
+  // Auto-fill invoice number if empty
+  if(!b.rechnungsNr){
+    const nr=nextRechnungsNr();
+    updB({rechnungsNr:nr});
+  }
   const eintraege=b.eintraege||[];
   let arbeitszeitGesamt=0;
   const mRows={},matRows={};
@@ -650,33 +672,39 @@ function printRechnung(b,fd,typ){
   const rNr=b.rechnungsNr||("RE-"+new Date().getFullYear()+"-"+String(Math.floor(Math.random()*9000)+1000));
 
   // Build positions HTML
-  // Build individual person rows
-  const personRows={};
-  for(const e of eintraege){
-    for(const p of(e.personalStunden||[])){
-      const k=(p.istIch?"__ICH__":p.name)+"__"+(p.stundensatz||0);
-      if(!personRows[k])personRows[k]={name:p.istIch?"Eigene Arbeitszeit":p.name||"Mitarbeiter",ss:p.stundensatz||0,h:0};
-      personRows[k].h+=p.stunden||0;
-    }
-  }
-  const pRowsArr=Object.values(personRows);
+  // Build position rows WITH date per line item (§14 UStG)
   const posRows=[];
   let pos=1;
-  for(const p of pRowsArr)posRows.push({pos:pos++,bez:p.name,detail:`${p.h.toFixed(1)} h · ${p.ss.toFixed(2)} €/Std.`,betrag:p.h*(p.ss||0)});
-  for(const m of mArr)posRows.push({pos:pos++,bez:m.name||"Maschine",detail:`${m.h.toFixed(1)} h · ${m.ss.toFixed(2)} €/Std.`,betrag:m.h*(m.ss||0)});
-  for(const m of matArr)posRows.push({pos:pos++,bez:m.bz||"Material",detail:`${m.mg.toFixed(2)} ${m.ei} · ${m.pr.toFixed(2)} €/${m.ei}`,betrag:m.mg*m.pr});
+  const sortedEintraege=[...eintraege].sort((a,z)=>a.datum.localeCompare(z.datum));
+  for(const e of sortedEintraege){
+    const datumStr=fmt(e.datum);
+    for(const p of(e.personalStunden||[])){
+      if(!p.stunden)continue;
+      const name=p.istIch?"Arbeitsleistung (Inhaber)":(p.name||"Mitarbeiter");
+      posRows.push({pos:pos++,datum:datumStr,bez:name,detail:`${p.stunden.toFixed(1)} h · ${(p.stundensatz||0).toFixed(2)} €/Std.`,betrag:(p.stunden||0)*(p.stundensatz||0)});
+    }
+    for(const m of(e.maschinenStunden||[])){
+      if(!m.stunden)continue;
+      posRows.push({pos:pos++,datum:datumStr,bez:m.name||"Maschineneinsatz",detail:`${m.stunden.toFixed(1)} h · ${(m.stundensatz||0).toFixed(2)} €/Std.`,betrag:(m.stunden||0)*(m.stundensatz||0)});
+    }
+    for(const m of(e.material||[])){
+      if(!m.menge)continue;
+      posRows.push({pos:pos++,datum:datumStr,bez:m.bezeichnung||"Material",detail:`${m.menge.toFixed(2)} ${m.einheit} · ${(m.preis||0).toFixed(2)} €/${m.einheit}`,betrag:(m.menge||0)*(m.preis||0)});
+    }
+  }
 
   const posHTML=posRows.map(r=>`
     <tr>
-      <td style="padding:7px 10px;border-bottom:1px solid #f0f0f0;color:#555;font-size:12px;width:28px;vertical-align:middle">${r.pos}</td>
-      <td style="padding:7px 10px;border-bottom:1px solid #f0f0f0;font-size:13px;vertical-align:middle">${esc(r.bez)}</td>
-      <td style="padding:7px 10px;border-bottom:1px solid #f0f0f0;font-size:12px;color:#555;vertical-align:middle;white-space:nowrap">${esc(r.detail)}</td>
-      <td style="padding:7px 10px;border-bottom:1px solid #f0f0f0;text-align:right;font-weight:bold;font-size:13px;white-space:nowrap;vertical-align:middle">${r.betrag.toFixed(2)} €</td>
+      <td style="padding:7px 8px;border-bottom:1px solid #f0f0f0;color:#555;font-size:11px;width:24px;vertical-align:middle">${r.pos}</td>
+      <td style="padding:7px 8px;border-bottom:1px solid #f0f0f0;font-size:11px;color:#555;white-space:nowrap;vertical-align:middle">${r.datum}</td>
+      <td style="padding:7px 8px;border-bottom:1px solid #f0f0f0;font-size:13px;vertical-align:middle">${esc(r.bez)}</td>
+      <td style="padding:7px 8px;border-bottom:1px solid #f0f0f0;font-size:11px;color:#444;vertical-align:middle;white-space:nowrap">${esc(r.detail)}</td>
+      <td style="padding:7px 8px;border-bottom:1px solid #f0f0f0;text-align:right;font-weight:bold;font-size:13px;white-space:nowrap;vertical-align:middle">${r.betrag.toFixed(2)} €</td>
     </tr>`).join("");
 
   const steuerzeile=ist13b
-    ?`<tr><td colspan="3" style="padding:6px 10px;font-size:12px;color:#555">Steuerschuldnerschaft des Leistungsempfängers (§ 13b UStG)</td><td style="padding:6px 10px;text-align:right;font-size:12px;color:#555">0,00 €</td></tr>`
-    :`<tr><td colspan="3" style="padding:6px 10px;font-size:12px;color:#555">zzgl. 19 % Umsatzsteuer</td><td style="padding:6px 10px;text-align:right;font-size:12px;color:#555">${mwst.toFixed(2)} €</td></tr>`;
+    ?`<tr><td colspan="4" style="padding:6px 10px;font-size:12px;color:#555">Steuerschuldnerschaft des Leistungsempfängers (§ 13b UStG)</td><td style="padding:6px 10px;text-align:right;font-size:12px;color:#555">0,00 €</td></tr>`
+    :`<tr><td colspan="4" style="padding:6px 10px;font-size:12px;color:#555">zzgl. 19 % Umsatzsteuer</td><td style="padding:6px 10px;text-align:right;font-size:12px;color:#555">${mwst.toFixed(2)} €</td></tr>`;
 
   const bruttozeile=ist13b
     ?`<tr style="style=""><td colspan="3" style="padding:10px 10px;font-size:14px;font-weight:bold;color:#2d6a4f;border-top:2px solid #2d6a4f">Rechnungsbetrag (netto)</td><td style="padding:10px 10px;text-align:right;font-size:16px;font-weight:bold;color:#2d6a4f">${netto.toFixed(2)} €</td></tr>`
@@ -733,6 +761,7 @@ function printRechnung(b,fd,typ){
           <tr><td style="color:#8aaa8a;padding:2px 12px 2px 0">Rechnungsnr.:</td><td style="font-weight:bold;color:#1a2e1a">${esc(rNr)}</td></tr>
           <tr><td style="color:#8aaa8a;padding:2px 12px 2px 0">Datum:</td><td style="color:#1a2e1a">${rDatum}</td></tr>
           <tr><td style="color:#8aaa8a;padding:2px 12px 2px 0">Baustelle:</td><td style="color:#1a2e1a">${esc(b.name)}</td></tr>
+          ${(()=>{const dates=eintraege.map(e=>e.datum).sort();if(!dates.length)return"";const von=fmt(dates[0]),bis=fmt(dates[dates.length-1]);return `<tr><td style="color:#8aaa8a;padding:2px 12px 2px 0">Leistungszeitraum:</td><td style="color:#1a2e1a">${von===bis?von:von+" – "+bis}</td></tr>`;})()}
 
         </table>
       </div>
@@ -744,18 +773,19 @@ function printRechnung(b,fd,typ){
       <table style="width:100%;border-collapse:collapse;margin-bottom:0">
         <thead>
           <tr style="background:#f0f7f0;-webkit-print-color-adjust:exact;print-color-adjust:exact">
-            <th style="padding:7px 10px;text-align:left;font-size:10px;color:#5a8a5a;text-transform:uppercase;letter-spacing:.5px;font-weight:600;width:28px">Pos.</th>
-            <th style="padding:7px 10px;text-align:left;font-size:10px;color:#5a8a5a;text-transform:uppercase;letter-spacing:.5px;font-weight:600">Leistung / Material</th>
-            <th style="padding:7px 10px;text-align:left;font-size:10px;color:#5a8a5a;text-transform:uppercase;letter-spacing:.5px;font-weight:600">Details</th>
-            <th style="padding:7px 10px;text-align:right;font-size:10px;color:#5a8a5a;text-transform:uppercase;letter-spacing:.5px;font-weight:600">Betrag</th>
+            <th style="padding:7px 8px;text-align:left;font-size:10px;color:#5a8a5a;text-transform:uppercase;letter-spacing:.5px;font-weight:600;width:24px">Pos.</th>
+            <th style="padding:7px 8px;text-align:left;font-size:10px;color:#5a8a5a;text-transform:uppercase;letter-spacing:.5px;font-weight:600;white-space:nowrap">Datum</th>
+            <th style="padding:7px 8px;text-align:left;font-size:10px;color:#5a8a5a;text-transform:uppercase;letter-spacing:.5px;font-weight:600">Leistung / Material</th>
+            <th style="padding:7px 8px;text-align:left;font-size:10px;color:#5a8a5a;text-transform:uppercase;letter-spacing:.5px;font-weight:600">Menge / Details</th>
+            <th style="padding:7px 8px;text-align:right;font-size:10px;color:#5a8a5a;text-transform:uppercase;letter-spacing:.5px;font-weight:600">Betrag</th>
           </tr>
         </thead>
         <tbody>${posHTML}</tbody>
         <tfoot>
-          <tr><td colspan="4" style="padding:4px 0"></td></tr>
-          <tr><td colspan="3" style="padding:6px 10px;font-size:12px;color:#555;border-top:1px solid #e0e0e0">Nettobetrag</td><td style="padding:6px 10px;text-align:right;font-size:12px;font-weight:bold;border-top:1px solid #e0e0e0">${netto.toFixed(2)} €</td></tr>
+          <tr><td colspan="5" style="padding:4px 0"></td></tr>
+          <tr><td colspan="4" style="padding:6px 10px;font-size:12px;color:#555;border-top:1px solid #e0e0e0">Nettobetrag</td><td style="padding:6px 10px;text-align:right;font-size:12px;font-weight:bold;border-top:1px solid #e0e0e0">${netto.toFixed(2)} €</td></tr>
           ${steuerzeile}
-          <tr><td colspan="4" style="padding:3px 0;border-top:2px solid #2d6a4f"></td></tr>
+          <tr><td colspan="5" style="padding:3px 0;border-top:2px solid #2d6a4f"></td></tr>
           ${bruttozeile}
         </tfoot>
       </table>
@@ -784,9 +814,10 @@ function printRechnung(b,fd,typ){
       ${esc(fd.firmaName||"")}${fd.strasse?" · "+esc(fd.strasse):""}${fd.tel?" · Tel.: "+esc(fd.tel):""}${fd.email?" · E-Mail: "+esc(fd.email):""}
     </div>`;
 
-  // Save to archive and kunde
+  // Save to archive and kunde, commit invoice number
   saveToArchiv(b,fd,typ,netto,mwst,brutto);
   saveKunde(b.bauherr,b.adresse);
+  if(b.rechnungsNr)commitRechnungsNr(b.rechnungsNr);
   overlay.appendChild(doc);document.body.appendChild(overlay);document.body.style.overflow="hidden";
 }
 
@@ -987,7 +1018,11 @@ const ARCHIVE_KEY="baumanager_archiv";
 function loadArchiv(){try{const r=localStorage.getItem(ARCHIVE_KEY);return r?JSON.parse(r):[];}catch{return[];}}
 function saveToArchiv(b,fd,typ,netto,mwst,brutto){
   const archiv=loadArchiv();
-  const eintrag={id:uid(),datum:b.rechnungsdatum||today(),gespeichertAm:new Date().toISOString(),rechnungsNr:b.rechnungsNr||"",baustelle:b.name,bauherr:b.bauherr||"",typ:typ,netto:netto,mwst:mwst,brutto:brutto,snapshot:{b:JSON.parse(JSON.stringify(b)),fd:JSON.parse(JSON.stringify(fd))}};
+  const rDatum=b.rechnungsdatum||today();
+  // Ensure snapshot has the correct rechnungsdatum
+  const bSnapshot=JSON.parse(JSON.stringify(b));
+  bSnapshot.rechnungsdatum=rDatum;
+  const eintrag={id:uid(),datum:rDatum,gespeichertAm:new Date().toISOString(),rechnungsNr:b.rechnungsNr||"",baustelle:b.name,bauherr:b.bauherr||"",typ:typ,netto:netto,mwst:mwst,brutto:brutto,snapshot:{b:bSnapshot,fd:JSON.parse(JSON.stringify(fd))}};
   archiv.push(eintrag);
   try{localStorage.setItem(ARCHIVE_KEY,JSON.stringify(archiv));}catch{archiv.shift();try{localStorage.setItem(ARCHIVE_KEY,JSON.stringify(archiv));}catch{}}
 }
